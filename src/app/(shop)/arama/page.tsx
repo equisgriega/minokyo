@@ -1,0 +1,76 @@
+import { prisma } from "@/lib/prisma";
+import ProductCard, { CardProduct } from "@/components/ProductCard";
+
+export const dynamic = "force-dynamic";
+export const metadata = { title: "Arama — minokyo" };
+
+export default async function SearchPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
+  const query = (q ?? "").trim();
+
+  let cards: CardProduct[] = [];
+  if (query) {
+    const products = await prisma.product.findMany({
+      where: {
+        active: true,
+        OR: [
+          { name: { contains: query } },
+          { description: { contains: query } },
+        ],
+      },
+      include: {
+        images: { orderBy: { position: "asc" }, take: 1 },
+        variants: true,
+        category: true,
+      },
+    });
+    cards = products.map((p) => ({
+      slug: p.slug,
+      name: p.name,
+      price: p.price,
+      gender: p.gender,
+      image: p.images[0]?.url ?? "/products/p1.jpeg",
+      categoryName: p.category?.name,
+      totalStock: p.variants.reduce((s, v) => s + v.stock, 0),
+    }));
+  }
+
+  return (
+    <div className="max-w-6xl mx-auto px-5 py-10">
+      <form action="/arama" className="max-w-xl mx-auto mb-8">
+        <div className="flex gap-2">
+          <input
+            name="q"
+            defaultValue={query}
+            autoFocus
+            placeholder="Ürün ara... (örn. sweatshirt, pantolon)"
+            className="flex-1 px-4 py-3 rounded-full border border-[#e6dccd] bg-[#fffdf9] focus:outline-none focus:border-[#7a5a42]"
+          />
+          <button className="px-6 py-3 rounded-full bg-[#5c4230] text-white font-semibold hover:bg-[#7a5a42] transition">
+            Ara
+          </button>
+        </div>
+      </form>
+
+      {query && (
+        <p className="text-center text-[#6b5c51] mb-6">
+          &quot;{query}&quot; için {cards.length} sonuç
+        </p>
+      )}
+
+      {query && cards.length === 0 ? (
+        <p className="text-center text-[#6b5c51] py-10">Sonuç bulunamadı. Farklı bir kelime dene.</p>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+          {cards.map((p) => (
+            <ProductCard key={p.slug} p={p} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

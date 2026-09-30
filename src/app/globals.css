@@ -1,26 +1,69 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f2ea;
+  --foreground: #3b2f28;
+  --cream: #f7f2ea;
+  --cream-2: #efe7db;
+  --paper: #fffdf9;
+  --ink: #3b2f28;
+  --ink-soft: #6b5c51;
+  --brown: #7a5a42;
+  --brown-dark: #5c4230;
+  --accent: #e8a87c;
+  --line: #e6dccd;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-cream: var(--cream);
+  --color-cream2: var(--cream-2);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-inksoft: var(--ink-soft);
+  --color-brown: var(--brown);
+  --color-browndark: var(--brown-dark);
+  --color-accent: var(--accent);
+  --color-line: var(--line);
+  --font-sans: var(--font-poppins);
+  --font-display: var(--font-baloo);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins), system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-baloo), var(--font-poppins), cursive;
+}
+
+@keyframes heroFade {
+  from {
+    opacity: 0.25;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.prose-mnk h2 {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--brown-dark);
+  margin-top: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+.prose-mnk ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.prose-mnk a {
+  color: var(--brown-dark);
+  text-decoration: underline;
+}
+.prose-mnk strong {
+  color: var(--brown-dark);
 }

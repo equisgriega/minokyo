@@ -1,0 +1,215 @@
+// minokyo — veritabanı şeması
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ---------- Kullanıcılar ----------
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  phone     String?
+  password  String // hashlenmiş
+  role      Role     @default(CUSTOMER)
+  addresses Address[]
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+model Address {
+  id        String  @id @default(cuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String? // "Ev", "İş"
+  fullName  String
+  phone     String
+  line      String
+  city      String
+  district  String
+  zip       String?
+  createdAt DateTime @default(now())
+}
+
+// ---------- Kategoriler & Ürünler ----------
+model Category {
+  id       String    @id @default(cuid())
+  name     String
+  slug     String    @unique
+  products Product[]
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String
+  price       Int // kuruş cinsinden (örn. 54900 = 549,00₺)
+  compareAt   Int? // indirim öncesi fiyat
+  active      Boolean   @default(true)
+  featured    Boolean   @default(false)
+  gender      String    @default("unisex") // kiz, erkek, unisex
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  images      ProductImage[]
+  variants    Variant[]
+  orderItems  OrderItem[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String?
+  position  Int     @default(0)
+}
+
+// Beden bazlı stok (depo yönetiminin kalbi)
+model Variant {
+  id         String      @id @default(cuid())
+  productId  String
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size       String // "2", "3", "4", "5", "6" (yaş)
+  sku        String      @unique
+  stock         Int           @default(0)
+  lowStockAt    Int           @default(3) // kritik stok eşiği
+  orderItems    OrderItem[]
+  stockNotifies StockNotify[]
+
+  @@unique([productId, size])
+}
+
+// ---------- Siparişler ----------
+model Order {
+  id            String      @id @default(cuid())
+  orderNo       String      @unique
+  userId        String?
+  user          User?       @relation(fields: [userId], references: [id])
+  email         String
+  phone         String
+  status        OrderStatus @default(PENDING)
+  paymentMethod String      @default("card")
+  paymentStatus String      @default("unpaid")
+
+  // teslimat bilgileri (anlık kopya)
+  fullName String
+  line     String
+  city     String
+  district String
+  zip      String?
+  note     String?
+
+  // kargo takibi
+  carrier    String? // yurtici | aras | mng | ptt
+  trackingNo String?
+  labelUrl   String? // kargo barkod/etiket PDF
+
+  // e-fatura (Paraşüt)
+  invoiceStatus String  @default("none") // none | issued | failed
+  invoiceId     String?
+  invoiceUrl    String?
+
+  items      OrderItem[]
+  subtotal   Int
+  discount   Int     @default(0)
+  couponCode String?
+  shipping   Int
+  total      Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+enum OrderStatus {
+  PENDING // ödeme bekliyor
+  PAID // ödendi
+  SHIPPED // kargoya verildi
+  DELIVERED // teslim edildi
+  CANCELLED // iptal
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
+  variantId String?
+  variant   Variant? @relation(fields: [variantId], references: [id])
+  name      String // anlık kopya
+  size      String
+  price     Int
+  qty       Int
+}
+
+// ---------- Terk edilen sepet (sepet hatırlatma için) ----------
+model AbandonedCart {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  name       String?
+  cartData   String // JSON (ürünler)
+  total      Int      @default(0)
+  reminded   Boolean  @default(false)
+  remindedAt DateTime?
+  recovered  Boolean  @default(false) // sipariş verildi mi
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// ---------- E-posta / bildirim kaydı ----------
+model EmailLog {
+  id        String   @id @default(cuid())
+  to        String
+  subject   String
+  body      String
+  type      String // order_confirmation | shipping | abandoned_cart
+  status    String   @default("sent") // sent | demo | failed
+  createdAt DateTime @default(now())
+}
+
+// ---------- Bülten ----------
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+// ---------- İndirim kuponu ----------
+model Coupon {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  type        String   @default("percent") // percent | fixed
+  value       Int // percent: 1-100, fixed: kuruş
+  minSubtotal Int      @default(0) // kuruş
+  active      Boolean  @default(true)
+  usageLimit  Int? // toplam kullanım sınırı
+  usedCount   Int      @default(0)
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+}
+
+// ---------- Stok gelince haber ver ----------
+model StockNotify {
+  id        String   @id @default(cuid())
+  email     String
+  variantId String
+  variant   Variant  @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  notified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@unique([email, variantId])
+}
