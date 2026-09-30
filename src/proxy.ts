@@ -12,8 +12,7 @@ export function proxy(req: NextRequest) {
     pathname.startsWith("/api") ||
     pathname.startsWith("/cok-yakinda") ||
     pathname.startsWith("/onizleme") ||
-    pathname.startsWith("/products") || // ürün görselleri
-    pathname.startsWith("/hero"); // hero videoları
+    pathname.includes("."); // statik dosyalar (logo.png, .svg, manifest, hero.mp4, ürün görselleri vb.)
 
   if (open) return NextResponse.next();
 
