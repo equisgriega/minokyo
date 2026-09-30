@@ -1,4 +1,5 @@
 import ComingSoonForm from "@/components/ComingSoonForm";
+import Logo from "@/components/Logo";
 
 export const metadata = { title: "minokyo — Çok Yakında" };
 
@@ -19,7 +20,9 @@ export default function ComingSoonPage() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#5c4230]/70 to-[#3b2f28]/85" />
 
       <div className="relative z-10 max-w-xl">
-        <div className="font-display text-5xl md:text-6xl font-extrabold text-white mb-3">minokyo</div>
+        <div className="flex justify-center mb-4">
+          <Logo light layout="stacked" size={72} />
+        </div>
         <p className="text-[#f4d06f] font-semibold tracking-widest uppercase text-sm mb-8">
           Çok Yakında
         </p>

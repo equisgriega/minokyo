@@ -1,5 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <rect width="512" height="512" rx="112" fill="#5c4230"/>
-  <text x="256" y="330" font-family="'Baloo 2', 'Poppins', system-ui, sans-serif" font-size="230" font-weight="800" fill="#f7f2ea" text-anchor="middle">m</text>
-  <circle cx="335" cy="150" r="17" fill="#f4d06f"/>
+  <rect width="512" height="512" rx="112" fill="#e4b33e"/>
+  <g transform="translate(146,150) scale(2.0)" fill="none">
+    <path d="M20 82 V52 Q20 37 37 37 Q54 37 54 52 V82 M54 52 Q54 37 71 37 Q88 37 88 52 V82"
+          stroke="#5a2e86" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M15 84 Q54 106 97 74" stroke="#5a2e86" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="95" cy="40" r="6.5" fill="#ffffff"/>
+  </g>
 </svg>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "./CartContext";
+import Logo from "./Logo";
 
 type HeaderUser = { name: string | null; email: string } | null;
 
@@ -33,8 +34,8 @@ export default function Header({ user }: { user: HeaderUser }) {
             ☰
           </button>
 
-          <Link href="/" className="font-display text-2xl font-extrabold text-[#5c4230]">
-            minokyo
+          <Link href="/" aria-label="minokyo ana sayfa">
+            <Logo size={28} />
           </Link>
 
           <nav className="hidden md:flex gap-6 ml-4 flex-1">

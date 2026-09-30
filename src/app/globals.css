@@ -12,6 +12,9 @@
   --brown-dark: #5c4230;
   --accent: #e8a87c;
   --line: #e6dccd;
+  /* marka logosu renkleri */
+  --brand-purple: #5a2e86;
+  --brand-yellow: #e4b33e;
 }
 
 @theme inline {

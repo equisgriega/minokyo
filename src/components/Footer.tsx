@@ -1,12 +1,13 @@
 import Link from "next/link";
+import Logo from "./Logo";
 
 export default function Footer() {
   return (
     <footer className="bg-[#5c4230] text-[#eaded2] mt-auto">
       <div className="max-w-6xl mx-auto px-5 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
         <div className="col-span-2 md:col-span-1">
-          <div className="font-display text-2xl font-extrabold text-white">minokyo</div>
-          <p className="text-sm opacity-75 mt-2">Minik tarzlar, büyük mutluluklar.</p>
+          <Logo light size={30} />
+          <p className="text-sm opacity-75 mt-3">Minik tarzlar, büyük mutluluklar.</p>
         </div>
         <div>
           <h5 className="text-white font-semibold mb-3 text-sm">Alışveriş</h5>
