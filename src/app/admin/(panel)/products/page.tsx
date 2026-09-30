@@ -20,19 +20,19 @@ export default async function ProductsPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold">Ürünler & Stok</h1>
-          <p className="text-[#6b5c51]">{products.length} ürün</p>
+          <p className="text-[#6b6280]">{products.length} ürün</p>
         </div>
         <Link
           href="/admin/ice-aktar"
-          className="px-5 py-2.5 rounded-full bg-[#5c4230] text-white text-sm font-semibold hover:bg-[#7a5a42] transition"
+          className="px-5 py-2.5 rounded-full bg-[#5a2e86] text-white text-sm font-semibold hover:bg-[#7a4fb0] transition"
         >
           ⬆ Toplu İçe Aktar
         </Link>
       </div>
 
-      <div className="bg-white rounded-2xl border border-[#e6dccd] overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#e3daf0] overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-[#faf7f1] text-[#6b5c51] text-left">
+          <thead className="bg-[#f4f0fa] text-[#6b6280] text-left">
             <tr>
               <th className="p-4 font-semibold">Ürün</th>
               <th className="p-4 font-semibold">Kategori</th>
@@ -42,13 +42,13 @@ export default async function ProductsPage() {
               <th className="p-4 font-semibold"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#f0e9dd]">
+          <tbody className="divide-y divide-[#ece7f5]">
             {products.map((p) => {
               const total = p.variants.reduce((s, v) => s + v.stock, 0);
               const low = p.variants.some((v) => v.stock <= 3);
               const out = total === 0;
               return (
-                <tr key={p.id} className="hover:bg-[#faf7f1] transition">
+                <tr key={p.id} className="hover:bg-[#f4f0fa] transition">
                   <td className="p-4">
                     <div className="flex items-center gap-3">
                       {p.images[0] && (
@@ -63,7 +63,7 @@ export default async function ProductsPage() {
                       <span className="font-medium">{p.name}</span>
                     </div>
                   </td>
-                  <td className="p-4 text-[#6b5c51]">{p.category?.name ?? "—"}</td>
+                  <td className="p-4 text-[#6b6280]">{p.category?.name ?? "—"}</td>
                   <td className="p-4 font-semibold">{formatTL(p.price)}</td>
                   <td className="p-4">
                     <span
@@ -98,7 +98,7 @@ export default async function ProductsPage() {
                   <td className="p-4 text-right">
                     <Link
                       href={`/admin/products/${p.id}`}
-                      className="text-[#5c4230] font-semibold hover:underline whitespace-nowrap"
+                      className="text-[#5a2e86] font-semibold hover:underline whitespace-nowrap"
                     >
                       Düzenle →
                     </Link>

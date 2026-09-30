@@ -61,7 +61,7 @@ export default async function HomePage() {
           <h1 className="font-display text-4xl md:text-6xl font-extrabold text-white leading-tight mt-3 drop-shadow-lg">
             Minik tarzlar,
             <br />
-            <span className="text-[#f4d06f]">büyük mutluluklar</span>
+            <span className="text-[#f0c33c]">büyük mutluluklar</span>
           </h1>
           <p className="text-white/90 mt-4 max-w-md drop-shadow">
             Yumuşacık kumaşlar, neşeli desenler ve gün boyu rahatlık. minokyo ile çocuğunuz hem şık
@@ -70,7 +70,7 @@ export default async function HomePage() {
           <div className="flex gap-3 mt-7 flex-wrap">
             <Link
               href="/urunler"
-              className="px-7 py-3.5 rounded-full bg-white text-[#5c4230] font-semibold hover:bg-[#f4d06f] transition shadow-lg"
+              className="px-7 py-3.5 rounded-full bg-white text-[#5a2e86] font-semibold hover:bg-[#f0c33c] transition shadow-lg"
             >
               Koleksiyonu Keşfet
             </Link>
@@ -96,10 +96,10 @@ export default async function HomePage() {
             <Link
               key={c.label}
               href={c.href}
-              className="bg-[#fffdf9] border border-[#e6dccd] rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-md transition"
+              className="bg-[#ffffff] border border-[#e3daf0] rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-md transition"
             >
               <div className="text-3xl mb-2">{c.emoji}</div>
-              <div className="font-semibold text-[#5c4230]">{c.label}</div>
+              <div className="font-semibold text-[#5a2e86]">{c.label}</div>
             </Link>
           ))}
         </div>
@@ -108,8 +108,8 @@ export default async function HomePage() {
       {/* Öne çıkanlar */}
       <section className="max-w-6xl mx-auto px-5 py-10">
         <div className="text-center mb-8">
-          <h2 className="font-display text-3xl font-bold text-[#5c4230]">Öne Çıkanlar</h2>
-          <p className="text-[#6b5c51]">Bu sezonun en sevilenleri</p>
+          <h2 className="font-display text-3xl font-bold text-[#5a2e86]">Öne Çıkanlar</h2>
+          <p className="text-[#6b6280]">Bu sezonun en sevilenleri</p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
           {featured.map((p) => (
@@ -119,7 +119,7 @@ export default async function HomePage() {
         <div className="text-center mt-8">
           <Link
             href="/urunler"
-            className="inline-block px-7 py-3.5 rounded-full border border-[#e6dccd] bg-[#fffdf9] font-semibold hover:border-[#7a5a42] transition"
+            className="inline-block px-7 py-3.5 rounded-full border border-[#e3daf0] bg-[#ffffff] font-semibold hover:border-[#7a4fb0] transition"
           >
             Tüm Ürünleri Gör →
           </Link>
@@ -127,7 +127,7 @@ export default async function HomePage() {
       </section>
 
       {/* Özellikler */}
-      <section className="bg-[#efe7db]/50 py-12 mt-6">
+      <section className="bg-[#ece7f5]/50 py-12 mt-6">
         <div className="max-w-6xl mx-auto px-5 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {[
             { i: "🌸", t: "Doğal Kumaşlar", d: "Hassas ciltler için yumuşak pamuk" },
@@ -137,8 +137,8 @@ export default async function HomePage() {
           ].map((f) => (
             <div key={f.t}>
               <div className="text-3xl mb-2">{f.i}</div>
-              <div className="font-semibold text-[#5c4230]">{f.t}</div>
-              <div className="text-sm text-[#6b5c51] mt-1">{f.d}</div>
+              <div className="font-semibold text-[#5a2e86]">{f.t}</div>
+              <div className="text-sm text-[#6b6280] mt-1">{f.d}</div>
             </div>
           ))}
         </div>

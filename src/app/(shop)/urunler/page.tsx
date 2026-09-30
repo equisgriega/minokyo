@@ -50,8 +50,8 @@ export default async function ProductsPage({
   return (
     <div className="max-w-6xl mx-auto px-5 py-10">
       <div className="text-center mb-8">
-        <h1 className="font-display text-3xl font-bold text-[#5c4230]">Koleksiyon</h1>
-        <p className="text-[#6b5c51]">{cards.length} ürün</p>
+        <h1 className="font-display text-3xl font-bold text-[#5a2e86]">Koleksiyon</h1>
+        <p className="text-[#6b6280]">{cards.length} ürün</p>
       </div>
 
       <div className="flex flex-wrap gap-2 justify-center mb-8">
@@ -61,8 +61,8 @@ export default async function ProductsPage({
             href={f.q}
             className={`px-5 py-2 rounded-full text-sm font-medium border transition ${
               active === f.key
-                ? "bg-[#5c4230] text-white border-[#5c4230]"
-                : "bg-[#fffdf9] text-[#6b5c51] border-[#e6dccd] hover:border-[#7a5a42]"
+                ? "bg-[#5a2e86] text-white border-[#5a2e86]"
+                : "bg-[#ffffff] text-[#6b6280] border-[#e3daf0] hover:border-[#7a4fb0]"
             }`}
           >
             {f.label}
@@ -71,7 +71,7 @@ export default async function ProductsPage({
       </div>
 
       {cards.length === 0 ? (
-        <p className="text-center text-[#6b5c51] py-16">Bu filtreye uygun ürün bulunamadı.</p>
+        <p className="text-center text-[#6b6280] py-16">Bu filtreye uygun ürün bulunamadı.</p>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
           {cards.map((p) => (

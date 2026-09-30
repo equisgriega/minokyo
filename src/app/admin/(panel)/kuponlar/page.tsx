@@ -7,15 +7,15 @@ export const dynamic = "force-dynamic";
 export default async function CouponsPage() {
   const coupons = await prisma.coupon.findMany({ orderBy: { createdAt: "desc" } });
   const field =
-    "w-full px-3 py-2 rounded-xl border border-[#e6dccd] bg-[#f7f2ea] text-sm focus:outline-none focus:border-[#7a5a42]";
+    "w-full px-3 py-2 rounded-xl border border-[#e3daf0] bg-[#f7f4fb] text-sm focus:outline-none focus:border-[#7a4fb0]";
 
   return (
     <div className="p-8 max-w-4xl">
       <h1 className="text-2xl font-bold mb-1">Kuponlar</h1>
-      <p className="text-[#6b5c51] mb-6">İndirim kodları oluştur ve yönet</p>
+      <p className="text-[#6b6280] mb-6">İndirim kodları oluştur ve yönet</p>
 
       {/* Yeni kupon */}
-      <form action={createCoupon} className="bg-white rounded-2xl border border-[#e6dccd] p-6 mb-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
+      <form action={createCoupon} className="bg-white rounded-2xl border border-[#e3daf0] p-6 mb-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
         <div>
           <label className="block text-xs font-semibold mb-1">Kod</label>
           <input name="code" required placeholder="İLK10" className={field} />
@@ -44,16 +44,16 @@ export default async function CouponsPage() {
           <input name="expiresAt" type="date" className={field} />
         </div>
         <div className="sm:col-span-2 lg:col-span-3">
-          <button className="px-6 py-2.5 rounded-full bg-[#5c4230] text-white font-semibold hover:bg-[#7a5a42] transition">
+          <button className="px-6 py-2.5 rounded-full bg-[#5a2e86] text-white font-semibold hover:bg-[#7a4fb0] transition">
             Kupon Oluştur
           </button>
         </div>
       </form>
 
       {/* Liste */}
-      <div className="bg-white rounded-2xl border border-[#e6dccd] overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#e3daf0] overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-[#faf7f1] text-[#6b5c51] text-left">
+          <thead className="bg-[#f4f0fa] text-[#6b6280] text-left">
             <tr>
               <th className="p-4 font-semibold">Kod</th>
               <th className="p-4 font-semibold">İndirim</th>
@@ -63,12 +63,12 @@ export default async function CouponsPage() {
               <th className="p-4 font-semibold"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#f0e9dd]">
+          <tbody className="divide-y divide-[#ece7f5]">
             {coupons.length === 0 && (
-              <tr><td colSpan={6} className="p-6 text-center text-[#6b5c51]">Henüz kupon yok.</td></tr>
+              <tr><td colSpan={6} className="p-6 text-center text-[#6b6280]">Henüz kupon yok.</td></tr>
             )}
             {coupons.map((c) => (
-              <tr key={c.id} className="hover:bg-[#faf7f1]">
+              <tr key={c.id} className="hover:bg-[#f4f0fa]">
                 <td className="p-4 font-mono font-semibold">{c.code}</td>
                 <td className="p-4">{c.type === "percent" ? `%${c.value}` : formatTL(c.value)}</td>
                 <td className="p-4">{c.minSubtotal > 0 ? formatTL(c.minSubtotal) : "—"}</td>

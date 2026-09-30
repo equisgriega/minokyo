@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f2ea;
-  --foreground: #3b2f28;
-  --cream: #f7f2ea;
-  --cream-2: #efe7db;
-  --paper: #fffdf9;
-  --ink: #3b2f28;
-  --ink-soft: #6b5c51;
-  --brown: #7a5a42;
-  --brown-dark: #5c4230;
-  --accent: #e8a87c;
-  --line: #e6dccd;
+  --background: #f7f4fb;
+  --foreground: #2f2545;
+  --cream: #f7f4fb;
+  --cream-2: #ece7f5;
+  --paper: #ffffff;
+  --ink: #2f2545;
+  --ink-soft: #6b6280;
+  --brown: #7a4fb0;
+  --brown-dark: #5a2e86;
+  --accent: #e4b33e;
+  --line: #e3daf0;
   /* marka logosu renkleri */
   --brand-purple: #5a2e86;
   --brand-yellow: #e4b33e;

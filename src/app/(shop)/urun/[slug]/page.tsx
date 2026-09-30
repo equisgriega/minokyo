@@ -54,12 +54,12 @@ export default async function ProductPage({
 
   return (
     <div className="max-w-6xl mx-auto px-5 py-8">
-      <nav className="text-sm text-[#6b5c51] mb-6">
+      <nav className="text-sm text-[#6b6280] mb-6">
         <Link href="/" className="hover:underline">Ana Sayfa</Link>
         {" / "}
         <Link href="/urunler" className="hover:underline">Ürünler</Link>
         {" / "}
-        <span className="text-[#3b2f28]">{product.name}</span>
+        <span className="text-[#2f2545]">{product.name}</span>
       </nav>
 
       <ProductDetail
@@ -82,7 +82,7 @@ export default async function ProductPage({
 
       {relatedCards.length > 0 && (
         <section className="mt-16">
-          <h2 className="font-display text-2xl font-bold text-[#5c4230] mb-6">Bunu Tamamla ✨</h2>
+          <h2 className="font-display text-2xl font-bold text-[#5a2e86] mb-6">Bunu Tamamla ✨</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {relatedCards.map((p) => (
               <ProductCard key={p.slug} p={p} />

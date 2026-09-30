@@ -103,21 +103,21 @@ export default function SettingsPage() {
   return (
     <div className="p-8 max-w-3xl">
       <h1 className="text-2xl font-bold mb-1">Entegrasyonlar</h1>
-      <p className="text-[#6b5c51] mb-6">
+      <p className="text-[#6b6280] mb-6">
         Anahtarları <code>.env</code> dosyasına ekleyip sunucuyu yeniden başlatınca ✅ olur.
       </p>
 
       {/* Katalog feed */}
-      <div className="bg-white rounded-2xl border border-[#e6dccd] p-5 mb-6">
+      <div className="bg-white rounded-2xl border border-[#e3daf0] p-5 mb-6">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div>
             <h2 className="font-bold">🗂️ Ürün Katalog Feed'i</h2>
-            <p className="text-sm text-[#6b5c51]">Meta/TikTok katalog için bu adresi ver.</p>
+            <p className="text-sm text-[#6b6280]">Meta/TikTok katalog için bu adresi ver.</p>
           </div>
           <a
             href="/catalog.xml"
             target="_blank"
-            className="text-sm text-[#5c4230] font-semibold underline break-all"
+            className="text-sm text-[#5a2e86] font-semibold underline break-all"
           >
             {BASE}/catalog.xml
           </a>
@@ -126,15 +126,15 @@ export default function SettingsPage() {
 
       <div className="space-y-6">
         {groups.map((g) => (
-          <div key={g.title} className="bg-white rounded-2xl border border-[#e6dccd] p-5">
+          <div key={g.title} className="bg-white rounded-2xl border border-[#e3daf0] p-5">
             <h2 className="font-bold mb-3">{g.title}</h2>
-            <div className="divide-y divide-[#f0e9dd]">
+            <div className="divide-y divide-[#ece7f5]">
               {g.rows.map((r) => (
                 <div key={r.label} className="flex items-start justify-between gap-4 py-3">
                   <div>
                     <div className="font-medium text-sm">{r.label}</div>
-                    <div className="text-xs text-[#6b5c51]">{r.note}</div>
-                    <code className="text-[11px] text-[#7a5a42]">{r.env}</code>
+                    <div className="text-xs text-[#6b6280]">{r.note}</div>
+                    <code className="text-[11px] text-[#7a4fb0]">{r.env}</code>
                   </div>
                   <span
                     className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${
@@ -150,7 +150,7 @@ export default function SettingsPage() {
         ))}
       </div>
 
-      <p className="text-xs text-[#6b5c51] mt-6">
+      <p className="text-xs text-[#6b6280] mt-6">
         Not: Bu sayfa yalnızca anahtarın <em>tanımlı olup olmadığını</em> gösterir; geçerliliğini
         Meta Events Manager / iyzico panelinden test et. Örnek eşik: 500₺ üzeri kargo bedava (
         {formatTL(50000)}).

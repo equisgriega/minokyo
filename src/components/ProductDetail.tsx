@@ -83,7 +83,7 @@ export default function ProductDetail({ product }: Props) {
     <div className="grid md:grid-cols-2 gap-10">
       {/* Galeri */}
       <div>
-        <div className="relative aspect-[3/4] rounded-3xl overflow-hidden bg-[#efe7db] border border-[#e6dccd]">
+        <div className="relative aspect-[3/4] rounded-3xl overflow-hidden bg-[#ece7f5] border border-[#e3daf0]">
           <Image
             src={product.images[activeImg]}
             alt={product.name}
@@ -100,7 +100,7 @@ export default function ProductDetail({ product }: Props) {
                 key={i}
                 onClick={() => setActiveImg(i)}
                 className={`relative w-20 h-24 rounded-xl overflow-hidden border-2 ${
-                  activeImg === i ? "border-[#5c4230]" : "border-transparent"
+                  activeImg === i ? "border-[#5a2e86]" : "border-transparent"
                 }`}
               >
                 <Image src={img} alt="" fill sizes="80px" className="object-cover" />
@@ -112,25 +112,25 @@ export default function ProductDetail({ product }: Props) {
 
       {/* Bilgi */}
       <div>
-        <span className="text-xs uppercase tracking-wide text-[#e8a87c] font-semibold">
+        <span className="text-xs uppercase tracking-wide text-[#e4b33e] font-semibold">
           {product.categoryName ?? "minokyo"}
         </span>
-        <h1 className="font-display text-3xl font-bold text-[#5c4230] mt-1 mb-2">{product.name}</h1>
-        <div className="font-display text-3xl font-bold text-[#5c4230] mb-4">
+        <h1 className="font-display text-3xl font-bold text-[#5a2e86] mt-1 mb-2">{product.name}</h1>
+        <div className="font-display text-3xl font-bold text-[#5a2e86] mb-4">
           {formatTL(product.price)}
         </div>
-        <p className="text-[#6b5c51] mb-6">{product.description}</p>
+        <p className="text-[#6b6280] mb-6">{product.description}</p>
 
         {/* Beden */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-2">
             <label className="font-semibold text-sm">
-              Beden (Yaş) <span className="text-[#e8a87c]">*</span>
+              Beden (Yaş) <span className="text-[#e4b33e]">*</span>
             </label>
             <button
               type="button"
               onClick={() => setShowChart((s) => !s)}
-              className="text-xs text-[#5c4230] font-semibold underline"
+              className="text-xs text-[#5a2e86] font-semibold underline"
             >
               📏 Beden Tablosu
             </button>
@@ -149,10 +149,10 @@ export default function ProductDetail({ product }: Props) {
                   }}
                   className={`min-w-[56px] px-3 py-2.5 rounded-xl border-[1.5px] font-semibold text-sm transition ${
                     size === v.size
-                      ? "bg-[#5c4230] text-white border-[#5c4230]"
+                      ? "bg-[#5a2e86] text-white border-[#5a2e86]"
                       : out
-                      ? "bg-[#f0e9dd] text-[#bcae9e] border-[#e6dccd] line-through"
-                      : "bg-[#fffdf9] border-[#e6dccd] hover:border-[#7a5a42]"
+                      ? "bg-[#ece7f5] text-[#bcae9e] border-[#e3daf0] line-through"
+                      : "bg-[#ffffff] border-[#e3daf0] hover:border-[#7a4fb0]"
                   }`}
                 >
                   {v.size} Yaş
@@ -166,12 +166,12 @@ export default function ProductDetail({ product }: Props) {
           )}
 
           {showChart && (
-            <div className="mt-3 border border-[#e6dccd] rounded-xl overflow-hidden text-sm">
+            <div className="mt-3 border border-[#e3daf0] rounded-xl overflow-hidden text-sm">
               <table className="w-full">
-                <thead className="bg-[#faf7f1] text-[#6b5c51] text-left">
+                <thead className="bg-[#f4f0fa] text-[#6b6280] text-left">
                   <tr><th className="p-2 font-semibold">Yaş</th><th className="p-2 font-semibold">Boy</th><th className="p-2 font-semibold">Kilo</th></tr>
                 </thead>
-                <tbody className="divide-y divide-[#f0e9dd]">
+                <tbody className="divide-y divide-[#ece7f5]">
                   {Object.entries(SIZE_CHART).map(([yas, v]) => (
                     <tr key={yas}><td className="p-2">{yas} Yaş</td><td className="p-2">{v.boy}</td><td className="p-2">{v.kilo}</td></tr>
                   ))}
@@ -183,7 +183,7 @@ export default function ProductDetail({ product }: Props) {
 
         {selectedVariant && selectedVariant.stock === 0 ? (
           /* Tükendi → stok gelince haber ver */
-          <div className="border border-[#e6dccd] rounded-2xl p-4 bg-[#faf7f1]">
+          <div className="border border-[#e3daf0] rounded-2xl p-4 bg-[#f4f0fa]">
             <p className="font-semibold text-sm mb-2">Bu beden tükendi 😔 Stok gelince haber verelim mi?</p>
             <div className="flex gap-2">
               <input
@@ -191,11 +191,11 @@ export default function ProductDetail({ product }: Props) {
                 value={notifyEmail}
                 onChange={(e) => setNotifyEmail(e.target.value)}
                 placeholder="E-posta adresin"
-                className="flex-1 px-4 py-2.5 rounded-xl border border-[#e6dccd] bg-[#fffdf9] text-sm focus:outline-none focus:border-[#7a5a42]"
+                className="flex-1 px-4 py-2.5 rounded-xl border border-[#e3daf0] bg-[#ffffff] text-sm focus:outline-none focus:border-[#7a4fb0]"
               />
               <button
                 onClick={handleNotify}
-                className="px-5 py-2.5 rounded-xl bg-[#5c4230] text-white text-sm font-semibold hover:bg-[#7a5a42] transition whitespace-nowrap"
+                className="px-5 py-2.5 rounded-xl bg-[#5a2e86] text-white text-sm font-semibold hover:bg-[#7a4fb0] transition whitespace-nowrap"
               >
                 Haber Ver
               </button>
@@ -212,7 +212,7 @@ export default function ProductDetail({ product }: Props) {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setQty((q) => Math.max(1, q - 1))}
-                  className="w-9 h-9 rounded-full border border-[#e6dccd] bg-[#fffdf9] font-bold text-lg"
+                  className="w-9 h-9 rounded-full border border-[#e3daf0] bg-[#ffffff] font-bold text-lg"
                 >
                   −
                 </button>
@@ -220,7 +220,7 @@ export default function ProductDetail({ product }: Props) {
                 <button
                   onClick={() => setQty((q) => (selectedVariant ? Math.min(maxStock, q + 1) : q + 1))}
                   disabled={!!selectedVariant && qty >= maxStock}
-                  className="w-9 h-9 rounded-full border border-[#e6dccd] bg-[#fffdf9] font-bold text-lg disabled:opacity-40"
+                  className="w-9 h-9 rounded-full border border-[#e3daf0] bg-[#ffffff] font-bold text-lg disabled:opacity-40"
                 >
                   +
                 </button>
@@ -229,14 +229,14 @@ export default function ProductDetail({ product }: Props) {
 
             <button
               onClick={handleAdd}
-              className="w-full py-4 rounded-full bg-[#5c4230] text-white font-semibold text-lg hover:bg-[#7a5a42] transition"
+              className="w-full py-4 rounded-full bg-[#5a2e86] text-white font-semibold text-lg hover:bg-[#7a4fb0] transition"
             >
               {added ? "✓ Sepete Eklendi" : "Sepete Ekle"}
             </button>
           </>
         )}
 
-        <ul className="mt-6 space-y-2 text-sm text-[#6b5c51]">
+        <ul className="mt-6 space-y-2 text-sm text-[#6b6280]">
           <li>🌱 %100 pamuk, yumuşak doku</li>
           <li>🚚 500₺ üzeri kargo bedava</li>
           <li>↩️ 14 gün içinde kolay iade</li>

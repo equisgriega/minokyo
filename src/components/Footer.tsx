@@ -3,7 +3,7 @@ import Logo from "./Logo";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#5c4230] text-[#eaded2] mt-auto">
+    <footer className="bg-[#5a2e86] text-[#e9e2f5] mt-auto">
       <div className="max-w-6xl mx-auto px-5 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
         <div className="col-span-2 md:col-span-1">
           <Logo light size={52} />

@@ -20,14 +20,14 @@ export default async function AccountPage({
   const { ok, error } = await searchParams;
 
   const field =
-    "w-full px-4 py-3 rounded-xl border border-[#e6dccd] bg-[#f7f2ea] focus:outline-none focus:border-[#7a5a42]";
+    "w-full px-4 py-3 rounded-xl border border-[#e3daf0] bg-[#f7f4fb] focus:outline-none focus:border-[#7a4fb0]";
 
   return (
     <div className="p-8 max-w-md">
       <h1 className="text-2xl font-bold mb-1">Hesap</h1>
-      <p className="text-[#6b5c51] mb-6">{admin!.email}</p>
+      <p className="text-[#6b6280] mb-6">{admin!.email}</p>
 
-      <div className="bg-white rounded-2xl border border-[#e6dccd] p-6">
+      <div className="bg-white rounded-2xl border border-[#e3daf0] p-6">
         <h2 className="font-bold mb-4">Şifre Değiştir</h2>
 
         {ok && (
@@ -54,7 +54,7 @@ export default async function AccountPage({
             <label className="block text-sm font-semibold mb-1.5">Yeni Şifre (Tekrar)</label>
             <input name="confirm" type="password" required className={field} />
           </div>
-          <button className="px-6 py-3 rounded-full bg-[#5c4230] text-white font-semibold hover:bg-[#7a5a42] transition">
+          <button className="px-6 py-3 rounded-full bg-[#5a2e86] text-white font-semibold hover:bg-[#7a4fb0] transition">
             Şifreyi Değiştir
           </button>
         </form>
