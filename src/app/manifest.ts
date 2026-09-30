@@ -13,8 +13,8 @@ export default function manifest(): MetadataRoute.Manifest {
     lang: "tr",
     categories: ["shopping", "kids"],
     icons: [
-      { src: "/logo.png", sizes: "512x512", type: "image/png", purpose: "any" },
-      { src: "/logo.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
+      { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+      { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
     ],
   };
 }

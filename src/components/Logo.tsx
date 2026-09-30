@@ -1,24 +1,28 @@
 import Image from "next/image";
 
-// minokyo gerçek logosu (yuvarlak yama rozeti). Beyaz köşeler rounded-full ile kırpılır.
+// minokyo logosu (şeffaf). light=true → koyu zeminler için beyaz versiyon.
+const AR = 379 / 260; // logo en/boy oranı
+
 export default function Logo({
-  size = 44,
+  size = 48,
+  light = false,
   className = "",
   priority = false,
 }: {
-  size?: number;
+  size?: number; // yükseklik (px)
+  light?: boolean;
   className?: string;
   priority?: boolean;
 }) {
   return (
     <Image
-      src="/logo.png"
+      src={light ? "/logo-white.png" : "/logo.png"}
       alt="Minokyo"
-      width={size}
+      width={Math.round(size * AR)}
       height={size}
       priority={priority}
-      className={`rounded-full object-cover ${className}`}
-      style={{ width: size, height: size }}
+      className={className}
+      style={{ height: size, width: "auto" }}
     />
   );
 }

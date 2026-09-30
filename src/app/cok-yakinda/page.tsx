@@ -21,7 +21,7 @@ export default function ComingSoonPage() {
 
       <div className="relative z-10 max-w-xl">
         <div className="flex justify-center mb-4">
-          <Logo size={160} priority />
+          <Logo light size={120} priority />
         </div>
         <p className="text-[#f4d06f] font-semibold tracking-widest uppercase text-sm mb-8">
           Çok Yakında
