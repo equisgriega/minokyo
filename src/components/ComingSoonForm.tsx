@@ -24,7 +24,7 @@ export default function ComingSoonForm() {
           type="email"
           required
           placeholder="E-posta adresin"
-          className="flex-1 px-5 py-3.5 rounded-full border-none text-[#2f2545] focus:outline-none focus:ring-2 focus:ring-[#f0c33c]"
+          className="flex-1 px-5 py-3.5 rounded-full border-none bg-white text-[#2f2545] placeholder:text-[#6b6280] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#f0c33c]"
         />
         <button
           disabled={loading}
