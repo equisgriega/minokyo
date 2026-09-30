@@ -34,8 +34,8 @@ export default function Header({ user }: { user: HeaderUser }) {
             ☰
           </button>
 
-          <Link href="/" aria-label="minokyo ana sayfa">
-            <Logo size={28} />
+          <Link href="/" aria-label="minokyo ana sayfa" className="flex items-center">
+            <Logo size={52} priority />
           </Link>
 
           <nav className="hidden md:flex gap-6 ml-4 flex-1">
