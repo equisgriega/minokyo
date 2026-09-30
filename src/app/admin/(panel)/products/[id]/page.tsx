@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { updateProduct, updateStock } from "../actions";
+import RelatedProductsPicker from "@/components/RelatedProductsPicker";
 
 export const dynamic = "force-dynamic";
 
@@ -18,10 +19,28 @@ export default async function ProductEditPage({
       images: { orderBy: { position: "asc" } },
       variants: { orderBy: { size: "asc" } },
       category: true,
+      relatedFrom: { select: { relatedId: true } },
     },
   });
 
   if (!product) notFound();
+
+  // Bağlı ürün seçici için diğer tüm ürünler
+  const allProducts = await prisma.product.findMany({
+    where: { id: { not: id } },
+    orderBy: { name: "asc" },
+    include: {
+      images: { orderBy: { position: "asc" }, take: 1 },
+      category: true,
+    },
+  });
+  const relatedOptions = allProducts.map((p) => ({
+    id: p.id,
+    name: p.name,
+    image: p.images[0]?.url,
+    categoryName: p.category?.name,
+  }));
+  const initialRelated = product.relatedFrom.map((r) => r.relatedId);
 
   return (
     <div className="p-8 max-w-3xl">
@@ -141,6 +160,13 @@ export default async function ProductEditPage({
           ))}
         </div>
       </div>
+
+      {/* Bağlı ürünler — Kombini tamamla */}
+      <RelatedProductsPicker
+        productId={product.id}
+        options={relatedOptions}
+        initialSelected={initialRelated}
+      />
     </div>
   );
 }

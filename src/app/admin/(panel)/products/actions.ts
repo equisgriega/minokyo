@@ -69,3 +69,29 @@ export async function updateProduct(formData: FormData) {
   revalidatePath("/admin/products");
   revalidatePath(`/admin/products/${id}`);
 }
+
+// Manuel "Kombini tamamla" bağlantılarını kaydet
+export async function updateRelatedProducts(formData: FormData) {
+  if (!(await requireAdmin())) throw new Error("Yetkisiz");
+  const id = String(formData.get("id"));
+  const relatedIds = formData
+    .getAll("relatedIds")
+    .map((v) => String(v))
+    .filter((v) => v && v !== id); // kendine bağlanamaz
+
+  // Önce bu ürünün tüm bağlantılarını sil, sonra seçilenleri yeniden kur
+  await prisma.$transaction([
+    prisma.productRelation.deleteMany({ where: { productId: id } }),
+    ...(relatedIds.length
+      ? [
+          prisma.productRelation.createMany({
+            data: relatedIds.map((relatedId) => ({ productId: id, relatedId })),
+            skipDuplicates: true,
+          }),
+        ]
+      : []),
+  ]);
+
+  revalidatePath("/admin/products");
+  revalidatePath(`/admin/products/${id}`);
+}
