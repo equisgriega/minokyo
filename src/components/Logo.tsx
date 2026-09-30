@@ -21,6 +21,7 @@ export default function Logo({
       width={Math.round(size * AR)}
       height={size}
       priority={priority}
+      unoptimized
       className={className}
       style={{ height: size, width: "auto" }}
     />
