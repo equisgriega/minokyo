@@ -19,6 +19,7 @@ export default async function PanelLayout({
     { href: "/admin/musteriler", label: "Müşteriler", icon: "👥" },
     { href: "/admin/notifications", label: "Bildirimler", icon: "📬" },
     { href: "/admin/ayarlar", label: "Entegrasyonlar", icon: "⚙️" },
+    { href: "/admin/hesap", label: "Hesap", icon: "🔑" },
   ];
 
   return (
