@@ -5,7 +5,17 @@ import ProductDetail from "@/components/ProductDetail";
 import ProductCard, { CardProduct } from "@/components/ProductCard";
 import type { Prisma } from "@prisma/client";
 
-export const dynamic = "force-dynamic";
+// ISR: ürün sayfaları CDN'den servis edilir, 2 dk'da bir (ve admin'de ürün/stok değişince) tazelenir.
+export const revalidate = 120;
+
+// Bilinen ürünleri build'de önceden üret (CDN'den anında). Yeni ürünler ilk ziyarette üretilir.
+export async function generateStaticParams() {
+  const products = await prisma.product.findMany({
+    where: { active: true },
+    select: { slug: true },
+  });
+  return products.map((p) => ({ slug: p.slug }));
+}
 
 export default async function ProductPage({
   params,
@@ -47,14 +57,25 @@ export default async function ProductPage({
     totalStock: p.variants.reduce((s, v) => s + v.stock, 0),
   });
 
-  // --- "Bunu Tamamla" ---
-  // 1) Yönetim panelinden manuel bağlanan ürünler öncelikli
-  const manualRelated = await prisma.product.findMany({
-    where: { active: true, relatedTo: { some: { productId: product.id } } },
-    include: cardInclude,
-    take: 8,
-  });
+  // Bağımsız sorguları tek seferde paralel çalıştır (daha hızlı)
+  const [manualRelated, ordersWithProduct] = await Promise.all([
+    // 1) Yönetim panelinden manuel bağlanan ürünler (öncelikli)
+    prisma.product.findMany({
+      where: { active: true, relatedTo: { some: { productId: product.id } } },
+      include: cardInclude,
+      take: 8,
+    }),
+    // "Bunu alanlar" için: bu ürünün geçtiği tamamlanmış siparişler
+    prisma.orderItem.findMany({
+      where: {
+        productId: product.id,
+        order: { status: { in: ["PAID", "SHIPPED", "DELIVERED"] } },
+      },
+      select: { orderId: true },
+    }),
+  ]);
 
+  // --- "Bunu Tamamla" ---
   let relatedCards: CardProduct[];
   if (manualRelated.length > 0) {
     relatedCards = manualRelated.map(toCard);
@@ -78,13 +99,6 @@ export default async function ProductPage({
 
   // --- "Bunu Alanlar Bunları da Aldı" (sipariş geçmişinden) ---
   let alsoBoughtCards: CardProduct[] = [];
-  const ordersWithProduct = await prisma.orderItem.findMany({
-    where: {
-      productId: product.id,
-      order: { status: { in: ["PAID", "SHIPPED", "DELIVERED"] } },
-    },
-    select: { orderId: true },
-  });
   const orderIds = [...new Set(ordersWithProduct.map((o) => o.orderId))];
   if (orderIds.length > 0) {
     const grouped = await prisma.orderItem.groupBy({

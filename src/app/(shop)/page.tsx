@@ -13,7 +13,8 @@ const HERO_VIDEOS = [
   "/hero5.mp4",
 ];
 
-export const dynamic = "force-dynamic";
+// ISR: sayfa CDN'den statik servis edilir, her 5 dk'da bir (ve admin değişikliğinde) tazelenir.
+export const revalidate = 300;
 
 async function getFeatured(): Promise<CardProduct[]> {
   const products = await prisma.product.findMany({

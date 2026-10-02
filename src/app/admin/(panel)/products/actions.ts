@@ -43,6 +43,9 @@ export async function updateStock(formData: FormData) {
 
   revalidatePath("/admin/products");
   revalidatePath("/admin");
+  // Vitrin ISR sayfalarını tazele
+  if (before) revalidatePath(`/urun/${before.product.slug}`);
+  revalidatePath("/");
 }
 
 export async function updateProduct(formData: FormData) {
@@ -55,7 +58,7 @@ export async function updateProduct(formData: FormData) {
   const active = formData.get("active") === "on";
   const featured = formData.get("featured") === "on";
 
-  await prisma.product.update({
+  const updated = await prisma.product.update({
     where: { id },
     data: {
       name,
@@ -65,9 +68,14 @@ export async function updateProduct(formData: FormData) {
       active,
       featured,
     },
+    select: { slug: true },
   });
   revalidatePath("/admin/products");
   revalidatePath(`/admin/products/${id}`);
+  // Vitrin ISR sayfalarını tazele
+  revalidatePath(`/urun/${updated.slug}`);
+  revalidatePath("/");
+  revalidatePath("/urunler");
 }
 
 // Manuel "Kombini tamamla" bağlantılarını kaydet
@@ -92,6 +100,8 @@ export async function updateRelatedProducts(formData: FormData) {
       : []),
   ]);
 
+  const prod = await prisma.product.findUnique({ where: { id }, select: { slug: true } });
   revalidatePath("/admin/products");
   revalidatePath(`/admin/products/${id}`);
+  if (prod) revalidatePath(`/urun/${prod.slug}`);
 }

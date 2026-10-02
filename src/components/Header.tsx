@@ -1,15 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "./CartContext";
 import Logo from "./Logo";
 
-type HeaderUser = { name: string | null; email: string } | null;
+type HeaderUser = { name: string | null } | null;
 
-export default function Header({ user }: { user: HeaderUser }) {
+export default function Header() {
   const { count, setOpen } = useCart();
   const [menu, setMenu] = useState(false);
+  const [user, setUser] = useState<HeaderUser>(null);
+
+  // Oturum durumunu istemci tarafında çek — sayfa HTML'i CDN'den statik gelir.
+  useEffect(() => {
+    let alive = true;
+    fetch("/api/me")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (alive && d) setUser(d.user);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   const nav = [
     { href: "/urunler", label: "Tüm Ürünler" },
