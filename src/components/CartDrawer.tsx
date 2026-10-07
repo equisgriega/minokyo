@@ -3,11 +3,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "./CartContext";
-import { formatTL } from "@/lib/money";
-import { BagIcon } from "./Icons";
+import { formatTL, FREE_SHIP_LIMIT } from "@/lib/money";
+import { BagIcon, CloseIcon } from "./Icons";
 
 export default function CartDrawer() {
   const { items, subtotal, isOpen, setOpen, setQty, remove } = useCart();
+  const remaining = Math.max(0, FREE_SHIP_LIMIT - subtotal);
+  const progress = Math.min(100, (subtotal / FREE_SHIP_LIMIT) * 100);
 
   return (
     <>
@@ -18,14 +20,14 @@ export default function CartDrawer() {
         onClick={() => setOpen(false)}
       />
       <aside
-        className={`fixed top-0 right-0 h-full w-[400px] max-w-[90vw] bg-[#fafafa] z-[60] shadow-2xl flex flex-col transition-transform ${
-          isOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed top-0 right-0 h-full w-[400px] max-w-[90vw] bg-white z-[70] flex flex-col transition-[transform,visibility] duration-300 ${
+          isOpen ? "translate-x-0 visible shadow-2xl" : "translate-x-full invisible"
         }`}
       >
-        <div className="flex items-center justify-between p-5 border-b border-[#e5e5e5]">
-          <h3 className="font-display text-xl font-bold text-[#111111]">Sepetim</h3>
-          <button onClick={() => setOpen(false)} className="text-2xl leading-none" aria-label="Kapat">
-            ×
+        <div className="flex items-center justify-between px-5 py-3 border-b border-[#e5e5e5]">
+          <h3 className="text-sm font-bold uppercase tracking-[0.06em] text-[#111111]">Sepetim ({items.reduce((n, i) => n + i.qty, 0)})</h3>
+          <button onClick={() => setOpen(false)} className="-mr-2 w-11 h-11 grid place-items-center text-[#111111]" aria-label="Kapat">
+            <CloseIcon />
           </button>
         </div>
 
@@ -43,6 +45,18 @@ export default function CartDrawer() {
           </div>
         ) : (
           <>
+            <div className="px-5 py-3 border-b border-[#e5e5e5]">
+              <p className="text-xs text-[#111111]">
+                {remaining > 0 ? (
+                  <>Kargo bedava için <strong>{formatTL(remaining)}</strong> daha ekle</>
+                ) : (
+                  <strong>Kargo bedava!</strong>
+                )}
+              </p>
+              <div className="mt-2 h-1 bg-[#f0f0f0]">
+                <div className="h-full bg-[#111111] transition-all" style={{ width: `${progress}%` }} />
+              </div>
+            </div>
             <div className="flex-1 overflow-y-auto p-5 space-y-4">
               {items.map((i) => (
                 <div key={i.variantId} className="flex gap-3">
@@ -62,7 +76,7 @@ export default function CartDrawer() {
                     <div className="flex items-center gap-2 mt-1.5">
                       <button
                         onClick={() => setQty(i.variantId, i.qty - 1)}
-                        className="w-7 h-7 rounded-none border border-[#e5e5e5] bg-white font-bold"
+                        className="w-9 h-9 rounded-none border border-[#e5e5e5] bg-white font-bold"
                       >
                         −
                       </button>
@@ -70,13 +84,13 @@ export default function CartDrawer() {
                       <button
                         onClick={() => setQty(i.variantId, i.qty + 1)}
                         disabled={i.qty >= i.maxStock}
-                        className="w-7 h-7 rounded-none border border-[#e5e5e5] bg-white font-bold disabled:opacity-40"
+                        className="w-9 h-9 rounded-none border border-[#e5e5e5] bg-white font-bold disabled:opacity-40"
                       >
                         +
                       </button>
                       <button
                         onClick={() => remove(i.variantId)}
-                        className="ml-auto text-xs text-[#6b6b6b] underline"
+                        className="ml-auto py-2 text-xs text-[#6b6b6b] underline"
                       >
                         Kaldır
                       </button>
@@ -89,10 +103,10 @@ export default function CartDrawer() {
               ))}
             </div>
 
-            <div className="p-5 border-t border-[#e5e5e5] bg-[#ffffff]">
+            <div className="p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] border-t border-[#e5e5e5] bg-white">
               <div className="flex justify-between items-center mb-1">
                 <span>Ara Toplam</span>
-                <strong className="font-display text-xl text-[#111111]">
+                <strong className="text-lg text-[#111111]">
                   {formatTL(subtotal)}
                 </strong>
               </div>
@@ -100,7 +114,7 @@ export default function CartDrawer() {
               <Link
                 href="/odeme"
                 onClick={() => setOpen(false)}
-                className="block text-center w-full py-3.5 rounded-none bg-[#111111] text-white font-semibold hover:bg-[#444444] transition"
+                className="block text-center w-full py-4 rounded-none bg-[#111111] text-white text-sm uppercase tracking-[0.06em] font-semibold hover:bg-[#444444] transition"
               >
                 Ödemeye Geç
               </Link>

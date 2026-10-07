@@ -5,13 +5,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/components/CartContext";
-import { formatTL } from "@/lib/money";
+import { formatTL, FREE_SHIP_LIMIT, SHIP_COST } from "@/lib/money";
 import { placeOrder, saveAbandonedCart, validateCoupon } from "@/app/(shop)/odeme/actions";
 import { trackInitiateCheckout } from "@/lib/track";
 import { BagIcon } from "@/components/Icons";
 
-const FREE_SHIP_LIMIT = 50000;
-const SHIP_COST = 4990;
 
 export type DefaultCustomer = {
   email?: string;
@@ -139,8 +137,8 @@ export default function CheckoutForm({
     "w-full px-4 py-3 rounded-xl border border-[#e5e5e5] bg-[#fafafa] focus:outline-none focus:border-[#444444]";
 
   return (
-    <div className="max-w-6xl mx-auto px-5 py-10">
-      <h1 className="font-display text-3xl font-bold text-[#111111] mb-1">Ödeme</h1>
+    <div className="max-w-6xl mx-auto px-5 py-6 md:py-10">
+      <h1 className="text-lg md:text-xl font-bold uppercase tracking-[0.06em] text-[#111111] mb-1">Ödeme</h1>
       <p className="text-[#6b6b6b] mb-6">Teslimat bilgilerini doldur, siparişini tamamla.</p>
 
       {error && (
@@ -149,31 +147,31 @@ export default function CheckoutForm({
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="grid lg:grid-cols-[1.5fr_1fr] gap-7 items-start">
-        <div className="space-y-5">
-          <section className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-6">
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-5 md:gap-7 items-start">
+        <div className="space-y-5 min-w-0">
+          <section className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-4 md:p-6">
             <h3 className="font-bold mb-4">İletişim</h3>
             <div className="grid sm:grid-cols-2 gap-4">
-              <input name="email" type="email" required placeholder="E-posta *" defaultValue={defaults.email} onBlur={(e) => captureCart(e.target.value)} className={field} />
-              <input name="phone" type="tel" required placeholder="Telefon *" defaultValue={defaults.phone} className={field} />
+              <input name="email" type="email" autoComplete="email" inputMode="email" required placeholder="E-posta *" defaultValue={defaults.email} onBlur={(e) => captureCart(e.target.value)} className={field} />
+              <input name="phone" type="tel" autoComplete="tel" inputMode="tel" required placeholder="Telefon *" defaultValue={defaults.phone} className={field} />
             </div>
           </section>
 
-          <section className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-6">
+          <section className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-4 md:p-6">
             <h3 className="font-bold mb-4">Teslimat Adresi</h3>
             <div className="space-y-4">
-              <input name="fullName" required placeholder="Ad Soyad *" defaultValue={defaults.fullName} className={field} />
-              <textarea name="line" required rows={2} placeholder="Adres (mahalle, sokak, no) *" className={field} />
-              <div className="grid sm:grid-cols-3 gap-4">
-                <input name="city" required placeholder="İl *" className={field} />
-                <input name="district" required placeholder="İlçe *" className={field} />
-                <input name="zip" placeholder="Posta Kodu" className={field} />
+              <input name="fullName" autoComplete="name" required placeholder="Ad Soyad *" defaultValue={defaults.fullName} className={field} />
+              <textarea name="line" autoComplete="street-address" required rows={2} placeholder="Adres (mahalle, sokak, no) *" className={field} />
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <input name="city" autoComplete="address-level1" required placeholder="İl *" className={field} />
+                <input name="district" autoComplete="address-level2" required placeholder="İlçe *" className={field} />
+                <input name="zip" autoComplete="postal-code" inputMode="numeric" placeholder="Posta Kodu" className={`${field} col-span-2 sm:col-span-1`} />
               </div>
               <textarea name="note" rows={2} placeholder="Sipariş notu (opsiyonel)" className={field} />
             </div>
           </section>
 
-          <section className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-6">
+          <section className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-4 md:p-6">
             <h3 className="font-bold mb-4">Ödeme Yöntemi</h3>
             <div className="space-y-3">
               {[
@@ -207,7 +205,7 @@ export default function CheckoutForm({
           </section>
         </div>
 
-        <aside className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-6 lg:sticky lg:top-24">
+        <aside className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-4 md:p-6 lg:sticky lg:top-24">
           <h3 className="font-bold mb-4">Sipariş Özeti</h3>
           <div className="space-y-3 mb-4">
             {items.map((i) => (
@@ -230,7 +228,8 @@ export default function CheckoutForm({
                 value={coupon}
                 onChange={(e) => setCoupon(e.target.value.toUpperCase())}
                 placeholder="İndirim kodu"
-                className="flex-1 px-3 py-2 rounded-xl border border-[#e5e5e5] bg-[#fafafa] text-sm focus:outline-none focus:border-[#444444]"
+                autoCapitalize="characters"
+                className="flex-1 min-w-0 px-3 py-2.5 rounded-xl border border-[#e5e5e5] bg-[#fafafa] text-base md:text-sm focus:outline-none focus:border-[#444444]"
               />
               <button
                 type="button"

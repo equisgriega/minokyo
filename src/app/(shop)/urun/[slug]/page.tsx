@@ -124,8 +124,8 @@ export default async function ProductPage({
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-5 py-8">
-      <nav className="text-sm text-[#6b6b6b] mb-6">
+    <div className="max-w-6xl mx-auto px-5 pt-0 pb-10 md:py-10">
+      <nav className="hidden md:block text-[13px] text-[#6b6b6b] mb-6">
         <Link href="/" className="hover:underline">Ana Sayfa</Link>
         {" / "}
         <Link href="/urunler" className="hover:underline">Ürünler</Link>
@@ -152,9 +152,9 @@ export default async function ProductPage({
       />
 
       {relatedCards.length > 0 && (
-        <section className="mt-16">
-          <h2 className="text-lg font-bold uppercase tracking-[0.06em] text-[#111111] mb-6">Kombini Tamamla</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
+        <section className="mt-14 md:mt-20">
+          <h2 className="text-base md:text-lg font-bold uppercase tracking-[0.06em] text-[#111111] mb-5 text-center">Kombini Tamamla</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-8">
             {relatedCards.map((p) => (
               <ProductCard key={p.slug} p={p} />
             ))}
@@ -163,9 +163,9 @@ export default async function ProductPage({
       )}
 
       {alsoBoughtCards.length > 0 && (
-        <section className="mt-16">
-          <h2 className="text-lg font-bold uppercase tracking-[0.06em] text-[#111111] mb-6">Bunu Alanlar Bunları da Aldı</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
+        <section className="mt-14 md:mt-20">
+          <h2 className="text-base md:text-lg font-bold uppercase tracking-[0.06em] text-[#111111] mb-5 text-center">Bunu Alanlar Bunları da Aldı</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-8">
             {alsoBoughtCards.map((p) => (
               <ProductCard key={p.slug} p={p} />
             ))}

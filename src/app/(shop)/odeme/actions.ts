@@ -8,6 +8,7 @@ import { isIyzicoConfigured, createCheckoutForm } from "@/lib/iyzico";
 import { capiPurchase } from "@/lib/capi";
 import { evaluateCoupon } from "@/lib/coupon";
 import { isParasutConfigured, createEArsivInvoice } from "@/lib/parasut";
+import { FREE_SHIP_LIMIT, SHIP_COST } from "@/lib/money";
 import { headers } from "next/headers";
 
 /** Checkout'ta kupon önizlemesi (indirim tutarını gösterir). */
@@ -15,8 +16,6 @@ export async function validateCoupon(code: string, subtotal: number) {
   return evaluateCoupon(code, subtotal);
 }
 
-const FREE_SHIP_LIMIT = 50000; // 500₺ (kuruş)
-const SHIP_COST = 4990; // 49,90₺
 
 type InItem = { variantId: string; qty: number };
 type Payload = {

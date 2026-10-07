@@ -24,16 +24,16 @@ export default function Footer() {
       </div>
 
       {/* Bağlantılar */}
-      <div className="max-w-7xl mx-auto px-5 pb-10 flex flex-wrap justify-center gap-x-8 gap-y-3 text-[13px] text-[#444444]">
+      <div className="max-w-7xl mx-auto px-5 pb-8 grid grid-cols-2 md:flex md:flex-wrap md:justify-center md:gap-x-8 text-[13px] text-[#444444]">
         {LINKS.map((l) => (
-          <Link key={l.href} href={l.href} className="hover:text-[#111111] hover:underline underline-offset-4">
+          <Link key={l.href} href={l.href} className="py-2.5 md:py-1 text-center hover:text-[#111111] hover:underline underline-offset-4">
             {l.label}
           </Link>
         ))}
       </div>
 
       <div className="border-t border-[#e5e5e5]">
-        <div className="max-w-7xl mx-auto px-5 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-[#6b6b6b]">
+        <div className="max-w-7xl mx-auto px-5 pt-6 pb-20 md:pb-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-[#6b6b6b] text-center">
           <Logo size={28} />
           <span>merhaba@minokyo.com · Pzt–Cmt 09:00–18:00</span>
           <span>© 2026 minokyo. Tüm hakları saklıdır.</span>

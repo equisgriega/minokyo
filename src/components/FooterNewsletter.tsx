@@ -25,7 +25,7 @@ export default function FooterNewsletter() {
           type="email"
           required
           placeholder="E-posta adresinizi girin"
-          className="flex-1 min-w-0 px-4 py-3 border border-[#e5e5e5] border-r-0 bg-white text-sm text-[#111111] placeholder:text-[#9a9a9a] focus:outline-none focus:border-[#111111]"
+          className="flex-1 min-w-0 px-4 py-3 border border-[#e5e5e5] border-r-0 bg-white text-base md:text-sm text-[#111111] placeholder:text-[#9a9a9a] focus:outline-none focus:border-[#111111]"
         />
         <button
           disabled={loading}
