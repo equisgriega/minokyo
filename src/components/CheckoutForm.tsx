@@ -8,6 +8,7 @@ import { useCart } from "@/components/CartContext";
 import { formatTL } from "@/lib/money";
 import { placeOrder, saveAbandonedCart, validateCoupon } from "@/app/(shop)/odeme/actions";
 import { trackInitiateCheckout } from "@/lib/track";
+import { BagIcon } from "@/components/Icons";
 
 const FREE_SHIP_LIMIT = 50000;
 const SHIP_COST = 4990;
@@ -124,7 +125,7 @@ export default function CheckoutForm({
   if (ready && items.length === 0) {
     return (
       <div className="max-w-6xl mx-auto px-5 py-20 text-center">
-        <div className="text-5xl mb-4">🛒</div>
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#f4f0fa] text-[#5a2e86] grid place-items-center"><BagIcon size={28} /></div>
         <h1 className="font-display text-2xl font-bold text-[#5a2e86] mb-2">Sepetin boş</h1>
         <p className="text-[#6b6280] mb-6">Ödemeye geçmek için önce sepetine ürün ekle.</p>
         <Link href="/urunler" className="px-7 py-3.5 rounded-full bg-[#5a2e86] text-white font-semibold">

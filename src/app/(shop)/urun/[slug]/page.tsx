@@ -153,8 +153,8 @@ export default async function ProductPage({
 
       {relatedCards.length > 0 && (
         <section className="mt-16">
-          <h2 className="font-display text-2xl font-bold text-[#5a2e86] mb-6">Bunu Tamamla ✨</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+          <h2 className="font-display text-2xl font-bold text-[#2f2545] mb-6">Kombini Tamamla</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
             {relatedCards.map((p) => (
               <ProductCard key={p.slug} p={p} />
             ))}
@@ -164,10 +164,8 @@ export default async function ProductPage({
 
       {alsoBoughtCards.length > 0 && (
         <section className="mt-16">
-          <h2 className="font-display text-2xl font-bold text-[#5a2e86] mb-6">
-            Bunu Alanlar Bunları da Aldı 🛒
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+          <h2 className="font-display text-2xl font-bold text-[#2f2545] mb-6">Bunu Alanlar Bunları da Aldı</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
             {alsoBoughtCards.map((p) => (
               <ProductCard key={p.slug} p={p} />
             ))}

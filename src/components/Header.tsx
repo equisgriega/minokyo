@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useCart } from "./CartContext";
 import Logo from "./Logo";
+import { BagIcon, CloseIcon, MenuIcon, SearchIcon, UserIcon } from "./Icons";
 
 type HeaderUser = { name: string | null } | null;
 
@@ -34,61 +35,52 @@ export default function Header() {
     { href: "/urunler?kategori=pantolonlar", label: "Pantolonlar" },
   ];
 
+  const iconBtn =
+    "w-10 h-10 grid place-items-center rounded-full text-[#2f2545] hover:bg-[#f4f0fa] transition";
+
   return (
     <>
-      <div className="bg-[#5a2e86] text-white text-center text-[13px] py-2 px-4">
-        ✨ 500₺ ve üzeri alışverişlerde <strong>kargo bedava</strong> ✨
+      <div className="bg-[#5a2e86] text-white text-center text-xs tracking-wide py-2 px-4">
+        500₺ ve üzeri siparişlerde kargo bedava · İlk siparişe %10 indirim: <strong>ILK10</strong>
       </div>
-      <header className="sticky top-0 z-40 bg-[#f7f4fb]/90 backdrop-blur border-b border-[#e3daf0]">
-        <div className="max-w-6xl mx-auto px-5 h-[68px] flex items-center gap-5">
-          <button
-            className="md:hidden text-2xl leading-none"
-            onClick={() => setMenu((v) => !v)}
-            aria-label="Menü"
-          >
-            ☰
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-[#ece7f5]">
+        <div className="max-w-6xl mx-auto px-5 h-16 flex items-center gap-4">
+          <button className={`md:hidden -ml-2 ${iconBtn}`} onClick={() => setMenu((v) => !v)} aria-label="Menü">
+            {menu ? <CloseIcon /> : <MenuIcon />}
           </button>
 
           <Link href="/" aria-label="minokyo ana sayfa" className="flex items-center">
-            <Logo size={46} priority />
+            <Logo size={42} priority />
           </Link>
 
-          <nav className="hidden md:flex gap-6 ml-4 flex-1">
+          <nav className="hidden md:flex gap-7 ml-6 flex-1">
             {nav.map((n) => (
               <Link
                 key={n.label}
                 href={n.href}
-                className="text-sm font-medium text-[#6b6280] hover:text-[#5a2e86] transition"
+                className="text-sm text-[#2f2545] hover:text-[#5a2e86] transition"
               >
                 {n.label}
               </Link>
             ))}
           </nav>
 
-          <div className="ml-auto md:ml-0 flex items-center gap-1">
-            <Link
-              href="/arama"
-              className="w-11 h-11 grid place-items-center rounded-full hover:bg-[#ece7f5] transition text-[#6b6280]"
-              aria-label="Ara"
-            >
-              <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" fill="none"/><path d="M21 21l-4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+          <div className="ml-auto md:ml-0 flex items-center">
+            <Link href="/arama" className={iconBtn} aria-label="Ara">
+              <SearchIcon />
             </Link>
             <Link
               href={user ? "/hesabim" : "/giris"}
-              className="hidden sm:flex items-center gap-2 px-3 h-11 rounded-full hover:bg-[#ece7f5] transition text-sm font-medium text-[#6b6280]"
+              className={iconBtn}
+              aria-label={user ? "Hesabım" : "Giriş yap"}
+              title={user ? (user.name?.split(" ")[0] ?? "Hesabım") : "Giriş yap"}
             >
-              <span className="text-lg">👤</span>
-              <span>{user ? (user.name?.split(" ")[0] ?? "Hesabım") : "Giriş"}</span>
+              <UserIcon />
             </Link>
-
-            <button
-              onClick={() => setOpen(true)}
-              className="relative w-11 h-11 grid place-items-center rounded-full hover:bg-[#ece7f5] transition"
-              aria-label="Sepet"
-            >
-              <span className="text-xl">🛒</span>
+            <button onClick={() => setOpen(true)} className={`relative ${iconBtn}`} aria-label="Sepet">
+              <BagIcon />
               {count > 0 && (
-                <span className="absolute top-1 right-0 bg-[#e4b33e] text-white text-[11px] font-bold min-w-[18px] h-[18px] rounded-full grid place-items-center px-1">
+                <span className="absolute top-0.5 right-0.5 bg-[#e4b33e] text-[#2f2545] text-[10px] font-bold min-w-[17px] h-[17px] rounded-full grid place-items-center px-1">
                   {count}
                 </span>
               )}
@@ -97,13 +89,13 @@ export default function Header() {
         </div>
 
         {menu && (
-          <nav className="md:hidden bg-[#f7f4fb] border-t border-[#e3daf0] px-5 py-4 flex flex-col gap-3">
+          <nav className="md:hidden bg-white border-t border-[#ece7f5] px-5 py-3 flex flex-col">
             {nav.map((n) => (
               <Link
                 key={n.label}
                 href={n.href}
                 onClick={() => setMenu(false)}
-                className="text-sm font-medium text-[#6b6280]"
+                className="py-3 text-[15px] text-[#2f2545] border-b border-[#f4f0fa] last:border-0"
               >
                 {n.label}
               </Link>
@@ -111,9 +103,10 @@ export default function Header() {
             <Link
               href={user ? "/hesabim" : "/giris"}
               onClick={() => setMenu(false)}
-              className="text-sm font-semibold text-[#5a2e86] border-t border-[#e3daf0] pt-3"
+              className="mt-2 py-3 flex items-center gap-2 text-[15px] font-medium text-[#5a2e86]"
             >
-              👤 {user ? (user.name?.split(" ")[0] ?? "Hesabım") : "Giriş / Üye Ol"}
+              <UserIcon size={18} />
+              {user ? (user.name?.split(" ")[0] ?? "Hesabım") : "Giriş / Üye Ol"}
             </Link>
           </nav>
         )}

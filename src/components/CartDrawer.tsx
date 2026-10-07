@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "./CartContext";
 import { formatTL } from "@/lib/money";
+import { BagIcon } from "./Icons";
 
 export default function CartDrawer() {
   const { items, subtotal, isOpen, setOpen, setQty, remove } = useCart();
@@ -30,7 +31,7 @@ export default function CartDrawer() {
 
         {items.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center gap-3 p-6 text-center">
-            <span className="text-5xl">🛒</span>
+            <span className="w-16 h-16 rounded-full bg-[#f4f0fa] text-[#5a2e86] grid place-items-center"><BagIcon size={28} /></span>
             <p className="text-[#6b6280]">Sepetin şimdilik boş.</p>
             <Link
               href="/urunler"

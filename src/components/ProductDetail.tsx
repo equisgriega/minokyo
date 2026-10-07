@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useCart } from "./CartContext";
 import { formatTL } from "@/lib/money";
 import { trackViewContent, trackAddToCart } from "@/lib/track";
+import { LeafIcon, ReturnIcon, TruckIcon } from "./Icons";
 import { requestStockNotify } from "@/app/(shop)/urun/actions";
 
 const SIZE_CHART: Record<string, { boy: string; kilo: string }> = {
@@ -132,7 +133,7 @@ export default function ProductDetail({ product }: Props) {
               onClick={() => setShowChart((s) => !s)}
               className="text-xs text-[#5a2e86] font-semibold underline"
             >
-              📏 Beden Tablosu
+              Beden Tablosu
             </button>
           </div>
           <div className="flex flex-wrap gap-2.5">
@@ -184,7 +185,7 @@ export default function ProductDetail({ product }: Props) {
         {selectedVariant && selectedVariant.stock === 0 ? (
           /* Tükendi → stok gelince haber ver */
           <div className="border border-[#e3daf0] rounded-2xl p-4 bg-[#f4f0fa]">
-            <p className="font-semibold text-sm mb-2">Bu beden tükendi 😔 Stok gelince haber verelim mi?</p>
+            <p className="font-semibold text-sm mb-2">Bu beden tükendi. Stok gelince haber verelim mi?</p>
             <div className="flex gap-2">
               <input
                 type="email"
@@ -236,10 +237,10 @@ export default function ProductDetail({ product }: Props) {
           </>
         )}
 
-        <ul className="mt-6 space-y-2 text-sm text-[#6b6280]">
-          <li>🌱 %100 pamuk, yumuşak doku</li>
-          <li>🚚 500₺ üzeri kargo bedava</li>
-          <li>↩️ 14 gün içinde kolay iade</li>
+        <ul className="mt-6 pt-6 border-t border-[#ece7f5] space-y-3 text-sm text-[#2f2545]">
+          <li className="flex items-center gap-3"><LeafIcon size={18} className="text-[#5a2e86]" /> %100 pamuk, yumuşak doku</li>
+          <li className="flex items-center gap-3"><TruckIcon size={18} className="text-[#5a2e86]" /> 500₺ üzeri kargo bedava</li>
+          <li className="flex items-center gap-3"><ReturnIcon size={18} className="text-[#5a2e86]" /> 14 gün içinde kolay iade</li>
         </ul>
       </div>
     </div>

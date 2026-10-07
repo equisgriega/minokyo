@@ -73,7 +73,7 @@ export default async function ProductsPage({
       {cards.length === 0 ? (
         <p className="text-center text-[#6b6280] py-16">Bu filtreye uygun ürün bulunamadı.</p>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
           {cards.map((p) => (
             <ProductCard key={p.slug} p={p} />
           ))}
