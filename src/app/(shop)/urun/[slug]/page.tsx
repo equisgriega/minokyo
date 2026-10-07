@@ -3,9 +3,11 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import ProductDetail from "@/components/ProductDetail";
 import ProductCard, { CardProduct } from "@/components/ProductCard";
+import ProductReviews from "@/components/ProductReviews";
+import { cardInclude, toCard } from "@/lib/cards";
 import type { Prisma } from "@prisma/client";
 
-// ISR: ürün sayfaları CDN'den servis edilir, 2 dk'da bir (ve admin'de ürün/stok değişince) tazelenir.
+// ISR: ürün sayfaları CDN'den servis edilir, 2 dk'da bir (ve admin'de ürün/stok/yorum değişince) tazelenir.
 export const revalidate = 120;
 
 // Bilinen ürünleri build'de önceden üret (CDN'den anında). Yeni ürünler ilk ziyarette üretilir.
@@ -34,31 +36,8 @@ export default async function ProductPage({
 
   if (!product) notFound();
 
-  const cardInclude = {
-    images: { orderBy: { position: "asc" as const }, take: 1 },
-    variants: true,
-    category: true,
-  };
-  const toCard = (p: {
-    slug: string;
-    name: string;
-    price: number;
-    gender: string;
-    images: { url: string }[];
-    category: { name: string } | null;
-    variants: { stock: number }[];
-  }): CardProduct => ({
-    slug: p.slug,
-    name: p.name,
-    price: p.price,
-    gender: p.gender,
-    image: p.images[0]?.url ?? "/products/p1.jpeg",
-    categoryName: p.category?.name,
-    totalStock: p.variants.reduce((s, v) => s + v.stock, 0),
-  });
-
   // Bağımsız sorguları tek seferde paralel çalıştır (daha hızlı)
-  const [manualRelated, ordersWithProduct] = await Promise.all([
+  const [manualRelated, ordersWithProduct, reviews] = await Promise.all([
     // 1) Yönetim panelinden manuel bağlanan ürünler (öncelikli)
     prisma.product.findMany({
       where: { active: true, relatedTo: { some: { productId: product.id } } },
@@ -73,9 +52,15 @@ export default async function ProductPage({
       },
       select: { orderId: true },
     }),
+    // Onaylı müşteri yorumları
+    prisma.review.findMany({
+      where: { productId: product.id, approved: true },
+      orderBy: { createdAt: "desc" },
+      select: { id: true, name: true, rating: true, comment: true, size: true, createdAt: true },
+    }),
   ]);
 
-  // --- "Bunu Tamamla" ---
+  // --- "Kombini Tamamla" ---
   let relatedCards: CardProduct[];
   if (manualRelated.length > 0) {
     relatedCards = manualRelated.map(toCard);
@@ -123,14 +108,49 @@ export default async function ProductPage({
     }
   }
 
+  const ratingAvg = reviews.length
+    ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length
+    : 0;
+
+  // Google ürün zengin sonucu (fiyat + gerçek yorum puanı varsa)
+  const appUrl = process.env.APP_URL || "https://minokyo.com";
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    image: product.images.map((i) => `${appUrl}${i.url}`),
+    sku: product.slug,
+    brand: { "@type": "Brand", name: "minokyo" },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "TRY",
+      price: (product.price / 100).toFixed(2),
+      availability: product.variants.some((v) => v.stock > 0)
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      url: `${appUrl}/urun/${product.slug}`,
+    },
+    ...(reviews.length
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: ratingAvg.toFixed(1),
+            reviewCount: reviews.length,
+          },
+        }
+      : {}),
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-5 pt-0 pb-10 md:py-10">
-      <nav className="hidden md:block text-[13px] text-[#6b6b6b] mb-6">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <nav className="hidden md:block text-[13px] text-muted mb-6">
         <Link href="/" className="hover:underline">Ana Sayfa</Link>
         {" / "}
         <Link href="/urunler" className="hover:underline">Ürünler</Link>
         {" / "}
-        <span className="text-[#111111]">{product.name}</span>
+        <span className="text-ink">{product.name}</span>
       </nav>
 
       <ProductDetail
@@ -140,8 +160,12 @@ export default async function ProductPage({
           name: product.name,
           description: product.description,
           price: product.price,
+          compareAt: product.compareAt,
           gender: product.gender,
           categoryName: product.category?.name,
+          material: product.material,
+          care: product.care,
+          fit: product.fit,
           images: product.images.map((i) => i.url),
           variants: product.variants.map((v) => ({
             id: v.id,
@@ -149,11 +173,19 @@ export default async function ProductPage({
             stock: v.stock,
           })),
         }}
+        rating={reviews.length ? { avg: ratingAvg, count: reviews.length } : null}
+      />
+
+      <ProductReviews
+        productId={product.id}
+        sizes={product.variants.map((v) => v.size)}
+        reviews={reviews.map((r) => ({ ...r, createdAt: r.createdAt.toISOString() }))}
+        avg={ratingAvg}
       />
 
       {relatedCards.length > 0 && (
         <section className="mt-14 md:mt-20">
-          <h2 className="text-base md:text-lg font-bold uppercase tracking-[0.06em] text-[#111111] mb-5 text-center">Kombini Tamamla</h2>
+          <h2 className="text-base md:text-lg font-bold uppercase tracking-[0.06em] text-ink mb-5 text-center">Kombini Tamamla</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-8">
             {relatedCards.map((p) => (
               <ProductCard key={p.slug} p={p} />
@@ -164,7 +196,7 @@ export default async function ProductPage({
 
       {alsoBoughtCards.length > 0 && (
         <section className="mt-14 md:mt-20">
-          <h2 className="text-base md:text-lg font-bold uppercase tracking-[0.06em] text-[#111111] mb-5 text-center">Bunu Alanlar Bunları da Aldı</h2>
+          <h2 className="text-base md:text-lg font-bold uppercase tracking-[0.06em] text-ink mb-5 text-center">Bunu Alanlar Bunları da Aldı</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-8">
             {alsoBoughtCards.map((p) => (
               <ProductCard key={p.slug} p={p} />

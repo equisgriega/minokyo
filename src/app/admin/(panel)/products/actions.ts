@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { tlToKurus } from "@/lib/money";
+import { cleanProductName } from "@/lib/naming";
 import { sendEmail } from "@/lib/email";
 import { revalidatePath } from "next/cache";
 
@@ -51,12 +52,18 @@ export async function updateStock(formData: FormData) {
 export async function updateProduct(formData: FormData) {
   if (!(await requireAdmin())) throw new Error("Yetkisiz");
   const id = String(formData.get("id"));
-  const name = String(formData.get("name") || "").trim();
+  const name = cleanProductName(String(formData.get("name") || ""));
   const description = String(formData.get("description") || "").trim();
   const priceTL = parseFloat(String(formData.get("price")) || "0");
   const gender = String(formData.get("gender") || "unisex");
   const active = formData.get("active") === "on";
   const featured = formData.get("featured") === "on";
+  const compareTL = parseFloat(String(formData.get("compareAt") || ""));
+  const compareAt = compareTL > 0 ? tlToKurus(compareTL) : null;
+  const fitRaw = String(formData.get("fit") || "");
+  const fit = ["dar", "normal", "bol"].includes(fitRaw) ? fitRaw : null;
+  const material = String(formData.get("material") || "").trim() || null;
+  const care = String(formData.get("care") || "").trim() || null;
 
   const updated = await prisma.product.update({
     where: { id },
@@ -67,6 +74,10 @@ export async function updateProduct(formData: FormData) {
       gender,
       active,
       featured,
+      compareAt,
+      fit,
+      material,
+      care,
     },
     select: { slug: true },
   });

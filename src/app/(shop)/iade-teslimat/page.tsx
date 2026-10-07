@@ -9,7 +9,7 @@ export default function Page() {
       <ul>
         <li>Siparişler onaylandıktan sonra 1–3 iş günü içinde kargoya verilir.</li>
         <li>Teslimat süresi bölgeye göre 1–4 iş günüdür.</li>
-        <li>500₺ ve üzeri alışverişlerde kargo ücretsizdir; altında 49,90₺ kargo ücreti uygulanır.</li>
+        <li>500 TL ve üzeri alışverişlerde kargo ücretsizdir; altında 49,90 TL kargo ücreti uygulanır.</li>
         <li>Kargonuzu, gönderi sonrası ilettiğimiz takip numarasıyla izleyebilirsiniz.</li>
       </ul>
       <h2>İade & Değişim</h2>

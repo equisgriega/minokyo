@@ -22,16 +22,16 @@ export default async function OrdersPage() {
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-1">Siparişler</h1>
-      <p className="text-[#6b6b6b] mb-6">{orders.length} sipariş</p>
+      <p className="text-muted mb-6">{orders.length} sipariş</p>
 
       {orders.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-[#e5e5e5] p-10 text-center text-[#6b6b6b]">
+        <div className="bg-white rounded-2xl border border-line p-10 text-center text-muted">
           Henüz sipariş yok. Vitrin yayına girince siparişler burada listelenecek.
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-[#e5e5e5] overflow-hidden">
+        <div className="bg-white rounded-2xl border border-line overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-[#f5f5f5] text-[#6b6b6b] text-left">
+            <thead className="bg-surface text-muted text-left">
               <tr>
                 <th className="p-4 font-semibold">Sipariş No</th>
                 <th className="p-4 font-semibold">Müşteri</th>
@@ -42,16 +42,16 @@ export default async function OrdersPage() {
                 <th className="p-4 font-semibold">Tarih</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#f0f0f0]">
+            <tbody className="divide-y divide-line-soft">
               {orders.map((o) => (
-                <tr key={o.id} className="hover:bg-[#f5f5f5] transition">
+                <tr key={o.id} className="hover:bg-surface transition">
                   <td className="p-4 font-mono font-medium">
-                    <Link href={`/admin/orders/${o.id}`} className="text-[#111111] hover:underline">
+                    <Link href={`/admin/orders/${o.id}`} className="text-ink hover:underline">
                       {o.orderNo}
                     </Link>
                   </td>
                   <td className="p-4">{o.fullName}</td>
-                  <td className="p-4 text-[#6b6b6b]">
+                  <td className="p-4 text-muted">
                     {o.items.reduce((s, i) => s + i.qty, 0)} ürün
                   </td>
                   <td className="p-4 font-semibold">{formatTL(o.total)}</td>
@@ -67,11 +67,11 @@ export default async function OrdersPage() {
                     </span>
                   </td>
                   <td className="p-4">
-                    <span className="text-xs bg-[#f0f0f0] text-[#111111] px-2.5 py-1 rounded-full">
+                    <span className="text-xs bg-line-soft text-ink px-2.5 py-1 rounded-full">
                       {STATUS_LABEL[o.status] ?? o.status}
                     </span>
                   </td>
-                  <td className="p-4 text-[#6b6b6b]">
+                  <td className="p-4 text-muted">
                     {o.createdAt.toLocaleDateString("tr-TR")}
                   </td>
                 </tr>

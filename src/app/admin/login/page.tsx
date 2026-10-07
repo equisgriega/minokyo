@@ -11,11 +11,11 @@ export default async function LoginPage({
   if (await requireAdmin()) redirect("/admin");
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#fafafa] px-4">
-      <div className="w-full max-w-sm bg-white rounded-3xl shadow-sm border border-[#e5e5e5] p-8">
+    <div className="min-h-screen flex items-center justify-center bg-subtle px-4">
+      <div className="w-full max-w-sm bg-white rounded-3xl shadow-sm border border-line p-8">
         <div className="text-center mb-6">
-          <div className="text-2xl font-extrabold text-[#111111]">minokyo</div>
-          <p className="text-sm text-[#6b6b6b] mt-1">Yönetim Paneli</p>
+          <div className="text-2xl font-extrabold text-ink">minokyo</div>
+          <p className="text-sm text-muted mt-1">Yönetim Paneli</p>
         </div>
 
         {error && (
@@ -26,34 +26,34 @@ export default async function LoginPage({
 
         <form action={login} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold mb-1.5 text-[#111111]">E-posta</label>
+            <label className="block text-sm font-semibold mb-1.5 text-ink">E-posta</label>
             <input
               type="email"
               name="email"
               required
               defaultValue="admin@minokyo.com"
-              className="w-full px-4 py-3 rounded-xl border border-[#e5e5e5] bg-[#fafafa] focus:outline-none focus:border-[#444444]"
+              className="w-full px-4 py-3 rounded-xl border border-line bg-subtle focus:outline-none focus:border-ink-2"
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold mb-1.5 text-[#111111]">Şifre</label>
+            <label className="block text-sm font-semibold mb-1.5 text-ink">Şifre</label>
             <input
               type="password"
               name="password"
               required
               placeholder="••••••••"
-              className="w-full px-4 py-3 rounded-xl border border-[#e5e5e5] bg-[#fafafa] focus:outline-none focus:border-[#444444]"
+              className="w-full px-4 py-3 rounded-xl border border-line bg-subtle focus:outline-none focus:border-ink-2"
             />
           </div>
           <button
             type="submit"
-            className="w-full py-3 rounded-full bg-[#111111] text-white font-semibold hover:bg-[#444444] transition"
+            className="w-full py-3 rounded-full bg-ink text-white font-semibold hover:bg-ink-2 transition"
           >
             Giriş Yap
           </button>
         </form>
 
-        <p className="text-xs text-[#6b6b6b] text-center mt-5">
+        <p className="text-xs text-muted text-center mt-5">
           Demo giriş: admin@minokyo.com / admin123
         </p>
       </div>

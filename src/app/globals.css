@@ -1,32 +1,40 @@
 @import "tailwindcss";
 
-/* minokyo — siyah & beyaz (monokrom) tema */
+/*
+ * minokyo tasarım değişkenleri — TÜM renkler burada.
+ * Temayı değiştirmek için sadece bu bloktaki değerleri değiştir.
+ * Kullanım: text-ink, bg-paper, border-line, bg-accent ...
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #111111;
-  --cream: #fafafa;
-  --cream-2: #f0f0f0;
-  --paper: #ffffff;
-  --ink: #111111;
-  --ink-soft: #6b6b6b;
-  --brown: #444444;
-  --brown-dark: #111111;
-  --accent: #111111;
-  --line: #e5e5e5;
+  --paper: #faf8f5; /* sayfa zemini — kırık beyaz */
+  --card: #ffffff; /* kart, giriş kutusu */
+  --subtle: #f5f2ed; /* hafif dolgu (input zemini, hover) */
+  --surface: #efebe5; /* görsel yer tutucu, çip */
+  --line: #e4dfd8; /* çizgi / kenarlık */
+  --line-soft: #ece8e2; /* ince ayraç */
+  --ink: #141414; /* ana metin, birincil buton */
+  --ink-2: #3d3a36; /* buton hover, koyu ikincil */
+  --muted: #6f6a63; /* ikincil metin */
+  --faint: #aaa49b; /* pasif metin (tükenmiş beden) */
+  --accent: #5a2e86; /* marka moru — SADECE indirim ve Yeni rozetleri */
+  --accent-soft: #f1ebf7;
+  --success: #3f8f6b;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-cream: var(--cream);
-  --color-cream2: var(--cream-2);
   --color-paper: var(--paper);
-  --color-ink: var(--ink);
-  --color-inksoft: var(--ink-soft);
-  --color-brown: var(--brown);
-  --color-browndark: var(--brown-dark);
-  --color-accent: var(--accent);
+  --color-card: var(--card);
+  --color-subtle: var(--subtle);
+  --color-surface: var(--surface);
   --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
   --font-sans: var(--font-inter);
   --font-display: var(--font-inter);
   /* Keskin köşeler: kart/kutu yuvarlaklıkları sıfır; rozet ve ikon daireleri (rounded-full) korunur */
@@ -39,8 +47,8 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--font-inter), system-ui, sans-serif;
 }
 
@@ -79,7 +87,7 @@ body {
 .prose-mnk h2 {
   font-weight: 700;
   font-size: 1.15rem;
-  color: var(--brown-dark);
+  color: var(--ink);
   margin-top: 1.5rem;
   margin-bottom: 0.25rem;
 }
@@ -88,9 +96,9 @@ body {
   padding-left: 1.25rem;
 }
 .prose-mnk a {
-  color: var(--brown-dark);
+  color: var(--ink);
   text-decoration: underline;
 }
 .prose-mnk strong {
-  color: var(--brown-dark);
+  color: var(--ink);
 }

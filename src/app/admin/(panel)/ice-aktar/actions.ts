@@ -1,5 +1,6 @@
 "use server";
 
+import { cleanProductName } from "@/lib/naming";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { tlToKurus } from "@/lib/money";
@@ -35,7 +36,7 @@ export async function importProducts(formData: FormData): Promise<ImportResult> 
 
   for (const r of rows) {
     const slug = r.slug?.trim();
-    const name = r.name?.trim();
+    const name = r.name ? cleanProductName(r.name) : "";
     if (!slug || !name) {
       result.errors.push(`Eksik slug/name: ${JSON.stringify(r).slice(0, 60)}`);
       continue;

@@ -33,59 +33,59 @@ export default async function OrderConfirmPage({
       />
       <div className="text-center mb-8">
         <div className="text-5xl mb-3">🎉</div>
-        <h1 className="font-display text-3xl font-bold text-[#111111]">Siparişin alındı!</h1>
-        <p className="text-[#6b6b6b] mt-2">
-          Sipariş numaran <strong className="text-[#111111]">{order.orderNo}</strong>. Teşekkürler{" "}
+        <h1 className="font-display text-3xl font-bold text-ink">Siparişin alındı!</h1>
+        <p className="text-muted mt-2">
+          Sipariş numaran <strong className="text-ink">{order.orderNo}</strong>. Teşekkürler{" "}
           {order.fullName.split(" ")[0]}! Detaylar {order.email} adresine gönderilecek.
         </p>
       </div>
 
-      <div className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-6">
+      <div className="bg-card border border-line rounded-2xl p-6">
         <h3 className="font-bold mb-4">Sipariş Detayı</h3>
         <div className="space-y-2 mb-4">
           {order.items.map((it) => (
             <div key={it.id} className="flex justify-between text-sm py-1">
               <span>
-                {it.name} <span className="text-[#6b6b6b]">· {it.size} Yaş × {it.qty}</span>
+                {it.name} <span className="text-muted">· {it.size} Yaş × {it.qty}</span>
               </span>
               <span className="font-semibold">{formatTL(it.price * it.qty)}</span>
             </div>
           ))}
         </div>
-        <div className="border-t border-[#e5e5e5] pt-3 space-y-2 text-sm">
+        <div className="border-t border-line pt-3 space-y-2 text-sm">
           <div className="flex justify-between"><span>Ara Toplam</span><span>{formatTL(order.subtotal)}</span></div>
           {order.discount > 0 && (
-            <div className="flex justify-between text-[#3f8f6b]">
+            <div className="flex justify-between text-success">
               <span>İndirim {order.couponCode ? `(${order.couponCode})` : ""}</span>
               <span>−{formatTL(order.discount)}</span>
             </div>
           )}
           <div className="flex justify-between"><span>Kargo</span><span>{order.shipping === 0 ? "Bedava" : formatTL(order.shipping)}</span></div>
-          <div className="flex justify-between font-display text-xl font-bold text-[#111111] pt-2 border-t border-[#e5e5e5]">
+          <div className="flex justify-between font-display text-xl font-bold text-ink pt-2 border-t border-line">
             <span>Toplam</span><span>{formatTL(order.total)}</span>
           </div>
         </div>
       </div>
 
       {order.carrier && order.trackingNo && (
-        <div className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-6 mt-5">
+        <div className="bg-card border border-line rounded-2xl p-6 mt-5">
           <h3 className="font-bold mb-2">🚚 Kargo Takibi</h3>
-          <p className="text-sm text-[#6b6b6b] mb-3">
+          <p className="text-sm text-muted mb-3">
             {carrierName(order.carrier)} · Takip No: <strong>{order.trackingNo}</strong>
           </p>
           <a
             href={trackingUrl(order.carrier, order.trackingNo) ?? "#"}
             target="_blank"
-            className="inline-block px-6 py-3 rounded-none bg-[#111111] text-white font-semibold text-sm"
+            className="inline-block px-6 py-3 rounded-none bg-ink text-white font-semibold text-sm"
           >
             Kargonu Takip Et →
           </a>
         </div>
       )}
 
-      <div className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-6 mt-5 text-sm">
+      <div className="bg-card border border-line rounded-2xl p-6 mt-5 text-sm">
         <h3 className="font-bold mb-3">Teslimat Adresi</h3>
-        <p className="text-[#6b6b6b]">
+        <p className="text-muted">
           {order.fullName}<br />
           {order.line}<br />
           {order.district} / {order.city} {order.zip}<br />
@@ -94,7 +94,7 @@ export default async function OrderConfirmPage({
       </div>
 
       <div className="text-center mt-8">
-        <Link href="/urunler" className="px-7 py-3.5 rounded-none bg-[#111111] text-white font-semibold">
+        <Link href="/urunler" className="px-7 py-3.5 rounded-none bg-ink text-white font-semibold">
           Alışverişe Devam Et
         </Link>
       </div>

@@ -31,7 +31,7 @@ export default async function NotificationsPage() {
   return (
     <div className="p-8 max-w-4xl">
       <h1 className="text-2xl font-bold mb-1">Bildirimler</h1>
-      <p className="text-[#6b6b6b] mb-6">E-posta bildirimleri ve sepet hatırlatmaları</p>
+      <p className="text-muted mb-6">E-posta bildirimleri ve sepet hatırlatmaları</p>
 
       {isDemo && (
         <div className="mb-6 text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
@@ -41,32 +41,32 @@ export default async function NotificationsPage() {
       )}
 
       {/* Terk edilen sepetler */}
-      <div className="bg-white rounded-2xl border border-[#e5e5e5] p-6 mb-6">
+      <div className="bg-white rounded-2xl border border-line p-6 mb-6">
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <div>
             <h2 className="font-bold text-lg">🛒 Terk Edilen Sepetler</h2>
-            <p className="text-sm text-[#6b6b6b]">
+            <p className="text-sm text-muted">
               {pending.length} sepet hatırlatma bekliyor · {carts.length} toplam
             </p>
           </div>
           <form action={sendRemindersForm}>
             <button
               disabled={pending.length === 0}
-              className="px-5 py-2.5 rounded-full bg-[#111111] text-white text-sm font-semibold hover:bg-[#444444] transition disabled:opacity-40"
+              className="px-5 py-2.5 rounded-full bg-ink text-white text-sm font-semibold hover:bg-ink-2 transition disabled:opacity-40"
             >
               Hatırlatma Gönder ({pending.length})
             </button>
           </form>
         </div>
         {carts.length === 0 ? (
-          <p className="text-sm text-[#6b6b6b]">Terk edilen sepet yok.</p>
+          <p className="text-sm text-muted">Terk edilen sepet yok.</p>
         ) : (
-          <div className="divide-y divide-[#f0f0f0]">
+          <div className="divide-y divide-line-soft">
             {carts.map((c) => (
               <div key={c.id} className="flex items-center justify-between py-3 text-sm">
                 <div>
                   <span className="font-medium">{c.email}</span>
-                  <span className="text-[#6b6b6b] ml-2">{formatTL(c.total)}</span>
+                  <span className="text-muted ml-2">{formatTL(c.total)}</span>
                 </div>
                 {c.reminded ? (
                   <span className="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full">
@@ -81,25 +81,25 @@ export default async function NotificationsPage() {
             ))}
           </div>
         )}
-        <p className="text-xs text-[#6b6b6b] mt-4">
+        <p className="text-xs text-muted mt-4">
           💡 Üretimde bir zamanlanmış görev (cron) bu hatırlatmaları otomatik gönderir.
         </p>
       </div>
 
       {/* E-posta kayıtları */}
-      <div className="bg-white rounded-2xl border border-[#e5e5e5] p-6">
+      <div className="bg-white rounded-2xl border border-line p-6">
         <h2 className="font-bold text-lg mb-4">📬 Gönderilen Bildirimler</h2>
         {logs.length === 0 ? (
-          <p className="text-sm text-[#6b6b6b]">Henüz bildirim gönderilmedi.</p>
+          <p className="text-sm text-muted">Henüz bildirim gönderilmedi.</p>
         ) : (
-          <div className="divide-y divide-[#f0f0f0]">
+          <div className="divide-y divide-line-soft">
             {logs.map((l) => {
               const st = STATUS_LABEL[l.status] ?? { t: l.status, cls: "bg-gray-100 text-gray-600" };
               return (
                 <div key={l.id} className="flex items-center justify-between py-3 gap-3">
                   <div className="min-w-0">
                     <div className="text-sm font-medium truncate">{l.subject}</div>
-                    <div className="text-xs text-[#6b6b6b]">
+                    <div className="text-xs text-muted">
                       {TYPE_LABEL[l.type] ?? l.type} · {l.to} · {l.createdAt.toLocaleString("tr-TR")}
                     </div>
                   </div>

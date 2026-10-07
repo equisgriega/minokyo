@@ -24,10 +24,10 @@ export default function CookieConsent() {
 
   return (
     <div className="fixed bottom-0 inset-x-0 z-[70] p-3 sm:p-4">
-      <div className="max-w-3xl mx-auto bg-[#ffffff] border border-[#e5e5e5] rounded-2xl shadow-xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-3">
-        <p className="text-sm text-[#111111] flex-1">
+      <div className="max-w-3xl mx-auto bg-card border border-line rounded-2xl shadow-xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <p className="text-sm text-ink flex-1">
           minokyo; deneyimini iyileştirmek ve reklamları ölçmek için çerez kullanır.{" "}
-          <Link href="/gizlilik" className="underline text-[#111111] font-medium">
+          <Link href="/gizlilik" className="underline text-ink font-medium">
             Detaylı bilgi
           </Link>
           . Pazarlama çerezleri yalnızca onayınla çalışır.
@@ -35,13 +35,13 @@ export default function CookieConsent() {
         <div className="flex gap-2 shrink-0">
           <button
             onClick={() => choose("denied")}
-            className="px-4 py-2.5 rounded-none border border-[#e5e5e5] text-sm font-semibold text-[#6b6b6b] hover:border-[#444444] transition"
+            className="px-4 py-2.5 rounded-none border border-line text-sm font-semibold text-muted hover:border-ink-2 transition"
           >
             Reddet
           </button>
           <button
             onClick={() => choose("granted")}
-            className="px-5 py-2.5 rounded-none bg-[#111111] text-white text-sm font-semibold hover:bg-[#444444] transition"
+            className="px-5 py-2.5 rounded-none bg-ink text-white text-sm font-semibold hover:bg-ink-2 transition"
           >
             Kabul Et
           </button>

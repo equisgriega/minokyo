@@ -24,17 +24,17 @@ export default function ComingSoonForm() {
           type="email"
           required
           placeholder="E-posta adresin"
-          className="flex-1 px-5 py-3.5 rounded-none border-none bg-white text-[#111111] placeholder:text-[#6b6b6b] shadow-sm focus:outline-none focus:ring-2 focus:ring-white/60"
+          className="flex-1 px-5 py-3.5 rounded-none border-none bg-white text-ink placeholder:text-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-white/60"
         />
         <button
           disabled={loading}
-          className="px-7 py-3.5 rounded-none bg-[#ffffff] text-[#111111] font-bold hover:bg-[#e5e5e5] transition disabled:opacity-60"
+          className="px-7 py-3.5 rounded-none bg-card text-ink font-bold hover:bg-line transition disabled:opacity-60"
         >
           {loading ? "..." : "Haber Ver"}
         </button>
       </div>
       {msg && (
-        <p className={`text-sm mt-3 ${msg.ok ? "text-[#ffffff]" : "text-red-200"}`}>{msg.text}</p>
+        <p className={`text-sm mt-3 ${msg.ok ? "text-white" : "text-red-200"}`}>{msg.text}</p>
       )}
     </form>
   );

@@ -61,6 +61,11 @@ model Product {
   active      Boolean   @default(true)
   featured    Boolean   @default(false)
   gender      String    @default("unisex") // kiz, erkek, unisex
+  // Ürün sayfası detayları (yönetim panelinden doldurulur)
+  material    String? // Kumaş içeriği: "%100 pamuk, 320 gr kadife"
+  care        String? // Bakım: "30°C'de ters yüz yıkayın..."
+  fit         String? // Kalıp: "dar" | "normal" | "bol"
+  reviews     Review[]
   categoryId  String?
   category    Category? @relation(fields: [categoryId], references: [id])
   images      ProductImage[]
@@ -71,6 +76,22 @@ model Product {
   relatedTo   ProductRelation[] @relation("RelationTarget")
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+// Müşteri yorumu — yönetim panelinden onaylanınca yayınlanır
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name      String
+  email     String
+  rating    Int // 1-5
+  comment   String
+  size      String? // aldığı beden (kalıp yorumu için faydalı)
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([productId, approved])
 }
 
 // Ürünler arası manuel bağlantı (kombin önerisi)

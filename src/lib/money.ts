@@ -1,12 +1,11 @@
 // Fiyatlar veritabanında kuruş (integer) tutulur; burada ₺ olarak biçimlenir.
 export function formatTL(kurus: number): string {
-  // Tam tutarlar sade (499₺), küsuratlılar iki haneli (49,90₺)
-  const digits = kurus % 100 === 0 ? 0 : 2;
+  // Türkiye e-ticaret alışkanlığı: 1.450,00 TL
   return (
     (kurus / 100).toLocaleString("tr-TR", {
-      minimumFractionDigits: digits,
-      maximumFractionDigits: digits,
-    }) + "₺"
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }) + " TL"
   );
 }
 

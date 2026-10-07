@@ -23,7 +23,7 @@ export default async function InvoicePage({
 
       <div className="max-w-2xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <a href={`/admin/orders/${order.id}`} className="no-print text-sm text-[#6b6b6b] hover:underline">
+          <a href={`/admin/orders/${order.id}`} className="no-print text-sm text-muted hover:underline">
             ← Siparişe dön
           </a>
           <PrintButton />
@@ -33,7 +33,7 @@ export default async function InvoicePage({
           {/* Başlık */}
           <div className="flex justify-between items-start mb-8 pb-6 border-b border-[#eee]">
             <div>
-              <div className="text-2xl font-extrabold text-[#111111]">minokyo</div>
+              <div className="text-2xl font-extrabold text-ink">minokyo</div>
               <div className="text-sm text-[#666]">Minik tarzlar, büyük mutluluklar</div>
               <div className="text-xs text-[#999] mt-2">[İşletme ünvanı · Vergi Dairesi / No · Adres]</div>
             </div>
@@ -79,7 +79,7 @@ export default async function InvoicePage({
             </thead>
             <tbody>
               {order.items.map((it) => (
-                <tr key={it.id} className="border-b border-[#f0f0f0]">
+                <tr key={it.id} className="border-b border-line-soft">
                   <td className="py-2">{it.name}</td>
                   <td className="py-2">{it.size} Yaş</td>
                   <td className="py-2 text-center">{it.qty}</td>
@@ -94,13 +94,13 @@ export default async function InvoicePage({
           <div className="ml-auto w-64 text-sm space-y-1">
             <div className="flex justify-between"><span>Ara Toplam</span><span>{formatTL(order.subtotal)}</span></div>
             {order.discount > 0 && (
-              <div className="flex justify-between text-[#3f8f6b]">
+              <div className="flex justify-between text-success">
                 <span>İndirim {order.couponCode ? `(${order.couponCode})` : ""}</span>
                 <span>−{formatTL(order.discount)}</span>
               </div>
             )}
             <div className="flex justify-between"><span>Kargo</span><span>{order.shipping === 0 ? "Bedava" : formatTL(order.shipping)}</span></div>
-            <div className="flex justify-between font-bold text-lg pt-2 border-t border-[#ddd] text-[#111111]">
+            <div className="flex justify-between font-bold text-lg pt-2 border-t border-[#ddd] text-ink">
               <span>Genel Toplam</span><span>{formatTL(order.total)}</span>
             </div>
             <div className="text-xs text-[#999] pt-1">Fiyatlara KDV dahildir.</div>

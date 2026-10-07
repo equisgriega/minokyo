@@ -18,13 +18,16 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
   },
   icons: {
-    icon: "/icon-512.png",
-    apple: "/icon-512.png",
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-64.png", sizes: "64x64", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#faf8f5",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
