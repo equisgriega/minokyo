@@ -1,44 +1,43 @@
 import Link from "next/link";
 import Logo from "./Logo";
+import FooterNewsletter from "./FooterNewsletter";
+
+const LINKS = [
+  { href: "/hakkimizda", label: "Hakkımızda" },
+  { href: "/mesafeli-satis", label: "Satış Sözleşmesi" },
+  { href: "/iade-teslimat", label: "İade & Teslimat" },
+  { href: "/gizlilik", label: "Gizlilik & KVKK" },
+  { href: "/sss", label: "Sıkça Sorulanlar" },
+  { href: "/iletisim", label: "İletişim" },
+];
 
 export default function Footer() {
   return (
-    <footer className="bg-[#5a2e86] text-[#e9e2f5] mt-auto">
-      <div className="max-w-6xl mx-auto px-5 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
-        <div className="col-span-2 md:col-span-1">
-          <Logo light size={52} />
-          <p className="text-sm opacity-75 mt-3">Minik tarzlar, büyük mutluluklar.</p>
-        </div>
-        <div>
-          <h5 className="text-white font-semibold mb-3 text-sm">Alışveriş</h5>
-          <div className="space-y-2 text-sm opacity-80">
-            <Link href="/urunler" className="block hover:opacity-100">Tüm Ürünler</Link>
-            <Link href="/urunler?cinsiyet=kiz" className="block hover:opacity-100">Kız</Link>
-            <Link href="/urunler?cinsiyet=erkek" className="block hover:opacity-100">Erkek</Link>
-            <Link href="/urunler?kategori=takimlar" className="block hover:opacity-100">Takımlar</Link>
-          </div>
-        </div>
-        <div>
-          <h5 className="text-white font-semibold mb-3 text-sm">Yardım</h5>
-          <div className="space-y-2 text-sm opacity-80">
-            <Link href="/iade-teslimat" className="block hover:opacity-100">İade & Teslimat</Link>
-            <Link href="/sss" className="block hover:opacity-100">Sıkça Sorulanlar</Link>
-            <Link href="/mesafeli-satis" className="block hover:opacity-100">Mesafeli Satış Sözleşmesi</Link>
-            <Link href="/gizlilik" className="block hover:opacity-100">Gizlilik & KVKK</Link>
-          </div>
-        </div>
-        <div>
-          <h5 className="text-white font-semibold mb-3 text-sm">Kurumsal</h5>
-          <div className="space-y-2 text-sm opacity-80">
-            <Link href="/hakkimizda" className="block hover:opacity-100">Hakkımızda</Link>
-            <Link href="/iletisim" className="block hover:opacity-100">İletişim</Link>
-            <span className="block">merhaba@minokyo.com</span>
-            <span className="block">Pzt–Cmt · 09:00–18:00</span>
-          </div>
-        </div>
+    <footer className="bg-white text-[#111111] mt-auto border-t border-[#e5e5e5]">
+      {/* Bülten */}
+      <div className="max-w-7xl mx-auto px-5 py-14 text-center">
+        <h5 className="text-sm font-bold uppercase tracking-[0.06em]">E-Bülten</h5>
+        <p className="text-[13px] text-[#6b6b6b] mt-2 mb-5">
+          Yeni ürün ve kampanyalardan ilk sen haberdar ol.
+        </p>
+        <FooterNewsletter />
       </div>
-      <div className="border-t border-white/10 py-4 text-center text-xs opacity-70">
-        © 2026 minokyo. Tüm hakları saklıdır.
+
+      {/* Bağlantılar */}
+      <div className="max-w-7xl mx-auto px-5 pb-10 flex flex-wrap justify-center gap-x-8 gap-y-3 text-[13px] text-[#444444]">
+        {LINKS.map((l) => (
+          <Link key={l.href} href={l.href} className="hover:text-[#111111] hover:underline underline-offset-4">
+            {l.label}
+          </Link>
+        ))}
+      </div>
+
+      <div className="border-t border-[#e5e5e5]">
+        <div className="max-w-7xl mx-auto px-5 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-[#6b6b6b]">
+          <Logo size={28} />
+          <span>merhaba@minokyo.com · Pzt–Cmt 09:00–18:00</span>
+          <span>© 2026 minokyo. Tüm hakları saklıdır.</span>
+        </div>
       </div>
     </footer>
   );

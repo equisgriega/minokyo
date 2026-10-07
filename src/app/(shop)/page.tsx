@@ -3,7 +3,7 @@ import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import ProductCard, { CardProduct } from "@/components/ProductCard";
 import HeroVideos from "@/components/HeroVideos";
-import { ArrowRightIcon, LeafIcon, ReturnIcon, ShieldIcon, TruckIcon } from "@/components/Icons";
+import { LeafIcon, ReturnIcon, ShieldIcon, TruckIcon } from "@/components/Icons";
 
 // Hero videoları — yeni video ekledikçe public/ içine koyup buraya ekle:
 // örn. "/hero2.mp4", "/hero3.mp4" — otomatik sırayla döner.
@@ -54,21 +54,30 @@ async function getFeatured(): Promise<CardProduct[]> {
   }));
 }
 
+function SectionTitle({ children, sub }: { children: React.ReactNode; sub?: string }) {
+  return (
+    <div className="text-center mb-8 md:mb-10">
+      <h2 className="text-lg md:text-xl font-bold uppercase tracking-[0.06em] text-[#111111]">{children}</h2>
+      {sub && <p className="text-[13px] text-[#6b6b6b] mt-2">{sub}</p>}
+    </div>
+  );
+}
+
 export default async function HomePage() {
   const featured = await getFeatured();
 
   return (
     <div>
-      {/* Hero — tam ekran, dönen video arka plan */}
-      <section className="relative w-full h-[calc(100svh-97px)] min-h-[520px] overflow-hidden bg-black">
+      {/* Hero — tam genişlik, dönen video */}
+      <section className="relative w-full h-[calc(100svh-97px)] md:h-[calc(100svh-128px)] min-h-[480px] overflow-hidden bg-black">
         <HeroVideos videos={HERO_VIDEOS} poster="/products/p6.jpeg" zoom={1.08} />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-        <div className="relative z-10 h-full max-w-6xl mx-auto px-5 flex flex-col justify-end pb-14 md:pb-20">
-          <span className="text-xs tracking-[0.2em] uppercase text-white/85">
-            Yeni Sezon · Sonbahar / Kış
+        <div className="relative z-10 h-full max-w-7xl mx-auto px-5 flex flex-col justify-end pb-12 md:pb-16">
+          <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-white/80">
+            Yeni Koleksiyon · AW 26/27
           </span>
-          <h1 className="font-display text-4xl md:text-6xl font-bold text-white leading-[1.05] mt-3 max-w-xl">
+          <h1 className="text-3xl md:text-5xl font-bold uppercase tracking-tight text-white leading-[1.05] mt-3 max-w-2xl">
             Minik tarzlar,
             <br />
             büyük mutluluklar
@@ -76,88 +85,66 @@ export default async function HomePage() {
           <div className="flex gap-3 mt-7 flex-wrap">
             <Link
               href="/urunler"
-              className="px-7 py-3 rounded-full bg-white text-[#2f2545] text-sm font-semibold hover:bg-[#f0c33c] transition"
+              className="px-8 py-3.5 bg-white text-[#111111] text-[13px] font-semibold uppercase tracking-[0.06em] hover:bg-[#111111] hover:text-white transition"
             >
               Koleksiyonu Keşfet
-            </Link>
-            <Link
-              href="/urunler?kategori=takimlar"
-              className="px-7 py-3 rounded-full border border-white/80 text-white text-sm font-semibold hover:bg-white hover:text-[#2f2545] transition"
-            >
-              Takımlar
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Kategoriler — fotoğraflı kartlar */}
-      <section className="max-w-6xl mx-auto px-5 pt-14 md:pt-20">
-        <h2 className="font-display text-2xl md:text-3xl font-bold text-[#2f2545] mb-6">Kategoriler</h2>
-        <div className="flex md:grid md:grid-cols-4 gap-4 overflow-x-auto snap-x snap-mandatory -mx-5 px-5 md:mx-0 md:px-0 pb-2 [scrollbar-width:none]">
+      {/* Kategoriler */}
+      <section className="max-w-7xl mx-auto px-5 pt-16 md:pt-24">
+        <SectionTitle>Kategoriler</SectionTitle>
+        <div className="flex md:grid md:grid-cols-4 gap-3 overflow-x-auto snap-x snap-mandatory -mx-5 px-5 md:mx-0 md:px-0 [scrollbar-width:none]">
           {CATEGORIES.map((c) => (
             <Link
               key={c.label}
               href={c.href}
-              className="group relative shrink-0 w-[62%] sm:w-[40%] md:w-auto aspect-[3/4] rounded-2xl overflow-hidden bg-[#f4f0fa] snap-start"
+              className="group relative shrink-0 w-[64%] sm:w-[42%] md:w-auto aspect-[3/4] overflow-hidden bg-[#f5f5f5] snap-start"
             >
               <Image
                 src={c.image}
                 alt={c.label}
                 fill
-                sizes="(max-width:768px) 62vw, 25vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                sizes="(max-width:768px) 64vw, 25vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white">
-                <span className="font-semibold text-base md:text-lg uppercase tracking-wide">{c.label}</span>
-                <span className="w-8 h-8 rounded-full bg-white/20 backdrop-blur grid place-items-center group-hover:bg-white group-hover:text-[#2f2545] transition">
-                  <ArrowRightIcon size={16} />
-                </span>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+              <span className="absolute bottom-4 left-4 text-white text-[13px] font-bold uppercase tracking-[0.08em]">
+                {c.label}
+              </span>
             </Link>
           ))}
         </div>
       </section>
 
       {/* Öne çıkanlar */}
-      <section className="max-w-6xl mx-auto px-5 pt-14 md:pt-20">
-        <div className="flex items-end justify-between mb-6">
-          <div>
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-[#2f2545]">Öne Çıkanlar</h2>
-            <p className="text-sm text-[#6b6280] mt-1">Bu sezonun en sevilenleri</p>
-          </div>
-          <Link
-            href="/urunler"
-            className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-[#5a2e86] hover:gap-2.5 transition-all"
-          >
-            Tümünü Gör <ArrowRightIcon size={16} />
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
+      <section className="max-w-7xl mx-auto px-5 pt-16 md:pt-24">
+        <SectionTitle sub="Bu sezonun en sevilenleri">Öne Çıkanlar</SectionTitle>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-10">
           {featured.map((p) => (
             <ProductCard key={p.slug} p={p} />
           ))}
         </div>
-        <div className="sm:hidden text-center mt-8">
+        <div className="text-center mt-10">
           <Link
             href="/urunler"
-            className="inline-flex items-center gap-1.5 px-6 py-3 rounded-full border border-[#e3daf0] text-sm font-semibold text-[#2f2545]"
+            className="inline-block px-10 py-3.5 border border-[#111111] text-[13px] font-semibold uppercase tracking-[0.06em] text-[#111111] hover:bg-[#111111] hover:text-white transition"
           >
-            Tümünü Gör <ArrowRightIcon size={16} />
+            Tümünü Gör
           </Link>
         </div>
       </section>
 
       {/* Özellikler */}
-      <section className="max-w-6xl mx-auto px-5 py-14 md:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-[#ece7f5] pt-10">
+      <section className="max-w-7xl mx-auto px-5 py-16 md:py-24">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-[#e5e5e5] pt-12">
           {FEATURES.map(({ Icon, t, d }) => (
             <div key={t} className="flex flex-col items-center text-center">
-              <span className="w-12 h-12 rounded-full bg-[#f4f0fa] text-[#5a2e86] grid place-items-center mb-3">
-                <Icon size={22} />
-              </span>
-              <div className="text-sm font-semibold text-[#2f2545]">{t}</div>
-              <div className="text-xs text-[#6b6280] mt-1">{d}</div>
+              <Icon size={26} className="text-[#111111] mb-3" />
+              <div className="text-[13px] font-semibold uppercase tracking-[0.05em] text-[#111111]">{t}</div>
+              <div className="text-xs text-[#6b6b6b] mt-1.5">{d}</div>
             </div>
           ))}
         </div>

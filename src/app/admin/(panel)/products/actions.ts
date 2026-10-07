@@ -26,10 +26,10 @@ export async function updateStock(formData: FormData) {
     });
     for (const w of waiting) {
       const link = `${APP_URL}/urun/${before.product.slug}`;
-      const html = `<div style="font-family:Arial,sans-serif;padding:20px;color:#2f2545">
-        <h2 style="color:#5a2e86">İstediğin ürün stokta! 🎉</h2>
+      const html = `<div style="font-family:Arial,sans-serif;padding:20px;color:#111111">
+        <h2 style="color:#111111">İstediğin ürün stokta! 🎉</h2>
         <p><strong>${before.product.name}</strong> · ${before.size} Yaş bedeni tekrar stoklarda.</p>
-        <a href="${link}" style="display:inline-block;margin-top:10px;background:#5a2e86;color:#fff;text-decoration:none;padding:12px 24px;border-radius:100px;font-weight:600">Hemen İncele</a>
+        <a href="${link}" style="display:inline-block;margin-top:10px;background:#111111;color:#fff;text-decoration:none;padding:12px 24px;border-radius:100px;font-weight:600">Hemen İncele</a>
       </div>`;
       await sendEmail({
         to: w.email,

@@ -31,16 +31,16 @@ export default async function OrderDetailPage({
 
   return (
     <div className="p-8 max-w-3xl">
-      <Link href="/admin/orders" className="text-sm text-[#6b6280] hover:underline">
+      <Link href="/admin/orders" className="text-sm text-[#6b6b6b] hover:underline">
         ← Siparişlere dön
       </Link>
       <div className="flex items-center gap-3 mt-2 mb-6 flex-wrap">
         <h1 className="text-2xl font-bold font-mono">{order.orderNo}</h1>
-        <span className="text-sm text-[#6b6280]">{order.createdAt.toLocaleString("tr-TR")}</span>
+        <span className="text-sm text-[#6b6b6b]">{order.createdAt.toLocaleString("tr-TR")}</span>
         <a
           href={`/admin/fatura/${order.id}`}
           target="_blank"
-          className="ml-auto px-4 py-2 rounded-full border border-[#e3daf0] bg-[#ffffff] text-sm font-semibold hover:border-[#7a4fb0] transition"
+          className="ml-auto px-4 py-2 rounded-full border border-[#e5e5e5] bg-[#ffffff] text-sm font-semibold hover:border-[#444444] transition"
         >
           🖨️ Fatura / Fiş
         </a>
@@ -48,33 +48,33 @@ export default async function OrderDetailPage({
 
       <div className="grid md:grid-cols-2 gap-6">
         {/* Durum */}
-        <div className="bg-white rounded-2xl border border-[#e3daf0] p-6">
+        <div className="bg-white rounded-2xl border border-[#e5e5e5] p-6">
           <h2 className="font-bold mb-4">Sipariş Durumu</h2>
           <form action={updateOrderStatus} className="flex gap-2">
             <input type="hidden" name="orderId" value={order.id} />
             <select
               name="status"
               defaultValue={order.status}
-              className="flex-1 px-4 py-2.5 rounded-xl border border-[#e3daf0] bg-[#f7f4fb] focus:outline-none focus:border-[#7a4fb0]"
+              className="flex-1 px-4 py-2.5 rounded-xl border border-[#e5e5e5] bg-[#fafafa] focus:outline-none focus:border-[#444444]"
             >
               {STATUSES.map((s) => (
                 <option key={s.v} value={s.v}>{s.label}</option>
               ))}
             </select>
-            <button className="px-5 py-2.5 rounded-full bg-[#5a2e86] text-white text-sm font-semibold hover:bg-[#7a4fb0] transition">
+            <button className="px-5 py-2.5 rounded-full bg-[#111111] text-white text-sm font-semibold hover:bg-[#444444] transition">
               Güncelle
             </button>
           </form>
-          <p className="text-xs text-[#6b6280] mt-3">
+          <p className="text-xs text-[#6b6b6b] mt-3">
             💡 &quot;Kargoda&quot; seçilince müşteriye otomatik kargo bilgilendirme e-postası gönderilir.
           </p>
         </div>
 
         {/* Müşteri */}
-        <div className="bg-white rounded-2xl border border-[#e3daf0] p-6 text-sm">
+        <div className="bg-white rounded-2xl border border-[#e5e5e5] p-6 text-sm">
           <h2 className="font-bold mb-4">Müşteri & Teslimat</h2>
-          <p className="text-[#6b6280] leading-relaxed">
-            <strong className="text-[#2f2545]">{order.fullName}</strong><br />
+          <p className="text-[#6b6b6b] leading-relaxed">
+            <strong className="text-[#111111]">{order.fullName}</strong><br />
             {order.email}<br />
             {order.phone}<br />
             {order.line}<br />
@@ -86,7 +86,7 @@ export default async function OrderDetailPage({
 
       {/* e-fatura */}
       {isParasutConfigured() && (
-        <div className="bg-white rounded-2xl border border-[#e3daf0] p-6 mt-6">
+        <div className="bg-white rounded-2xl border border-[#e5e5e5] p-6 mt-6">
           <h2 className="font-bold mb-3">🧾 e-Fatura (Paraşüt)</h2>
           <div className="flex items-center gap-3 flex-wrap">
             <span
@@ -101,14 +101,14 @@ export default async function OrderDetailPage({
               {order.invoiceStatus === "issued" ? "Kesildi" : order.invoiceStatus === "failed" ? "Başarısız" : "Kesilmedi"}
             </span>
             {order.invoiceUrl && (
-              <a href={order.invoiceUrl} target="_blank" className="text-sm text-[#5a2e86] font-semibold underline">
+              <a href={order.invoiceUrl} target="_blank" className="text-sm text-[#111111] font-semibold underline">
                 Faturayı Gör (PDF)
               </a>
             )}
             {order.invoiceStatus !== "issued" && (
               <form action={issueInvoice} className="ml-auto">
                 <input type="hidden" name="orderId" value={order.id} />
-                <button className="px-4 py-2 rounded-full bg-[#5a2e86] text-white text-sm font-semibold hover:bg-[#7a4fb0] transition">
+                <button className="px-4 py-2 rounded-full bg-[#111111] text-white text-sm font-semibold hover:bg-[#444444] transition">
                   Fatura Kes
                 </button>
               </form>
@@ -118,7 +118,7 @@ export default async function OrderDetailPage({
       )}
 
       {/* Kargo */}
-      <div className="bg-white rounded-2xl border border-[#e3daf0] p-6 mt-6">
+      <div className="bg-white rounded-2xl border border-[#e5e5e5] p-6 mt-6">
         <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
           <h2 className="font-bold">🚚 Kargo Takibi</h2>
           {isShippingApiConfigured() && !order.trackingNo && (
@@ -131,17 +131,17 @@ export default async function OrderDetailPage({
           )}
         </div>
         {order.labelUrl && (
-          <a href={order.labelUrl} target="_blank" className="inline-block mb-3 text-sm text-[#5a2e86] font-semibold underline">
+          <a href={order.labelUrl} target="_blank" className="inline-block mb-3 text-sm text-[#111111] font-semibold underline">
             🏷️ Kargo Etiketini Yazdır (PDF)
           </a>
         )}
         {order.carrier && order.trackingNo && (
-          <p className="text-sm text-[#6b6280] mb-4">
+          <p className="text-sm text-[#6b6b6b] mb-4">
             Mevcut: <strong>{carrierName(order.carrier)}</strong> · Takip No: {order.trackingNo}{" "}
             <a
               href={trackingUrl(order.carrier, order.trackingNo) ?? "#"}
               target="_blank"
-              className="text-[#5a2e86] font-semibold underline ml-2"
+              className="text-[#111111] font-semibold underline ml-2"
             >
               Takip et →
             </a>
@@ -154,7 +154,7 @@ export default async function OrderDetailPage({
             <select
               name="carrier"
               defaultValue={order.carrier ?? ""}
-              className="px-4 py-2.5 rounded-xl border border-[#e3daf0] bg-[#f7f4fb] focus:outline-none focus:border-[#7a4fb0]"
+              className="px-4 py-2.5 rounded-xl border border-[#e5e5e5] bg-[#fafafa] focus:outline-none focus:border-[#444444]"
             >
               <option value="">Seçin</option>
               {CARRIER_LIST.map((c) => (
@@ -168,41 +168,41 @@ export default async function OrderDetailPage({
               name="trackingNo"
               defaultValue={order.trackingNo ?? ""}
               placeholder="Örn. 1234567890"
-              className="w-full px-4 py-2.5 rounded-xl border border-[#e3daf0] bg-[#f7f4fb] focus:outline-none focus:border-[#7a4fb0]"
+              className="w-full px-4 py-2.5 rounded-xl border border-[#e5e5e5] bg-[#fafafa] focus:outline-none focus:border-[#444444]"
             />
           </div>
           <button
             name="ship"
             value="0"
-            className="px-5 py-2.5 rounded-full border border-[#e3daf0] bg-[#ffffff] text-sm font-semibold hover:border-[#7a4fb0] transition"
+            className="px-5 py-2.5 rounded-full border border-[#e5e5e5] bg-[#ffffff] text-sm font-semibold hover:border-[#444444] transition"
           >
             Kaydet
           </button>
           <button
             name="ship"
             value="1"
-            className="px-5 py-2.5 rounded-full bg-[#5a2e86] text-white text-sm font-semibold hover:bg-[#7a4fb0] transition"
+            className="px-5 py-2.5 rounded-full bg-[#111111] text-white text-sm font-semibold hover:bg-[#444444] transition"
           >
             Kaydet & Kargoya Ver
           </button>
         </form>
-        <p className="text-xs text-[#6b6280] mt-3">
+        <p className="text-xs text-[#6b6b6b] mt-3">
           💡 &quot;Kargoya Ver&quot; müşteriye takip linkli e-posta gönderir ve durumu &quot;Kargoda&quot; yapar.
         </p>
       </div>
 
       {/* Ürünler */}
-      <div className="bg-white rounded-2xl border border-[#e3daf0] p-6 mt-6">
+      <div className="bg-white rounded-2xl border border-[#e5e5e5] p-6 mt-6">
         <h2 className="font-bold mb-4">Ürünler</h2>
         <div className="space-y-2">
           {order.items.map((it) => (
-            <div key={it.id} className="flex justify-between text-sm py-2 border-b border-[#ece7f5] last:border-0">
-              <span>{it.name} <span className="text-[#6b6280]">· {it.size} Yaş × {it.qty}</span></span>
+            <div key={it.id} className="flex justify-between text-sm py-2 border-b border-[#f0f0f0] last:border-0">
+              <span>{it.name} <span className="text-[#6b6b6b]">· {it.size} Yaş × {it.qty}</span></span>
               <span className="font-semibold">{formatTL(it.price * it.qty)}</span>
             </div>
           ))}
         </div>
-        <div className="mt-4 pt-4 border-t border-[#e3daf0] space-y-1 text-sm">
+        <div className="mt-4 pt-4 border-t border-[#e5e5e5] space-y-1 text-sm">
           <div className="flex justify-between"><span>Ara Toplam</span><span>{formatTL(order.subtotal)}</span></div>
           {order.discount > 0 && (
             <div className="flex justify-between text-[#3f8f6b]">
@@ -211,8 +211,8 @@ export default async function OrderDetailPage({
             </div>
           )}
           <div className="flex justify-between"><span>Kargo</span><span>{order.shipping === 0 ? "Bedava" : formatTL(order.shipping)}</span></div>
-          <div className="flex justify-between font-bold text-lg text-[#5a2e86] pt-1"><span>Toplam</span><span>{formatTL(order.total)}</span></div>
-          <div className="text-xs text-[#6b6280] pt-2">Ödeme: {order.paymentMethod} · {order.paymentStatus}</div>
+          <div className="flex justify-between font-bold text-lg text-[#111111] pt-1"><span>Toplam</span><span>{formatTL(order.total)}</span></div>
+          <div className="text-xs text-[#6b6b6b] pt-2">Ödeme: {order.paymentMethod} · {order.paymentStatus}</div>
         </div>
       </div>
     </div>

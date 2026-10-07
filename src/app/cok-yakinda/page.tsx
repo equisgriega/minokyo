@@ -5,7 +5,7 @@ export const metadata = { title: "minokyo — Çok Yakında" };
 
 export default function ComingSoonPage() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden bg-[#5a2e86]">
+    <div className="min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden bg-[#111111]">
       {/* Arka plan video */}
       <video
         className="absolute inset-0 w-full h-full object-cover opacity-30"
@@ -17,13 +17,13 @@ export default function ComingSoonPage() {
         style={{ transform: "scale(1.08)" }}
         aria-hidden="true"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#5a2e86]/70 to-[#2f2545]/85" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#111111]/70 to-[#111111]/85" />
 
       <div className="relative z-10 max-w-xl">
         <div className="flex justify-center mb-4">
           <Logo light size={120} priority />
         </div>
-        <p className="text-[#f0c33c] font-semibold tracking-widest uppercase text-sm mb-8">
+        <p className="text-[#ffffff] font-semibold tracking-widest uppercase text-sm mb-8">
           Çok Yakında
         </p>
         <h1 className="font-display text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
@@ -31,7 +31,7 @@ export default function ComingSoonPage() {
         </h1>
         <p className="text-white/85 mb-8">
           Çocuklar için rahat, şık ve kaliteli kıyafetlerle çok yakında buradayız. Açılışta ilk
-          haberdar olmak ve <strong className="text-[#f0c33c]">%10 indirim</strong> kazanmak için
+          haberdar olmak ve <strong className="text-[#ffffff]">%10 indirim</strong> kazanmak için
           e-postanı bırak.
         </p>
 

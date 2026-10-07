@@ -1,20 +1,18 @@
 @import "tailwindcss";
 
+/* minokyo — siyah & beyaz (monokrom) tema */
 :root {
   --background: #ffffff;
-  --foreground: #2f2545;
-  --cream: #f7f4fb;
-  --cream-2: #ece7f5;
+  --foreground: #111111;
+  --cream: #fafafa;
+  --cream-2: #f0f0f0;
   --paper: #ffffff;
-  --ink: #2f2545;
-  --ink-soft: #6b6280;
-  --brown: #7a4fb0;
-  --brown-dark: #5a2e86;
-  --accent: #e4b33e;
-  --line: #e3daf0;
-  /* marka logosu renkleri */
-  --brand-purple: #5a2e86;
-  --brand-yellow: #e4b33e;
+  --ink: #111111;
+  --ink-soft: #6b6b6b;
+  --brown: #444444;
+  --brown-dark: #111111;
+  --accent: #111111;
+  --line: #e5e5e5;
 }
 
 @theme inline {
@@ -29,18 +27,26 @@
   --color-browndark: var(--brown-dark);
   --color-accent: var(--accent);
   --color-line: var(--line);
-  --font-sans: var(--font-poppins);
-  --font-display: var(--font-baloo);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-inter);
+  /* Keskin köşeler: kart/kutu yuvarlaklıkları sıfır; rozet ve ikon daireleri (rounded-full) korunur */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
 }
 
 .font-display {
-  font-family: var(--font-baloo), var(--font-poppins), cursive;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  letter-spacing: -0.01em;
 }
 
 @keyframes heroFade {
@@ -49,6 +55,24 @@ body {
   }
   to {
     opacity: 1;
+  }
+}
+
+/* Kayan duyuru şeridi */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
   }
 }
 

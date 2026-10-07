@@ -48,22 +48,22 @@ export default async function SearchPage({
             defaultValue={query}
             autoFocus
             placeholder="Ürün ara... (örn. sweatshirt, pantolon)"
-            className="flex-1 px-4 py-3 rounded-full border border-[#e3daf0] bg-[#ffffff] focus:outline-none focus:border-[#7a4fb0]"
+            className="flex-1 px-4 py-3 rounded-none border border-[#e5e5e5] bg-[#ffffff] focus:outline-none focus:border-[#444444]"
           />
-          <button className="px-6 py-3 rounded-full bg-[#5a2e86] text-white font-semibold hover:bg-[#7a4fb0] transition">
+          <button className="px-6 py-3 rounded-none bg-[#111111] text-white font-semibold hover:bg-[#444444] transition">
             Ara
           </button>
         </div>
       </form>
 
       {query && (
-        <p className="text-center text-[#6b6280] mb-6">
+        <p className="text-center text-[#6b6b6b] mb-6">
           &quot;{query}&quot; için {cards.length} sonuç
         </p>
       )}
 
       {query && cards.length === 0 ? (
-        <p className="text-center text-[#6b6280] py-10">Sonuç bulunamadı. Farklı bir kelime dene.</p>
+        <p className="text-center text-[#6b6b6b] py-10">Sonuç bulunamadı. Farklı bir kelime dene.</p>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
           {cards.map((p) => (

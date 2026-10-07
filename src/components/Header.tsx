@@ -8,6 +8,12 @@ import { BagIcon, CloseIcon, MenuIcon, SearchIcon, UserIcon } from "./Icons";
 
 type HeaderUser = { name: string | null } | null;
 
+const ANNOUNCEMENTS = [
+  "500₺ ve üzeri siparişlerde kargo bedava",
+  "İlk siparişe %10 indirim: ILK10",
+  "14 gün içinde kolay iade",
+];
+
 export default function Header() {
   const { count, setOpen } = useCart();
   const [menu, setMenu] = useState(false);
@@ -28,45 +34,54 @@ export default function Header() {
   }, []);
 
   const nav = [
-    { href: "/urunler", label: "Tüm Ürünler" },
-    { href: "/urunler?cinsiyet=kiz", label: "Kız" },
-    { href: "/urunler?cinsiyet=erkek", label: "Erkek" },
+    { href: "/urunler", label: "Tümü" },
+    { href: "/urunler?cinsiyet=kiz", label: "Kız Çocuk" },
+    { href: "/urunler?cinsiyet=erkek", label: "Erkek Çocuk" },
     { href: "/urunler?kategori=takimlar", label: "Takımlar" },
     { href: "/urunler?kategori=pantolonlar", label: "Pantolonlar" },
   ];
 
-  const iconBtn =
-    "w-10 h-10 grid place-items-center rounded-full text-[#2f2545] hover:bg-[#f4f0fa] transition";
+  const iconBtn = "w-10 h-10 grid place-items-center text-[#111111] hover:opacity-60 transition";
+  // Kesintisiz kayma için metni iki kez yan yana koyuyoruz
+  const ticker = [...ANNOUNCEMENTS, ...ANNOUNCEMENTS];
 
   return (
     <>
-      <div className="bg-[#5a2e86] text-white text-center text-xs tracking-wide py-2 px-4">
-        500₺ ve üzeri siparişlerde kargo bedava · İlk siparişe %10 indirim: <strong>ILK10</strong>
+      <div className="bg-[#111111] text-white text-[12px] font-medium py-2 overflow-hidden whitespace-nowrap">
+        <div className="inline-flex animate-marquee">
+          {[0, 1].map((k) => (
+            <div key={k} className="flex shrink-0" aria-hidden={k === 1}>
+              {ticker.map((t, i) => (
+                <span key={i} className="px-8">
+                  {t}
+                  <span className="pl-16 opacity-50">✦</span>
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-[#ece7f5]">
-        <div className="max-w-6xl mx-auto px-5 h-16 flex items-center gap-4">
-          <button className={`md:hidden -ml-2 ${iconBtn}`} onClick={() => setMenu((v) => !v)} aria-label="Menü">
-            {menu ? <CloseIcon /> : <MenuIcon />}
-          </button>
 
-          <Link href="/" aria-label="minokyo ana sayfa" className="flex items-center">
-            <Logo size={42} priority />
+      <header className="sticky top-0 z-40 bg-white border-b border-[#e5e5e5]">
+        <div className="max-w-7xl mx-auto px-5 h-16 grid grid-cols-[1fr_auto_1fr] items-center">
+          {/* Sol: mobil menü / masaüstü arama */}
+          <div className="flex items-center">
+            <button className={`md:hidden -ml-2 ${iconBtn}`} onClick={() => setMenu((v) => !v)} aria-label="Menü">
+              {menu ? <CloseIcon /> : <MenuIcon />}
+            </button>
+            <Link href="/arama" className={`hidden md:grid -ml-2 ${iconBtn}`} aria-label="Ara">
+              <SearchIcon />
+            </Link>
+          </div>
+
+          {/* Orta: logo */}
+          <Link href="/" aria-label="minokyo ana sayfa" className="flex items-center justify-center">
+            <Logo size={40} priority />
           </Link>
 
-          <nav className="hidden md:flex gap-7 ml-6 flex-1">
-            {nav.map((n) => (
-              <Link
-                key={n.label}
-                href={n.href}
-                className="text-sm text-[#2f2545] hover:text-[#5a2e86] transition"
-              >
-                {n.label}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="ml-auto md:ml-0 flex items-center">
-            <Link href="/arama" className={iconBtn} aria-label="Ara">
+          {/* Sağ: hesap + sepet */}
+          <div className="flex items-center justify-end gap-1">
+            <Link href="/arama" className={`md:hidden ${iconBtn}`} aria-label="Ara">
               <SearchIcon />
             </Link>
             <Link
@@ -77,10 +92,15 @@ export default function Header() {
             >
               <UserIcon />
             </Link>
-            <button onClick={() => setOpen(true)} className={`relative ${iconBtn}`} aria-label="Sepet">
+            <button
+              onClick={() => setOpen(true)}
+              className="flex items-center gap-2 h-10 pl-2 text-[#111111] hover:opacity-60 transition"
+              aria-label="Sepet"
+            >
               <BagIcon />
+              <span className="hidden md:inline text-[13px]">Sepetim ({count})</span>
               {count > 0 && (
-                <span className="absolute top-0.5 right-0.5 bg-[#e4b33e] text-[#2f2545] text-[10px] font-bold min-w-[17px] h-[17px] rounded-full grid place-items-center px-1">
+                <span className="md:hidden -ml-3 -mt-4 bg-[#111111] text-white text-[10px] font-bold min-w-[16px] h-[16px] rounded-full grid place-items-center px-1">
                   {count}
                 </span>
               )}
@@ -88,14 +108,27 @@ export default function Header() {
           </div>
         </div>
 
+        {/* Masaüstü menü — logonun altında, büyük harf */}
+        <nav className="hidden md:flex justify-center gap-10 pb-3 -mt-1">
+          {nav.map((n) => (
+            <Link
+              key={n.label}
+              href={n.href}
+              className="text-[12px] font-medium uppercase tracking-[0.08em] text-[#111111] hover:underline underline-offset-4"
+            >
+              {n.label}
+            </Link>
+          ))}
+        </nav>
+
         {menu && (
-          <nav className="md:hidden bg-white border-t border-[#ece7f5] px-5 py-3 flex flex-col">
+          <nav className="md:hidden bg-white border-t border-[#e5e5e5] px-5 py-2 flex flex-col">
             {nav.map((n) => (
               <Link
                 key={n.label}
                 href={n.href}
                 onClick={() => setMenu(false)}
-                className="py-3 text-[15px] text-[#2f2545] border-b border-[#f4f0fa] last:border-0"
+                className="py-3.5 text-[13px] font-medium uppercase tracking-[0.08em] text-[#111111] border-b border-[#f0f0f0] last:border-0"
               >
                 {n.label}
               </Link>
@@ -103,7 +136,7 @@ export default function Header() {
             <Link
               href={user ? "/hesabim" : "/giris"}
               onClick={() => setMenu(false)}
-              className="mt-2 py-3 flex items-center gap-2 text-[15px] font-medium text-[#5a2e86]"
+              className="mt-1 py-3.5 flex items-center gap-2 text-[13px] font-medium text-[#111111]"
             >
               <UserIcon size={18} />
               {user ? (user.name?.split(" ")[0] ?? "Hesabım") : "Giriş / Üye Ol"}

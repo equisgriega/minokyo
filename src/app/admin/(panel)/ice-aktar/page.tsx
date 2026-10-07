@@ -15,38 +15,38 @@ export default function ImportPage() {
   return (
     <div className="p-8 max-w-3xl">
       <h1 className="text-2xl font-bold mb-1">Toplu Ürün İçe Aktar</h1>
-      <p className="text-[#6b6280] mb-6">
+      <p className="text-[#6b6b6b] mb-6">
         Excel&apos;de tabloyu hazırla → <strong>Farklı Kaydet → CSV</strong> → içeriği aşağıya yapıştır.
         Mevcut slug&apos;lar atlanır.
       </p>
 
-      <div className="bg-white rounded-2xl border border-[#e3daf0] p-5 mb-5">
+      <div className="bg-white rounded-2xl border border-[#e5e5e5] p-5 mb-5">
         <h2 className="font-bold text-sm mb-2">Sütun başlıkları (ilk satır)</h2>
-        <pre className="text-xs bg-[#f4f0fa] p-3 rounded-xl overflow-x-auto whitespace-pre">{TEMPLATE}</pre>
-        <p className="text-xs text-[#6b6280] mt-2">
+        <pre className="text-xs bg-[#f5f5f5] p-3 rounded-xl overflow-x-auto whitespace-pre">{TEMPLATE}</pre>
+        <p className="text-xs text-[#6b6b6b] mt-2">
           Ayraç <code>;</code> veya <code>,</code> olabilir. Kategori: takimlar / ust-giyim /
           pantolonlar. Cinsiyet: kiz / erkek / unisex. Metinlerde ayraç kullanma.
         </p>
       </div>
 
-      <form action={formAction} className="bg-white rounded-2xl border border-[#e3daf0] p-5">
+      <form action={formAction} className="bg-white rounded-2xl border border-[#e5e5e5] p-5">
         <textarea
           name="csv"
           rows={10}
           required
           placeholder="CSV içeriğini buraya yapıştır..."
-          className="w-full px-4 py-3 rounded-xl border border-[#e3daf0] bg-[#f7f4fb] font-mono text-xs focus:outline-none focus:border-[#7a4fb0]"
+          className="w-full px-4 py-3 rounded-xl border border-[#e5e5e5] bg-[#fafafa] font-mono text-xs focus:outline-none focus:border-[#444444]"
         />
         <button
           disabled={pending}
-          className="mt-4 px-6 py-2.5 rounded-full bg-[#5a2e86] text-white font-semibold hover:bg-[#7a4fb0] transition disabled:opacity-60"
+          className="mt-4 px-6 py-2.5 rounded-full bg-[#111111] text-white font-semibold hover:bg-[#444444] transition disabled:opacity-60"
         >
           {pending ? "İçe aktarılıyor..." : "İçe Aktar"}
         </button>
       </form>
 
       {state && (
-        <div className="bg-white rounded-2xl border border-[#e3daf0] p-5 mt-5">
+        <div className="bg-white rounded-2xl border border-[#e5e5e5] p-5 mt-5">
           <p className="font-semibold text-[#3f8f6b]">
             ✅ {state.created} ürün eklendi · {state.skipped} atlandı
           </p>

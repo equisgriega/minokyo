@@ -42,9 +42,9 @@ export default function RelatedProductsPicker({
   }
 
   return (
-    <form onSubmit={onSubmit} className="bg-white rounded-2xl border border-[#e3daf0] p-6 mt-6">
+    <form onSubmit={onSubmit} className="bg-white rounded-2xl border border-[#e5e5e5] p-6 mt-6">
       <h2 className="font-bold mb-1">🔗 Bağlı Ürünler — “Kombini Tamamla”</h2>
-      <p className="text-sm text-[#6b6280] mb-4">
+      <p className="text-sm text-[#6b6b6b] mb-4">
         Bu ürünün sayfasında birlikte önerilecek ürünleri seç. Seçilmezse otomatik öneri gösterilir.
       </p>
 
@@ -52,45 +52,45 @@ export default function RelatedProductsPicker({
         value={q}
         onChange={(e) => setQ(e.target.value)}
         placeholder="Ürün ara…"
-        className="w-full px-4 py-2.5 mb-3 rounded-xl border border-[#e3daf0] bg-[#f7f4fb] focus:outline-none focus:border-[#7a4fb0]"
+        className="w-full px-4 py-2.5 mb-3 rounded-xl border border-[#e5e5e5] bg-[#fafafa] focus:outline-none focus:border-[#444444]"
       />
 
-      <div className="max-h-72 overflow-y-auto divide-y divide-[#ece7f5] border border-[#ece7f5] rounded-xl">
+      <div className="max-h-72 overflow-y-auto divide-y divide-[#f0f0f0] border border-[#f0f0f0] rounded-xl">
         {filtered.length === 0 && (
-          <p className="text-sm text-[#6b6280] p-4">Eşleşen ürün yok.</p>
+          <p className="text-sm text-[#6b6b6b] p-4">Eşleşen ürün yok.</p>
         )}
         {filtered.map((o) => (
           <label
             key={o.id}
-            className="flex items-center gap-3 p-2.5 cursor-pointer hover:bg-[#f7f4fb]"
+            className="flex items-center gap-3 p-2.5 cursor-pointer hover:bg-[#fafafa]"
           >
             <input
               type="checkbox"
               checked={selected.has(o.id)}
               onChange={() => toggle(o.id)}
-              className="accent-[#5a2e86] w-4 h-4"
+              className="accent-[#111111] w-4 h-4"
             />
             {o.image && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={o.image}
                 alt=""
-                className="w-9 h-11 object-cover rounded-lg border border-[#e3daf0]"
+                className="w-9 h-11 object-cover rounded-lg border border-[#e5e5e5]"
               />
             )}
             <span className="text-sm font-medium">{o.name}</span>
             {o.categoryName && (
-              <span className="ml-auto text-xs text-[#6b6280]">{o.categoryName}</span>
+              <span className="ml-auto text-xs text-[#6b6b6b]">{o.categoryName}</span>
             )}
           </label>
         ))}
       </div>
 
       <div className="flex items-center gap-3 mt-4">
-        <button className="px-6 py-2.5 rounded-full bg-[#5a2e86] text-white font-semibold hover:bg-[#7a4fb0] transition">
+        <button className="px-6 py-2.5 rounded-none bg-[#111111] text-white font-semibold hover:bg-[#444444] transition">
           Bağlantıları Kaydet
         </button>
-        <span className="text-sm text-[#6b6280]">{selected.size} ürün seçili</span>
+        <span className="text-sm text-[#6b6b6b]">{selected.size} ürün seçili</span>
         {saved && <span className="text-sm text-green-600 font-medium">✓ Kaydedildi</span>}
       </div>
     </form>

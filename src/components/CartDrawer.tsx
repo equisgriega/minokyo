@@ -18,12 +18,12 @@ export default function CartDrawer() {
         onClick={() => setOpen(false)}
       />
       <aside
-        className={`fixed top-0 right-0 h-full w-[400px] max-w-[90vw] bg-[#f7f4fb] z-[60] shadow-2xl flex flex-col transition-transform ${
+        className={`fixed top-0 right-0 h-full w-[400px] max-w-[90vw] bg-[#fafafa] z-[60] shadow-2xl flex flex-col transition-transform ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between p-5 border-b border-[#e3daf0]">
-          <h3 className="font-display text-xl font-bold text-[#5a2e86]">Sepetim</h3>
+        <div className="flex items-center justify-between p-5 border-b border-[#e5e5e5]">
+          <h3 className="font-display text-xl font-bold text-[#111111]">Sepetim</h3>
           <button onClick={() => setOpen(false)} className="text-2xl leading-none" aria-label="Kapat">
             ×
           </button>
@@ -31,12 +31,12 @@ export default function CartDrawer() {
 
         {items.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center gap-3 p-6 text-center">
-            <span className="w-16 h-16 rounded-full bg-[#f4f0fa] text-[#5a2e86] grid place-items-center"><BagIcon size={28} /></span>
-            <p className="text-[#6b6280]">Sepetin şimdilik boş.</p>
+            <span className="w-16 h-16 rounded-full bg-[#f5f5f5] text-[#111111] grid place-items-center"><BagIcon size={28} /></span>
+            <p className="text-[#6b6b6b]">Sepetin şimdilik boş.</p>
             <Link
               href="/urunler"
               onClick={() => setOpen(false)}
-              className="px-6 py-3 rounded-full bg-[#5a2e86] text-white font-semibold hover:bg-[#7a4fb0] transition"
+              className="px-6 py-3 rounded-none bg-[#111111] text-white font-semibold hover:bg-[#444444] transition"
             >
               Alışverişe Başla
             </Link>
@@ -55,14 +55,14 @@ export default function CartDrawer() {
                   />
                   <div className="flex-1 min-w-0">
                     <div className="text-sm font-semibold leading-tight">{i.name}</div>
-                    <div className="text-xs text-[#6b6280]">Beden: {i.size} Yaş</div>
-                    <div className="text-sm font-semibold text-[#5a2e86] mt-0.5">
+                    <div className="text-xs text-[#6b6b6b]">Beden: {i.size} Yaş</div>
+                    <div className="text-sm font-semibold text-[#111111] mt-0.5">
                       {formatTL(i.price)}
                     </div>
                     <div className="flex items-center gap-2 mt-1.5">
                       <button
                         onClick={() => setQty(i.variantId, i.qty - 1)}
-                        className="w-7 h-7 rounded-full border border-[#e3daf0] bg-white font-bold"
+                        className="w-7 h-7 rounded-none border border-[#e5e5e5] bg-white font-bold"
                       >
                         −
                       </button>
@@ -70,13 +70,13 @@ export default function CartDrawer() {
                       <button
                         onClick={() => setQty(i.variantId, i.qty + 1)}
                         disabled={i.qty >= i.maxStock}
-                        className="w-7 h-7 rounded-full border border-[#e3daf0] bg-white font-bold disabled:opacity-40"
+                        className="w-7 h-7 rounded-none border border-[#e5e5e5] bg-white font-bold disabled:opacity-40"
                       >
                         +
                       </button>
                       <button
                         onClick={() => remove(i.variantId)}
-                        className="ml-auto text-xs text-[#6b6280] underline"
+                        className="ml-auto text-xs text-[#6b6b6b] underline"
                       >
                         Kaldır
                       </button>
@@ -89,18 +89,18 @@ export default function CartDrawer() {
               ))}
             </div>
 
-            <div className="p-5 border-t border-[#e3daf0] bg-[#ffffff]">
+            <div className="p-5 border-t border-[#e5e5e5] bg-[#ffffff]">
               <div className="flex justify-between items-center mb-1">
                 <span>Ara Toplam</span>
-                <strong className="font-display text-xl text-[#5a2e86]">
+                <strong className="font-display text-xl text-[#111111]">
                   {formatTL(subtotal)}
                 </strong>
               </div>
-              <p className="text-xs text-[#6b6280] mb-3">Kargo, ödeme adımında hesaplanır.</p>
+              <p className="text-xs text-[#6b6b6b] mb-3">Kargo, ödeme adımında hesaplanır.</p>
               <Link
                 href="/odeme"
                 onClick={() => setOpen(false)}
-                className="block text-center w-full py-3.5 rounded-full bg-[#5a2e86] text-white font-semibold hover:bg-[#7a4fb0] transition"
+                className="block text-center w-full py-3.5 rounded-none bg-[#111111] text-white font-semibold hover:bg-[#444444] transition"
               >
                 Ödemeye Geç
               </Link>

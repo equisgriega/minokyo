@@ -20,13 +20,13 @@ export default async function RegisterPage({
   if (user) redirect(user.role === "ADMIN" ? "/admin" : "/hesabim");
 
   const field =
-    "w-full px-4 py-3 rounded-xl border border-[#e3daf0] bg-[#f7f4fb] focus:outline-none focus:border-[#7a4fb0]";
+    "w-full px-4 py-3 rounded-xl border border-[#e5e5e5] bg-[#fafafa] focus:outline-none focus:border-[#444444]";
 
   return (
     <div className="max-w-md mx-auto px-5 py-14">
-      <div className="bg-[#ffffff] border border-[#e3daf0] rounded-3xl p-8">
-        <h1 className="font-display text-2xl font-bold text-[#5a2e86] text-center mb-1">Üye Ol</h1>
-        <p className="text-sm text-[#6b6280] text-center mb-6">
+      <div className="bg-[#ffffff] border border-[#e5e5e5] rounded-3xl p-8">
+        <h1 className="font-display text-2xl font-bold text-[#111111] text-center mb-1">Üye Ol</h1>
+        <p className="text-sm text-[#6b6b6b] text-center mb-6">
           İlk siparişinde %10 indirim seni bekliyor 🎉
         </p>
 
@@ -41,14 +41,14 @@ export default async function RegisterPage({
           <input name="email" type="email" required placeholder="E-posta" className={field} />
           <input name="phone" type="tel" placeholder="Telefon (opsiyonel)" className={field} />
           <input name="password" type="password" required placeholder="Şifre (en az 6 karakter)" className={field} />
-          <button className="w-full py-3.5 rounded-full bg-[#5a2e86] text-white font-semibold hover:bg-[#7a4fb0] transition">
+          <button className="w-full py-3.5 rounded-none bg-[#111111] text-white font-semibold hover:bg-[#444444] transition">
             Hesap Oluştur
           </button>
         </form>
 
-        <p className="text-sm text-center text-[#6b6280] mt-5">
+        <p className="text-sm text-center text-[#6b6b6b] mt-5">
           Zaten hesabın var mı?{" "}
-          <Link href="/giris" className="text-[#5a2e86] font-semibold hover:underline">
+          <Link href="/giris" className="text-[#111111] font-semibold hover:underline">
             Giriş yap
           </Link>
         </p>

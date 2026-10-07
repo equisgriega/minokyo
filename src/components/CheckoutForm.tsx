@@ -125,10 +125,10 @@ export default function CheckoutForm({
   if (ready && items.length === 0) {
     return (
       <div className="max-w-6xl mx-auto px-5 py-20 text-center">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#f4f0fa] text-[#5a2e86] grid place-items-center"><BagIcon size={28} /></div>
-        <h1 className="font-display text-2xl font-bold text-[#5a2e86] mb-2">Sepetin boş</h1>
-        <p className="text-[#6b6280] mb-6">Ödemeye geçmek için önce sepetine ürün ekle.</p>
-        <Link href="/urunler" className="px-7 py-3.5 rounded-full bg-[#5a2e86] text-white font-semibold">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#f5f5f5] text-[#111111] grid place-items-center"><BagIcon size={28} /></div>
+        <h1 className="font-display text-2xl font-bold text-[#111111] mb-2">Sepetin boş</h1>
+        <p className="text-[#6b6b6b] mb-6">Ödemeye geçmek için önce sepetine ürün ekle.</p>
+        <Link href="/urunler" className="px-7 py-3.5 rounded-none bg-[#111111] text-white font-semibold">
           Alışverişe Başla
         </Link>
       </div>
@@ -136,12 +136,12 @@ export default function CheckoutForm({
   }
 
   const field =
-    "w-full px-4 py-3 rounded-xl border border-[#e3daf0] bg-[#f7f4fb] focus:outline-none focus:border-[#7a4fb0]";
+    "w-full px-4 py-3 rounded-xl border border-[#e5e5e5] bg-[#fafafa] focus:outline-none focus:border-[#444444]";
 
   return (
     <div className="max-w-6xl mx-auto px-5 py-10">
-      <h1 className="font-display text-3xl font-bold text-[#5a2e86] mb-1">Ödeme</h1>
-      <p className="text-[#6b6280] mb-6">Teslimat bilgilerini doldur, siparişini tamamla.</p>
+      <h1 className="font-display text-3xl font-bold text-[#111111] mb-1">Ödeme</h1>
+      <p className="text-[#6b6b6b] mb-6">Teslimat bilgilerini doldur, siparişini tamamla.</p>
 
       {error && (
         <div className="mb-5 text-sm text-red-700 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
@@ -151,7 +151,7 @@ export default function CheckoutForm({
 
       <form onSubmit={handleSubmit} className="grid lg:grid-cols-[1.5fr_1fr] gap-7 items-start">
         <div className="space-y-5">
-          <section className="bg-[#ffffff] border border-[#e3daf0] rounded-2xl p-6">
+          <section className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-6">
             <h3 className="font-bold mb-4">İletişim</h3>
             <div className="grid sm:grid-cols-2 gap-4">
               <input name="email" type="email" required placeholder="E-posta *" defaultValue={defaults.email} onBlur={(e) => captureCart(e.target.value)} className={field} />
@@ -159,7 +159,7 @@ export default function CheckoutForm({
             </div>
           </section>
 
-          <section className="bg-[#ffffff] border border-[#e3daf0] rounded-2xl p-6">
+          <section className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-6">
             <h3 className="font-bold mb-4">Teslimat Adresi</h3>
             <div className="space-y-4">
               <input name="fullName" required placeholder="Ad Soyad *" defaultValue={defaults.fullName} className={field} />
@@ -173,7 +173,7 @@ export default function CheckoutForm({
             </div>
           </section>
 
-          <section className="bg-[#ffffff] border border-[#e3daf0] rounded-2xl p-6">
+          <section className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-6">
             <h3 className="font-bold mb-4">Ödeme Yöntemi</h3>
             <div className="space-y-3">
               {[
@@ -184,7 +184,7 @@ export default function CheckoutForm({
                 <label
                   key={o.v}
                   className={`flex gap-3 p-4 rounded-xl border cursor-pointer transition ${
-                    pay === o.v ? "border-[#5a2e86] bg-[#f7f4fb]" : "border-[#e3daf0]"
+                    pay === o.v ? "border-[#111111] bg-[#fafafa]" : "border-[#e5e5e5]"
                   }`}
                 >
                   <input
@@ -192,22 +192,22 @@ export default function CheckoutForm({
                     name="pay"
                     checked={pay === o.v}
                     onChange={() => setPay(o.v)}
-                    className="mt-1 accent-[#5a2e86]"
+                    className="mt-1 accent-[#111111]"
                   />
                   <span>
                     <strong className="block text-sm">{o.t}</strong>
-                    <small className="text-[#6b6280]">{o.d}</small>
+                    <small className="text-[#6b6b6b]">{o.d}</small>
                   </span>
                 </label>
               ))}
             </div>
-            <p className="text-xs text-[#6b6280] mt-3 bg-[#f7f4fb] p-3 rounded-xl">
+            <p className="text-xs text-[#6b6b6b] mt-3 bg-[#fafafa] p-3 rounded-xl">
               💡 Kart ile online ödeme, ödeme altyapısı bağlandığında aktifleşecek. Şu an sipariş kaydı oluşturulur.
             </p>
           </section>
         </div>
 
-        <aside className="bg-[#ffffff] border border-[#e3daf0] rounded-2xl p-6 lg:sticky lg:top-24">
+        <aside className="bg-[#ffffff] border border-[#e5e5e5] rounded-2xl p-6 lg:sticky lg:top-24">
           <h3 className="font-bold mb-4">Sipariş Özeti</h3>
           <div className="space-y-3 mb-4">
             {items.map((i) => (
@@ -215,27 +215,27 @@ export default function CheckoutForm({
                 <Image src={i.image} alt={i.name} width={48} height={60} className="rounded-lg object-cover w-12 h-[60px]" />
                 <div className="flex-1 text-sm">
                   <div className="font-medium leading-tight">{i.name}</div>
-                  <div className="text-xs text-[#6b6280]">Beden: {i.size} · Adet: {i.qty}</div>
+                  <div className="text-xs text-[#6b6b6b]">Beden: {i.size} · Adet: {i.qty}</div>
                 </div>
-                <div className="text-sm font-semibold text-[#5a2e86] whitespace-nowrap">
+                <div className="text-sm font-semibold text-[#111111] whitespace-nowrap">
                   {formatTL(i.price * i.qty)}
                 </div>
               </div>
             ))}
           </div>
           {/* Kupon */}
-          <div className="border-t border-[#e3daf0] pt-3 mb-3">
+          <div className="border-t border-[#e5e5e5] pt-3 mb-3">
             <div className="flex gap-2">
               <input
                 value={coupon}
                 onChange={(e) => setCoupon(e.target.value.toUpperCase())}
                 placeholder="İndirim kodu"
-                className="flex-1 px-3 py-2 rounded-xl border border-[#e3daf0] bg-[#f7f4fb] text-sm focus:outline-none focus:border-[#7a4fb0]"
+                className="flex-1 px-3 py-2 rounded-xl border border-[#e5e5e5] bg-[#fafafa] text-sm focus:outline-none focus:border-[#444444]"
               />
               <button
                 type="button"
                 onClick={applyCoupon}
-                className="px-4 py-2 rounded-xl bg-[#ece7f5] text-[#5a2e86] text-sm font-semibold hover:bg-[#5a2e86] hover:text-white transition"
+                className="px-4 py-2 rounded-xl bg-[#f0f0f0] text-[#111111] text-sm font-semibold hover:bg-[#111111] hover:text-white transition"
               >
                 Uygula
               </button>
@@ -246,7 +246,7 @@ export default function CheckoutForm({
               </p>
             )}
           </div>
-          <div className="border-t border-[#e3daf0] pt-3 space-y-2 text-sm">
+          <div className="border-t border-[#e5e5e5] pt-3 space-y-2 text-sm">
             <div className="flex justify-between"><span>Ara Toplam</span><span>{formatTL(subtotal)}</span></div>
             {discount > 0 && (
               <div className="flex justify-between text-[#3f8f6b]">
@@ -258,21 +258,21 @@ export default function CheckoutForm({
               <span>Kargo</span>
               <span>{shipping === 0 ? "Bedava" : formatTL(shipping)}</span>
             </div>
-            <div className="flex justify-between font-display text-xl font-bold text-[#5a2e86] pt-2 border-t border-[#e3daf0]">
+            <div className="flex justify-between font-display text-xl font-bold text-[#111111] pt-2 border-t border-[#e5e5e5]">
               <span>Toplam</span><span>{formatTL(total)}</span>
             </div>
           </div>
           {shipping === 0 ? (
             <p className="text-xs text-[#3f8f6b] mt-2 font-medium">🎉 Kargo bedava!</p>
           ) : (
-            <p className="text-xs text-[#6b6280] mt-2">
+            <p className="text-xs text-[#6b6b6b] mt-2">
               {formatTL(FREE_SHIP_LIMIT - subtotal)} daha ekleyin, kargo bedava olsun.
             </p>
           )}
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-5 py-4 rounded-full bg-[#5a2e86] text-white font-semibold text-lg hover:bg-[#7a4fb0] transition disabled:opacity-60"
+            className="w-full mt-5 py-4 rounded-none bg-[#111111] text-white font-semibold text-lg hover:bg-[#444444] transition disabled:opacity-60"
           >
             {loading ? "İşleniyor..." : "Siparişi Tamamla"}
           </button>

@@ -16,7 +16,7 @@ export default function Logo({
 }) {
   return (
     <Image
-      src={light ? "/logo-white.png" : "/logo.png"}
+      src={light ? "/logo-white.png" : "/logo-black.png"}
       alt="Minokyo"
       width={Math.round(size * AR)}
       height={size}
