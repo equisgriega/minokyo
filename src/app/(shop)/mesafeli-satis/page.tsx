@@ -12,7 +12,7 @@ export default function Page() {
       </p>
       <h2>2. Konu</h2>
       <p>
-        Sözleşmenin konusu, ALICI'nın minokyo internet sitesinden elektronik ortamda sipariş verdiği
+        Sözleşmenin konusu, ALICI&apos;nın minokyo internet sitesinden elektronik ortamda sipariş verdiği
         ürünün satışı ve teslimine ilişkin 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve
         Mesafeli Sözleşmeler Yönetmeliği hükümleri uyarınca tarafların hak ve yükümlülükleridir.
       </p>
@@ -23,7 +23,7 @@ export default function Page() {
       </p>
       <h2>4. Teslimat</h2>
       <p>
-        Ürün, sipariş onayından sonra kargoya verilir ve ALICI'nın belirttiği adrese teslim edilir.
+        Ürün, sipariş onayından sonra kargoya verilir ve ALICI&apos;nın belirttiği adrese teslim edilir.
         Teslimat ve kargo koşulları İade & Teslimat sayfasında belirtilmiştir.
       </p>
       <h2>5. Cayma Hakkı</h2>
@@ -34,7 +34,7 @@ export default function Page() {
       </p>
       <h2>6. Uyuşmazlık</h2>
       <p>
-        Uyuşmazlıklarda ALICI'nın yerleşim yerindeki Tüketici Hakem Heyetleri ve Tüketici
+        Uyuşmazlıklarda ALICI&apos;nın yerleşim yerindeki Tüketici Hakem Heyetleri ve Tüketici
         Mahkemeleri yetkilidir.
       </p>
       <p><em>Not: Bu metin bir taslaktır; işletme bilgilerinizle doldurulmalı ve hukuki olarak gözden geçirilmelidir.</em></p>

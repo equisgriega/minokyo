@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 const ERRORS: Record<string, string> = {
   current: "Mevcut şifre yanlış.",
-  short: "Yeni şifre en az 6 karakter olmalı.",
+  short: "Yeni şifre en az 8 karakter olmalı.",
   match: "Yeni şifreler eşleşmiyor.",
 };
 
@@ -48,7 +48,7 @@ export default async function AccountPage({
           </div>
           <div>
             <label className="block text-sm font-semibold mb-1.5">Yeni Şifre</label>
-            <input name="next" type="password" required minLength={6} placeholder="En az 6 karakter" className={field} />
+            <input name="next" type="password" required minLength={8} placeholder="En az 8 karakter" className={field} />
           </div>
           <div>
             <label className="block text-sm font-semibold mb-1.5">Yeni Şifre (Tekrar)</label>

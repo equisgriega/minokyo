@@ -1,18 +1,14 @@
 import { NextResponse } from "next/server";
+import { isAuthorizedCron } from "@/lib/cron-auth";
 import { runAbandonedReminders } from "@/lib/reminders";
 
-// Üretimde zamanlanmış görev (cron) bu adresi çağırır:
-//   GET /api/cron/abandoned-cart   (Authorization: Bearer <CRON_SECRET>)
-// Örn. Vercel Cron veya harici bir cron servisi ile saatte bir.
-export async function GET(request: Request) {
-  const secret = process.env.CRON_SECRET;
-  const auth = request.headers.get("authorization");
+export const dynamic = "force-dynamic";
 
-  if (secret && auth !== `Bearer ${secret}`) {
+// Elle tetikleme için (Authorization: Bearer <CRON_SECRET>). Günlük görev: /api/cron/daily
+export async function GET(request: Request) {
+  if (!isAuthorizedCron(request)) {
     return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
   }
-
-  // Son 60 dakikadır tamamlanmamış sepetlere hatırlatma gönder
   const sent = await runAbandonedReminders(60);
   return NextResponse.json({ ok: true, sent });
 }

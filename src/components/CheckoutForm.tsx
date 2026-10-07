@@ -5,7 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/components/CartContext";
-import { formatTL, FREE_SHIP_LIMIT, SHIP_COST } from "@/lib/money";
+import { formatTL, FREE_SHIP_LIMIT } from "@/lib/money";
+import { calcTotals } from "@/lib/pricing";
 import { placeOrder, saveAbandonedCart, validateCoupon } from "@/app/(shop)/odeme/actions";
 import { trackInitiateCheckout } from "@/lib/track";
 import { BagIcon } from "@/components/Icons";
@@ -20,9 +21,11 @@ export type DefaultCustomer = {
 export default function CheckoutForm({
   defaults,
   paymentError,
+  cardEnabled = false,
 }: {
   defaults: DefaultCustomer;
   paymentError?: boolean;
+  cardEnabled?: boolean;
 }) {
   const { items, subtotal, clear, ready } = useCart();
   const router = useRouter();
@@ -30,7 +33,7 @@ export default function CheckoutForm({
   const [error, setError] = useState(
     paymentError ? "Ödeme tamamlanamadı veya iptal edildi. Lütfen tekrar deneyin." : ""
   );
-  const [pay, setPay] = useState("card");
+  const [pay, setPay] = useState(cardEnabled ? "card" : "transfer");
 
   // Kupon
   const [coupon, setCoupon] = useState("");
@@ -52,8 +55,7 @@ export default function CheckoutForm({
     }
   }
 
-  const shipping = subtotal >= FREE_SHIP_LIMIT ? 0 : items.length ? SHIP_COST : 0;
-  const total = Math.max(0, subtotal - discount) + shipping;
+  const { shipping, total } = calcTotals(subtotal, discount);
 
   // Sepet hatırlatma: e-posta + ürün varsa yarım kalan sepeti kaydet
   const capturedRef = useRef("");
@@ -65,8 +67,7 @@ export default function CheckoutForm({
     saveAbandonedCart({
       email: e,
       name,
-      items: items.map((i) => ({ name: i.name, size: i.size, qty: i.qty, price: i.price })),
-      total: subtotal,
+      items: items.map((i) => ({ variantId: i.variantId, qty: i.qty })),
     });
   }
   useEffect(() => {
@@ -112,7 +113,7 @@ export default function CheckoutForm({
         window.location.href = res.paymentUrl;
         return;
       }
-      router.push(`/siparis/${res.orderNo}`);
+      router.push(`/siparis/${res.orderNo}?t=${res.token}`);
     } else {
       setLoading(false);
       setError(res.error);
@@ -175,20 +176,21 @@ export default function CheckoutForm({
             <h3 className="font-bold mb-4">Ödeme Yöntemi</h3>
             <div className="space-y-3">
               {[
-                { v: "card", t: "Kredi / Banka Kartı", d: "Yakında: iyzico ile güvenli ödeme" },
-                { v: "transfer", t: "Havale / EFT", d: "Sipariş sonrası hesap bilgileri iletilir" },
-                { v: "door", t: "Kapıda Ödeme", d: "Teslimatta nakit veya kart" },
+                { v: "card", t: "Kredi / Banka Kartı", d: cardEnabled ? "iyzico ile güvenli ödeme" : "Yakında aktif olacak", disabled: !cardEnabled },
+                { v: "transfer", t: "Havale / EFT", d: "Sipariş sonrası hesap bilgileri iletilir", disabled: false },
+                { v: "door", t: "Kapıda Ödeme", d: "Teslimatta nakit veya kart", disabled: false },
               ].map((o) => (
                 <label
                   key={o.v}
-                  className={`flex gap-3 p-4 rounded-xl border cursor-pointer transition ${
-                    pay === o.v ? "border-ink bg-subtle" : "border-line"
+                  className={`flex gap-3 p-4 rounded-xl border transition ${
+                    o.disabled ? "opacity-50 cursor-not-allowed border-line" : pay === o.v ? "border-ink bg-subtle cursor-pointer" : "border-line cursor-pointer"
                   }`}
                 >
                   <input
                     type="radio"
                     name="pay"
                     checked={pay === o.v}
+                    disabled={o.disabled}
                     onChange={() => setPay(o.v)}
                     className="mt-1 accent-ink"
                   />
@@ -199,9 +201,6 @@ export default function CheckoutForm({
                 </label>
               ))}
             </div>
-            <p className="text-xs text-muted mt-3 bg-subtle p-3 rounded-xl">
-              💡 Kart ile online ödeme, ödeme altyapısı bağlandığında aktifleşecek. Şu an sipariş kaydı oluşturulur.
-            </p>
           </section>
         </div>
 

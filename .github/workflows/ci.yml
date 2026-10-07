@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # postinstall → prisma generate (veritabanı bağlantısı gerektirmez)
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tip kontrolü
+        run: npm run typecheck
+
+      # Entegrasyon testleri yalnızca TEST_DATABASE_URL gizli değişkeni tanımlıysa çalışır
+      # (GitHub → Settings → Secrets → Actions → TEST_DATABASE_URL = Neon "dev" dalı)
+      - name: Testler
+        run: npm test
+        env:
+          TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}

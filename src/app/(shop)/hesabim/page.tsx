@@ -86,7 +86,7 @@ export default async function AccountPage() {
                 </div>
                 <div className="flex justify-between items-center border-t border-line pt-3">
                   <div className="flex gap-4">
-                    <Link href={`/siparis/${o.orderNo}`} className="text-sm text-ink font-semibold hover:underline">
+                    <Link href={`/siparis/${o.orderNo}?t=${o.accessToken}`} className="text-sm text-ink font-semibold hover:underline">
                       Detayı Gör →
                     </Link>
                     {o.carrier && o.trackingNo && (

@@ -1,4 +1,6 @@
+import crypto from "crypto";
 import { prisma } from "@/lib/prisma";
+import { getSession } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { formatTL } from "@/lib/money";
@@ -7,18 +9,35 @@ import { carrierName, trackingUrl } from "@/lib/carriers";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = { robots: { index: false, follow: false } };
+
 export default async function OrderConfirmPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ orderNo: string }>;
+  searchParams: Promise<{ t?: string }>;
 }) {
   const { orderNo } = await params;
+  const { t } = await searchParams;
   const order = await prisma.order.findUnique({
     where: { orderNo },
     include: { items: true },
   });
 
   if (!order) notFound();
+
+  // KVKK: ad/adres/telefon yalnızca e-postadaki anahtarlı linkle, siparişin sahibi
+  // veya yönetici tarafından görülebilir. Aksi halde "bulunamadı" (var olduğu da sızmaz).
+  const tokenOk =
+    typeof t === "string" &&
+    t.length === order.accessToken.length &&
+    crypto.timingSafeEqual(Buffer.from(t), Buffer.from(order.accessToken));
+  if (!tokenOk) {
+    const user = await getSession();
+    const allowed = user && (user.role === "ADMIN" || (order.userId && order.userId === user.id));
+    if (!allowed) notFound();
+  }
 
   return (
     <div className="max-w-2xl mx-auto px-5 py-14">

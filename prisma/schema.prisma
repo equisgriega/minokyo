@@ -17,6 +17,7 @@ model User {
   phone     String?
   password  String // hashlenmiş
   role      Role     @default(CUSTOMER)
+  sessionVersion Int @default(0) // şifre değişince artar → eski oturumlar geçersiz
   addresses Address[]
   orders    Order[]
   createdAt DateTime @default(now())
@@ -135,6 +136,8 @@ model Variant {
 model Order {
   id            String      @id @default(cuid())
   orderNo       String      @unique
+  // Sipariş sayfası linki için tahmin edilemez anahtar (KVKK: adres/telefon koruması)
+  accessToken   String      @unique @default(dbgenerated("replace((gen_random_uuid())::text, '-'::text, ''::text)"))
   userId        String?
   user          User?       @relation(fields: [userId], references: [id])
   email         String
@@ -249,4 +252,11 @@ model StockNotify {
   createdAt DateTime @default(now())
 
   @@unique([email, variantId])
+}
+
+// İstek sınırı (brute force / spam koruması) — serverless'ta kalıcı sayaç
+model RateLimit {
+  key     String   @id
+  count   Int      @default(0)
+  resetAt DateTime
 }

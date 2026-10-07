@@ -17,7 +17,8 @@ export function proxy(req: NextRequest) {
   if (open) return NextResponse.next();
 
   // Önizleme çerezi olan (mağaza sahibi) gerçek siteyi görür
-  if (req.cookies.get("mnk_preview")?.value === "1") return NextResponse.next();
+  const key = process.env.PREVIEW_KEY;
+  if (key && req.cookies.get("mnk_preview")?.value === key) return NextResponse.next();
 
   const url = req.nextUrl.clone();
   url.pathname = "/cok-yakinda";

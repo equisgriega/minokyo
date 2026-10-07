@@ -6,6 +6,7 @@ import { registerCustomer } from "../auth-actions";
 export const dynamic = "force-dynamic";
 
 const ERRORS: Record<string, string> = {
+  rate: "Çok fazla kayıt denemesi. Lütfen daha sonra tekrar deneyin.",
   invalid: "Lütfen bilgileri kontrol edin (şifre en az 6 karakter).",
   exists: "Bu e-posta ile zaten bir hesap var. Giriş yapın.",
 };

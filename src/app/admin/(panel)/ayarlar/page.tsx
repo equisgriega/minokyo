@@ -111,7 +111,7 @@ export default function SettingsPage() {
       <div className="bg-white rounded-2xl border border-line p-5 mb-6">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div>
-            <h2 className="font-bold">🗂️ Ürün Katalog Feed'i</h2>
+            <h2 className="font-bold">🗂️ Ürün Katalog Feed&apos;i</h2>
             <p className="text-sm text-muted">Meta/TikTok katalog için bu adresi ver.</p>
           </div>
           <a

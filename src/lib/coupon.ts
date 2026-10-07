@@ -1,5 +1,6 @@
 import { prisma } from "./prisma";
 import { formatTL } from "./money";
+import { calcDiscount } from "./pricing";
 
 export type CouponResult =
   | { ok: true; discount: number; code: string; label: string }
@@ -18,10 +19,7 @@ export async function evaluateCoupon(rawCode: string, subtotal: number): Promise
   if (subtotal < c.minSubtotal)
     return { ok: false, error: `Bu kupon ${formatTL(c.minSubtotal)} ve üzeri sepetlerde geçerli.` };
 
-  const discount =
-    c.type === "percent"
-      ? Math.round((subtotal * c.value) / 100)
-      : Math.min(c.value, subtotal);
+  const discount = calcDiscount(c, subtotal);
 
   const label =
     c.type === "percent" ? `%${c.value} indirim` : `${formatTL(c.value)} indirim`;

@@ -41,10 +41,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setOpen] = useState(false);
   const [ready, setReady] = useState(false);
 
-  // Yükle
+  // Yükle — sepet tarayıcı hafızasında; sunucu çiziminde boş başlar, mount sonrası bir kez
+  // yüklenir (hydration uyumu için kasıtlı). Bu tek seferlik senkronizasyon kuralın istisnası.
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (raw) setItems(JSON.parse(raw));
     } catch {}
     setReady(true);

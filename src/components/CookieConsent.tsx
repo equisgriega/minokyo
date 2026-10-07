@@ -1,23 +1,34 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+// Onay durumu tarayıcı hafızasında (harici kaynak) → useSyncExternalStore ile okunur
+function subscribe(cb: () => void) {
+  window.addEventListener("mnk-consent", cb);
+  window.addEventListener("storage", cb);
+  return () => {
+    window.removeEventListener("mnk-consent", cb);
+    window.removeEventListener("storage", cb);
+  };
+}
+function readConsent() {
+  try {
+    return localStorage.getItem("mnk_consent") ? "decided" : "pending";
+  } catch {
+    return "decided"; // depolama kapalıysa bandı gösterme
+  }
+}
 
 export default function CookieConsent() {
-  const [decided, setDecided] = useState(true); // başlangıçta gösterme (flash önle)
-
-  useEffect(() => {
-    try {
-      setDecided(Boolean(localStorage.getItem("mnk_consent")));
-    } catch {}
-  }, []);
+  // Sunucuda "decided" → ilk çizimde band görünmez (titreme olmaz)
+  const decided = useSyncExternalStore(subscribe, readConsent, () => "decided") === "decided";
 
   function choose(value: "granted" | "denied") {
     try {
       localStorage.setItem("mnk_consent", value);
     } catch {}
     window.dispatchEvent(new Event("mnk-consent"));
-    setDecided(true);
   }
 
   if (decided) return null;

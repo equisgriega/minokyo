@@ -19,8 +19,9 @@ export default function PurchaseTracker({
   useEffect(() => {
     const key = `mnk_purchase_${orderNo}`;
     try {
-      if (sessionStorage.getItem(key)) return; // aynı sayfada tekrar sayma
-      sessionStorage.setItem(key, "1");
+      // localStorage: sayfa günler sonra tekrar açılsa da dönüşüm ikinci kez sayılmaz
+      if (localStorage.getItem(key)) return;
+      localStorage.setItem(key, "1");
     } catch {}
     trackPurchase({ orderNo, value, contents });
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -2,13 +2,18 @@
 
 import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/email";
+import { escapeHtml } from "@/lib/html";
+import { rateLimitIp } from "@/lib/security";
 
 /** Tükenen beden için müşteri e-postasını kaydeder; stok gelince bilgilendirilir. */
 export async function requestStockNotify(
   variantId: string,
   email: string
 ): Promise<{ ok: boolean; message: string }> {
-  const e = email.trim().toLowerCase();
+  if (!(await rateLimitIp("notify", 20, 3600))) {
+    return { ok: false, message: "Çok fazla deneme. Lütfen daha sonra tekrar dene." };
+  }
+  const e = String(email ?? "").trim().toLowerCase().slice(0, 120);
   if (!e || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) {
     return { ok: false, message: "Geçerli bir e-posta girin." };
   }
@@ -28,6 +33,10 @@ export async function requestStockNotify(
 export async function submitReview(
   formData: FormData
 ): Promise<{ ok: boolean; message: string }> {
+  // Spam koruması: IP başına saatte 5 yorum
+  if (!(await rateLimitIp("review", 5, 3600))) {
+    return { ok: false, message: "Çok fazla yorum gönderildi. Lütfen daha sonra tekrar dene." };
+  }
   const productId = String(formData.get("productId") || "");
   const name = String(formData.get("name") || "").trim().slice(0, 60);
   const email = String(formData.get("email") || "").trim().toLowerCase();
@@ -68,6 +77,3 @@ export async function submitReview(
   return { ok: true, message: "Teşekkürler! Yorumun onaylandıktan sonra yayınlanacak." };
 }
 
-function escapeHtml(s: string) {
-  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
-}

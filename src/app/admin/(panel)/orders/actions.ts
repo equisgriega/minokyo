@@ -8,12 +8,14 @@ import { carrierName, trackingUrl } from "@/lib/carriers";
 import { isShippingApiConfigured, createShipment } from "@/lib/shipping";
 import { isParasutConfigured, createEArsivInvoice } from "@/lib/parasut";
 import { revalidatePath } from "next/cache";
+import { cancelOrder } from "@/lib/orders";
 
 async function sendShippingMail(orderNo: string) {
   const o = await prisma.order.findUnique({ where: { orderNo } });
   if (!o) return;
   const mail = shippingEmail({
     orderNo: o.orderNo,
+    accessToken: o.accessToken,
     fullName: o.fullName,
     carrierName: carrierName(o.carrier),
     trackingNo: o.trackingNo,
@@ -110,15 +112,22 @@ export async function issueInvoice(formData: FormData) {
 export async function updateOrderStatus(formData: FormData) {
   if (!(await requireAdmin())) throw new Error("Yetkisiz");
   const orderId = String(formData.get("orderId"));
-  const status = String(formData.get("status")) as
-    | "PENDING"
-    | "PAID"
-    | "SHIPPED"
-    | "DELIVERED"
-    | "CANCELLED";
+  const STATUSES = ["PENDING", "PAID", "SHIPPED", "DELIVERED", "CANCELLED"] as const;
+  const raw = String(formData.get("status"));
+  if (!(STATUSES as readonly string[]).includes(raw)) throw new Error("Geçersiz durum");
+  const status = raw as (typeof STATUSES)[number];
 
   const current = await prisma.order.findUnique({ where: { id: orderId } });
   if (!current) throw new Error("Sipariş bulunamadı");
+
+  // İptal: henüz kargolanmamışsa stok ve kupon iade edilir
+  if (status === "CANCELLED" && (current.status === "PENDING" || current.status === "PAID")) {
+    await cancelOrder(current.orderNo, ["PENDING", "PAID"]);
+    revalidatePath(`/admin/orders/${orderId}`);
+    revalidatePath("/admin/orders");
+    revalidatePath("/admin/products");
+    return;
+  }
 
   const paymentStatus =
     status === "PAID" || status === "SHIPPED" || status === "DELIVERED"

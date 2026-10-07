@@ -20,7 +20,7 @@ export default async function LoginPage({
 
         {error && (
           <div className="mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
-            E-posta veya şifre hatalı.
+            {error === "rate" ? "Çok fazla deneme yapıldı. Lütfen 15 dakika sonra tekrar deneyin." : "E-posta veya şifre hatalı."}
           </div>
         )}
 
