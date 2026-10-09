@@ -12,6 +12,9 @@ export function proxy(req: NextRequest) {
     pathname.startsWith("/api") ||
     pathname.startsWith("/cok-yakinda") ||
     pathname.startsWith("/onizleme") ||
+    // Şifre sıfırlama: çok yakında modunda da çalışsın (yönetici şifresini unutursa)
+    pathname.startsWith("/sifremi-unuttum") ||
+    pathname.startsWith("/sifre-yenile") ||
     pathname.includes("."); // statik dosyalar (logo.png, .svg, manifest, hero.mp4, ürün görselleri vb.)
 
   if (open) return NextResponse.next();

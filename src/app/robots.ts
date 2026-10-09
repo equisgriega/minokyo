@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: "/",
         // Kişisel veri veya işlem içeren sayfalar arama motorlarına kapalı
-        disallow: ["/admin", "/api", "/odeme", "/hesabim", "/siparis", "/giris", "/kayit", "/onizleme"],
+        disallow: ["/admin", "/api", "/odeme", "/hesabim", "/siparis", "/giris", "/kayit", "/onizleme", "/sifremi-unuttum", "/sifre-yenile"],
       },
     ],
     sitemap: `${BASE}/sitemap.xml`,

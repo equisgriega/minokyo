@@ -93,3 +93,16 @@ export const SparkleIcon = (p: P) => (
     <path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6" />
   </Svg>
 );
+
+export const SortIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M7 4v16M3.5 16.5L7 20l3.5-3.5" />
+    <path d="M17 20V4M13.5 7.5L17 4l3.5 3.5" />
+  </Svg>
+);
+
+export const ChevronDownIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M6 9l6 6 6-6" />
+  </Svg>
+);

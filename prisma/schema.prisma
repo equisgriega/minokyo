@@ -19,6 +19,7 @@ model User {
   role      Role     @default(CUSTOMER)
   sessionVersion Int @default(0) // şifre değişince artar → eski oturumlar geçersiz
   addresses Address[]
+  passwordResets PasswordReset[]
   orders    Order[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -259,4 +260,17 @@ model RateLimit {
   key     String   @id
   count   Int      @default(0)
   resetAt DateTime
+}
+
+// Şifre sıfırlama — linkin kendisi değil SHA-256 özeti saklanır; 30 dk geçerli, tek kullanımlık
+model PasswordReset {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
 }

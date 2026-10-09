@@ -6,7 +6,7 @@ type SendOpts = {
   to: string;
   subject: string;
   html: string;
-  type: "order_confirmation" | "shipping" | "abandoned_cart" | "review";
+  type: "order_confirmation" | "shipping" | "abandoned_cart" | "review" | "password_reset";
 };
 
 /**

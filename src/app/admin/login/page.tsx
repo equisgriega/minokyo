@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { login } from "./actions";
 import { requireAdmin } from "@/lib/auth";
 import { redirect } from "next/navigation";
@@ -31,7 +32,7 @@ export default async function LoginPage({
               type="email"
               name="email"
               required
-              defaultValue="admin@minokyo.com"
+              autoComplete="username"
               className="w-full px-4 py-3 rounded-xl border border-line bg-subtle focus:outline-none focus:border-ink-2"
             />
           </div>
@@ -52,6 +53,11 @@ export default async function LoginPage({
             Giriş Yap
           </button>
         </form>
+        <p className="text-center mt-4">
+          <Link href="/sifremi-unuttum" className="text-[13px] text-muted hover:text-ink underline underline-offset-2">
+            Şifremi unuttum
+          </Link>
+        </p>
 
         <p className="text-xs text-muted text-center mt-5">
           Demo giriş: admin@minokyo.com / admin123

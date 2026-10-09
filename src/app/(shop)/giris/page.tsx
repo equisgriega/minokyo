@@ -32,8 +32,13 @@ export default async function LoginPage({
         )}
 
         <form action={loginCustomer} className="space-y-4">
-          <input name="email" type="email" required placeholder="E-posta" className={field} />
-          <input name="password" type="password" required placeholder="Şifre" className={field} />
+          <input name="email" type="email" required autoComplete="email" placeholder="E-posta" className={field} />
+          <input name="password" type="password" required autoComplete="current-password" placeholder="Şifre" className={field} />
+          <div className="text-right -mt-2">
+            <Link href="/sifremi-unuttum" className="text-[13px] text-muted hover:text-ink underline underline-offset-2">
+              Şifremi unuttum
+            </Link>
+          </div>
           <button className="w-full py-3.5 rounded-none bg-ink text-white font-semibold hover:bg-ink-2 transition">
             Giriş Yap
           </button>

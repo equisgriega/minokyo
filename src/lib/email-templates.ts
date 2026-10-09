@@ -141,3 +141,13 @@ export function abandonedCartEmail(c: { name?: string | null; items: Item[]; tot
   `;
   return { subject: "Sepetini unuttun mu? · minokyo", html: shell("Sepetin seni bekliyor", body) };
 }
+
+export function passwordResetEmail(o: { name?: string | null; url: string; minutes: number }) {
+  const body = `
+    <p style="font-size:15px;line-height:1.6">Merhaba ${firstNameOf(o.name)}, şifreni sıfırlamak için bir istek aldık.</p>
+    <a href="${e(o.url)}" style="${btn}">Yeni Şifre Belirle</a>
+    <p style="font-size:13px;color:#6f6a63;margin-top:18px">Bu link ${o.minutes} dakika geçerlidir ve yalnızca bir kez kullanılabilir.</p>
+    <p style="font-size:13px;color:#6f6a63">Bu isteği sen yapmadıysan bu e-postayı yok sayabilirsin; şifren değişmez.</p>
+  `;
+  return { subject: "Şifre sıfırlama · minokyo", html: shell("Şifreni sıfırla", body) };
+}

@@ -67,3 +67,45 @@ test("SEO: robots.txt ve sitemap.xml", async ({ request }) => {
   expect(sitemap.status()).toBe(200);
   expect(await sitemap.text()).toContain("/urun/");
 });
+
+test("sırala: fiyata göre artan/azalan çalışır, ad sıralaması yok", async ({ page, isMobile }) => {
+  const prices = async () =>
+    (await page.locator("a[href^='/urun/'] p").allInnerTexts())
+      .map((t) => t.match(/([\d.]+),(\d{2}) TL/))
+      .filter(Boolean)
+      .map((m) => Number(m![1].replace(/\./g, "")) * 100 + Number(m![2]));
+
+  await page.goto("/urunler");
+  if (isMobile) {
+    await page.getByRole("button", { name: /^sırala/i }).click();
+    const dialog = page.getByRole("dialog", { name: "Sırala" });
+    await expect(dialog.getByText("Ürün Adına Göre")).toHaveCount(0);
+    await dialog.getByLabel("Fiyata Göre (Artan)").check();
+    await dialog.getByRole("button", { name: /uygula/i }).click();
+  } else {
+    await page.getByRole("button", { name: /sırala:/i }).click();
+    await expect(page.getByRole("option", { name: /ürün adı/i })).toHaveCount(0);
+    await page.getByRole("option", { name: "Fiyata Göre (Artan)" }).click();
+  }
+  await expect(page).toHaveURL(/sirala=fiyat-artan/);
+  const asc = await prices();
+  expect(asc.length).toBeGreaterThan(1);
+  expect(asc).toEqual([...asc].sort((a, b) => a - b));
+
+  await page.goto("/urunler?sirala=fiyat-azalan&cinsiyet=kiz");
+  const desc = await prices();
+  expect(desc).toEqual([...desc].sort((a, b) => b - a));
+  // Filtre değişince sıralama korunur
+  await expect(page.getByRole("link", { name: "Erkek", exact: true })).toHaveAttribute("href", /sirala=fiyat-azalan/);
+});
+
+test("şifremi unuttum: giriş sayfasında link var, geçersiz sıfırlama linki reddedilir", async ({ page }) => {
+  await page.goto("/giris");
+  await page.getByRole("link", { name: "Şifremi unuttum" }).click();
+  await expect(page.getByRole("heading", { name: "Şifremi Unuttum" })).toBeVisible();
+  await expect(page.getByRole("button", { name: /sıfırlama linki gönder/i })).toBeVisible();
+
+  await page.goto("/sifre-yenile?t=gecersiz-belirtec-123456789012345");
+  await expect(page.getByText(/geçersiz, süresi dolmuş/i)).toBeVisible();
+  await expect(page.getByRole("link", { name: "Yeni Link İste" })).toBeVisible();
+});

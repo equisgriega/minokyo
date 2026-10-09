@@ -149,3 +149,62 @@ describe.skipIf(!TEST_DB)("sipariş akışı (entegrasyon)", () => {
     expect(r.orderNo).toMatch(/^MNK[A-Z2-9]{6}$/);
   });
 });
+
+describe.skipIf(!TEST_DB)("şifre sıfırlama akışı (entegrasyon)", () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let prisma: any, requestPasswordReset: any, resetPassword: any, hashResetToken: any;
+  const email = `reset${Date.now()}@test.minokyo`;
+
+  beforeAll(async () => {
+    process.env.DATABASE_URL = TEST_DB;
+    delete process.env.RESEND_API_KEY;
+    ({ prisma } = await import("@/lib/prisma"));
+    ({ requestPasswordReset, resetPassword } = await import("@/app/(shop)/sifre-actions"));
+    ({ hashResetToken } = await import("@/lib/password-reset"));
+    await prisma.user.create({ data: { email, name: "Test", password: "x", role: "CUSTOMER" } });
+  });
+  afterAll(async () => {
+    if (!prisma) return;
+    await prisma.user.deleteMany({ where: { email } });
+    await prisma.$disconnect();
+  });
+
+  const fd = (o: Record<string, string>) => {
+    const f = new FormData();
+    for (const [k, v] of Object.entries(o)) f.set(k, v);
+    return f;
+  };
+
+  it("kayıtlı olmayan e-postaya da aynı yanıt verilir (hesap varlığı sızmaz)", async () => {
+    const a = await requestPasswordReset(fd({ email }));
+    const b = await requestPasswordReset(fd({ email: `yok${Date.now()}@test.minokyo` }));
+    expect(a).toEqual(b);
+  });
+
+  it("link bir kez kullanılır, şifre değişir ve oturum sürümü artar", async () => {
+    const user = await prisma.user.findUnique({ where: { email } });
+    const token = "test-belirteci-" + Date.now() + "-xxxxxxxxxxxx";
+    await prisma.passwordReset.deleteMany({ where: { userId: user.id } });
+    await prisma.passwordReset.create({
+      data: { userId: user.id, tokenHash: hashResetToken(token), expiresAt: new Date(Date.now() + 600000) },
+    });
+    const r1 = await resetPassword(fd({ token, password: "yeniSifre123", confirm: "yeniSifre123" }));
+    expect(r1.ok).toBe(true);
+    const r2 = await resetPassword(fd({ token, password: "baskaSifre123", confirm: "baskaSifre123" }));
+    expect(r2.ok).toBe(false);
+    const after = await prisma.user.findUnique({ where: { email } });
+    expect(after.password).not.toBe("x");
+    expect(after.sessionVersion).toBe(user.sessionVersion + 1);
+  });
+
+  it("süresi dolmuş link reddedilir", async () => {
+    const user = await prisma.user.findUnique({ where: { email } });
+    const token = "eski-belirtec-" + Date.now() + "-xxxxxxxxxxxx";
+    await prisma.passwordReset.create({
+      data: { userId: user.id, tokenHash: hashResetToken(token), expiresAt: new Date(Date.now() - 1000) },
+    });
+    const r = await resetPassword(fd({ token, password: "yeniSifre123", confirm: "yeniSifre123" }));
+    expect(r.ok).toBe(false);
+  });
+});
+
