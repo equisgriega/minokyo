@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import { setSession, clearSession } from "@/lib/auth";
+import { setSession, clearSession, getSession } from "@/lib/auth";
 import { rateLimitIp } from "@/lib/security";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -68,4 +68,32 @@ export async function loginCustomer(formData: FormData) {
 export async function logoutCustomer() {
   await clearSession();
   redirect("/");
+}
+
+/**
+ * Hesabı kalıcı olarak siler (Google Play hesap silme zorunluluğu).
+ * Siparişler yasal saklama yükümlülüğü (fatura/VUK) nedeniyle silinmez; hesapla bağı koparılır.
+ */
+export async function deleteAccount(formData: FormData): Promise<{ ok: false; message: string } | void> {
+  const session = await getSession();
+  if (!session) redirect("/giris");
+  if (session.role === "ADMIN") return { ok: false, message: "Yönetici hesabı buradan silinemez." };
+
+  if (!(await rateLimitIp("delete-account", 5, 3600))) {
+    return { ok: false, message: "Çok fazla deneme. Lütfen daha sonra tekrar dene." };
+  }
+  if (formData.get("confirm") !== "on") return { ok: false, message: "Silme işlemini onaylaman gerekiyor." };
+
+  const user = await prisma.user.findUnique({ where: { id: session.id } });
+  if (!user || !(await bcrypt.compare(String(formData.get("password") || ""), user.password))) {
+    return { ok: false, message: "Şifre hatalı." };
+  }
+
+  await prisma.$transaction([
+    prisma.order.updateMany({ where: { userId: user.id }, data: { userId: null } }),
+    // Adresler, şifre sıfırlama kayıtları ilişki üzerinden (cascade) silinir
+    prisma.user.delete({ where: { id: user.id } }),
+  ]);
+  await clearSession();
+  redirect("/?hesap=silindi");
 }

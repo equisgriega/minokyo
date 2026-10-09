@@ -3,16 +3,28 @@ import type { CapacitorConfig } from "@capacitor/cli";
 const config: CapacitorConfig = {
   appId: "com.minokyo.app",
   appName: "minokyo",
-  // Native derleme için gerekli (kullanılmıyor; içerik server.url'den yüklenir)
-  webDir: "public",
+  // Küçük native kabuk (logo + bağlantı yok sayfası). Mağaza içeriği server.url'den yüklenir.
+  webDir: "mobile-shell",
+  // Site, uygulamadan gelen istekleri bu etiketle tanır (ör. çok yakında modunda test için)
+  appendUserAgent: "MinokyoApp/1.0",
+  backgroundColor: "#faf8f5",
   server: {
-    // Uygulama canlı siteyi açar. Yayına çıkınca burası minokyo.com olmalı.
-    // Geliştirmede telefonda test için buraya bilgisayarının LAN adresini yazabilirsin:
+    // Geliştirmede telefonda test için bilgisayarının LAN adresini yazabilirsin:
     // url: "http://192.168.1.147:3000",
     url: "https://minokyo.com",
     cleartext: false,
+    // İnternet yoksa / site açılamazsa gösterilecek yerel sayfa
+    errorPath: "offline.html",
+    // Ödeme sayfası uygulama içinde açılsın (dışarı fırlarsa ödeme dönüşü kaybolur).
+    // Bunlar dışındaki alan adları (WhatsApp, Instagram...) sistem tarayıcısında/uygulamasında açılır.
+    allowNavigation: ["*.iyzipay.com", "*.iyzico.com"],
   },
-  backgroundColor: "#f7f2ea",
+  android: {
+    allowMixedContent: false,
+    captureInput: true,
+    // Yayın sürümünde WebView hata ayıklama kapalı
+    webContentsDebuggingEnabled: false,
+  },
 };
 
 export default config;

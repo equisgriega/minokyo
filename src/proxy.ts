@@ -15,9 +15,16 @@ export function proxy(req: NextRequest) {
     // Şifre sıfırlama: çok yakında modunda da çalışsın (yönetici şifresini unutursa)
     pathname.startsWith("/sifremi-unuttum") ||
     pathname.startsWith("/sifre-yenile") ||
+    // Google Play hesap silme bağlantısı herkese açık olmalı
+    pathname.startsWith("/hesap-silme") ||
     pathname.includes("."); // statik dosyalar (logo.png, .svg, manifest, hero.mp4, ürün görselleri vb.)
 
   if (open) return NextResponse.next();
+
+  // Mobil uygulama (Google Play test/inceleme) çok yakında modunda da mağazayı görür.
+  // Not: kullanıcı ajanı taklit edilebilir; çok yakında sayfası bir güvenlik önlemi değil, vitrin perdesidir.
+  // Mağaza açılınca (COMING_SOON=false) bu satırın etkisi kalmaz.
+  if ((req.headers.get("user-agent") || "").includes("MinokyoApp/")) return NextResponse.next();
 
   // Önizleme çerezi olan (mağaza sahibi) gerçek siteyi görür
   const key = process.env.PREVIEW_KEY;

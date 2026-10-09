@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+// Google Play yükleme anahtarı: android/keystore.properties (git'e girmez, yedekle!)
+def keystorePropsFile = rootProject.file("keystore.properties")
+def keystoreProps = new Properties()
+if (keystorePropsFile.exists()) {
+    keystorePropsFile.withInputStream { keystoreProps.load(it) }
+}
+
 android {
     namespace = "com.minokyo.app"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -7,8 +14,9 @@ android {
         applicationId "com.minokyo.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        // Her Play yüklemesinde sürüm kodu artmalı: gradlew bundleRelease -PappVersionCode=2 -PappVersionName=1.0.1
+        versionCode = (project.findProperty("appVersionCode") ?: "1").toString().toInteger()
+        versionName = (project.findProperty("appVersionName") ?: "1.0.0").toString()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,8 +24,19 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        release {
+            if (keystorePropsFile.exists()) {
+                storeFile file(keystoreProps["storeFile"])
+                storePassword keystoreProps["storePassword"]
+                keyAlias keystoreProps["keyAlias"]
+                keyPassword keystoreProps["keyPassword"]
+            }
+        }
+    }
     buildTypes {
         release {
+            signingConfig keystorePropsFile.exists() ? signingConfigs.release : null
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

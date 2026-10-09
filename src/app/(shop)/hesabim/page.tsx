@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { formatTL } from "@/lib/money";
 import { logoutCustomer } from "../auth-actions";
 import { trackingUrl } from "@/lib/carriers";
+import DeleteAccountForm from "@/components/DeleteAccountForm";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +22,8 @@ export default async function AccountPage() {
   if (!user) redirect("/giris");
 
   const orders = await prisma.order.findMany({
-    where: { OR: [{ userId: user.id }, { email: user.email }] },
+    // Yalnızca bu hesaba bağlı siparişler (e-posta eşleşmesi doğrulanmamış hesaplara başkasının siparişini gösterebilirdi)
+    where: { userId: user.id },
     include: { items: true },
     orderBy: { createdAt: "desc" },
   });
@@ -108,6 +110,8 @@ export default async function AccountPage() {
           })}
         </div>
       )}
+
+      {user.role !== "ADMIN" && <DeleteAccountForm />}
     </div>
   );
 }
