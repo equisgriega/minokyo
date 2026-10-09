@@ -19,6 +19,14 @@ const config: CapacitorConfig = {
     // Bunlar dışındaki alan adları (WhatsApp, Instagram...) sistem tarayıcısında/uygulamasında açılır.
     allowNavigation: ["*.iyzipay.com", "*.iyzico.com"],
   },
+  plugins: {
+    SystemBars: {
+      // İçerik durum çubuğunun ALTINDAN başlar (header saat/pil simgeleriyle çakışmaz)
+      insetsHandling: "native",
+      // Açık zemin → koyu simgeler
+      style: "LIGHT",
+    },
+  },
   android: {
     allowMixedContent: false,
     captureInput: true,

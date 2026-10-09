@@ -5,11 +5,13 @@ import Footer from "@/components/Footer";
 import Analytics from "@/components/Analytics";
 import CookieConsent from "@/components/CookieConsent";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import NativeBridge from "@/components/NativeBridge";
 
 export default function ShopLayout({ children }: { children: React.ReactNode }) {
   return (
     <CartProvider>
       <Analytics />
+      <NativeBridge />
       <Header />
       <div className="flex-1">{children}</div>
       <Footer />
