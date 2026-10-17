@@ -274,3 +274,16 @@ model PasswordReset {
 
   @@index([userId])
 }
+
+// Tarayıcı/uygulama tarafında oluşan hatalar (test kullanıcılarının cihazlarından)
+model ClientError {
+  id        String   @id @default(cuid())
+  message   String
+  stack     String?
+  digest    String?
+  url       String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

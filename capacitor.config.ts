@@ -12,6 +12,8 @@ const config: CapacitorConfig = {
     // Geliştirmede telefonda test için bilgisayarının LAN adresini yazabilirsin:
     // url: "http://192.168.1.147:3000",
     url: "https://minokyo.com",
+    // İlk açılış: uygulama çerezini bırakıp mağazaya geçen giriş adresi
+    appStartPath: "/uygulama",
     cleartext: false,
     // İnternet yoksa / site açılamazsa gösterilecek yerel sayfa
     errorPath: "offline.html",

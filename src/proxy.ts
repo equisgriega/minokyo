@@ -17,6 +17,8 @@ export function proxy(req: NextRequest) {
     pathname.startsWith("/sifre-yenile") ||
     // Google Play hesap silme bağlantısı herkese açık olmalı
     pathname.startsWith("/hesap-silme") ||
+    // Mobil uygulama giriş adresi (uygulama çerezini bırakır)
+    pathname.startsWith("/uygulama") ||
     pathname.includes("."); // statik dosyalar (logo.png, .svg, manifest, hero.mp4, ürün görselleri vb.)
 
   if (open) return NextResponse.next();
@@ -24,6 +26,9 @@ export function proxy(req: NextRequest) {
   // Mobil uygulama (Google Play test/inceleme) çok yakında modunda da mağazayı görür.
   // Not: kullanıcı ajanı taklit edilebilir; çok yakında sayfası bir güvenlik önlemi değil, vitrin perdesidir.
   // Mağaza açılınca (COMING_SOON=false) bu satırın etkisi kalmaz.
+  // Uygulama, ilk açılışta /uygulama adresinden "mnk_app" çerezini alır. Çerez, Capacitor'ün
+  // kendi HTTP istemcisiyle yaptığı sayfa isteklerinde de taşındığı için kullanıcı ajanından güvenilir.
+  if (req.cookies.get("mnk_app")?.value === "1") return NextResponse.next();
   if ((req.headers.get("user-agent") || "").includes("MinokyoApp/")) return NextResponse.next();
 
   // Önizleme çerezi olan (mağaza sahibi) gerçek siteyi görür
