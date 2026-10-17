@@ -1,12 +1,14 @@
 ﻿# Google Play için imzalı AAB üretir.
 # Kullanım (store klasöründe):
 #   powershell -ExecutionPolicy Bypass -File scripts\build-android.ps1 -VersionCode 2 -VersionName 1.0.1
+#   -Apk eklenirse telefona doğrudan kurulabilen test APK'sı da üretilir (Play'e AAB yüklenir).
 #
 # Her Play yüklemesinde VersionCode bir öncekinden BÜYÜK olmalı.
 # Proje yolunda Türkçe karakter (Masaüstü) olduğu için Android derleyicisi geçici M: sürücüsünden çalıştırılır.
 param(
   [Parameter(Mandatory = $true)][int]$VersionCode,
-  [Parameter(Mandatory = $true)][string]$VersionName
+  [Parameter(Mandatory = $true)][string]$VersionName,
+  [switch]$Apk
 )
 $ErrorActionPreference = "Stop"
 
@@ -25,7 +27,9 @@ try {
   npx cap sync android
   Push-Location "$Drive\android"
   Write-Host "→ AAB derleniyor (sürüm $VersionName / kod $VersionCode)..."
-  .\gradlew.bat --no-daemon bundleRelease "-PappVersionCode=$VersionCode" "-PappVersionName=$VersionName"
+  $Tasks = @("bundleRelease")
+  if ($Apk) { $Tasks += "assembleRelease" }
+  .\gradlew.bat --no-daemon @Tasks "-PappVersionCode=$VersionCode" "-PappVersionName=$VersionName"
   if ($LASTEXITCODE -ne 0) { throw "Gradle derlemesi başarısız." }
   Pop-Location
   $Out = "$Project\play-store\release"
@@ -33,6 +37,11 @@ try {
   $Dest = "$Out\minokyo-$VersionName-$VersionCode.aab"
   Copy-Item "$Project\android\app\build\outputs\bundle\release\app-release.aab" $Dest -Force
   Write-Host "✓ Hazır: $Dest"
+  if ($Apk) {
+    $ApkDest = "$Out\minokyo-$VersionName-$VersionCode-test.apk"
+    Copy-Item "$Project\android\app\build\outputs\apk\release\app-release.apk" $ApkDest -Force
+    Write-Host "✓ Test APK: $ApkDest"
+  }
 } finally {
   Pop-Location -ErrorAction SilentlyContinue
   Set-Location $Project
