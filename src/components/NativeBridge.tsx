@@ -4,8 +4,11 @@ import { useEffect } from "react";
 import { useCart } from "./CartContext";
 
 type BackEvent = { canGoBack: boolean };
+type Handle = { remove: () => void | Promise<void> };
 type AppPlugin = {
-  addListener: (e: "backButton", cb: (ev: BackEvent) => void) => Promise<{ remove: () => void }>;
+  // Uygulamaya enjekte edilen köprü (native-bridge.js) tutamacı DOĞRUDAN döndürür;
+  // @capacitor/core ise Promise döndürür. İkisi de desteklenir.
+  addListener: (e: "backButton", cb: (ev: BackEvent) => void) => Handle | Promise<Handle>;
   exitApp: () => void;
 };
 type CapacitorGlobal = { isNativePlatform?: () => boolean; Plugins?: { App?: AppPlugin } };
@@ -13,27 +16,38 @@ type CapacitorGlobal = { isNativePlatform?: () => boolean; Plugins?: { App?: App
 /**
  * Yalnızca mobil uygulamada (Capacitor) çalışır; web'de hiçbir şey yapmaz.
  * Android geri tuşu: sepet açıksa kapatır → geçmiş varsa geri gider → yoksa uygulamadan çıkar.
+ * Köprüde bir sorun olursa mağazayı çökertmez, sessizce devre dışı kalır.
  */
 export default function NativeBridge() {
   const { isOpen, setOpen } = useCart();
 
   useEffect(() => {
-    const cap = (window as unknown as { Capacitor?: CapacitorGlobal }).Capacitor;
-    const app = cap?.isNativePlatform?.() ? cap.Plugins?.App : undefined;
-    if (!app) return;
-
-    let handle: { remove: () => void } | undefined;
+    let handle: Handle | undefined;
     let cancelled = false;
-    app
-      .addListener("backButton", ({ canGoBack }) => {
+    try {
+      const cap = (window as unknown as { Capacitor?: CapacitorGlobal }).Capacitor;
+      const app = cap?.isNativePlatform?.() ? cap.Plugins?.App : undefined;
+      if (!app?.addListener) return;
+
+      const result = app.addListener("backButton", ({ canGoBack }) => {
         if (isOpen) setOpen(false);
         else if (canGoBack) window.history.back();
         else app.exitApp();
-      })
-      .then((h) => (cancelled ? h.remove() : (handle = h)));
+      });
+      Promise.resolve(result)
+        .then((h) => {
+          if (cancelled) void h?.remove?.();
+          else handle = h;
+        })
+        .catch((e) => console.warn("Geri tuşu köprüsü kurulamadı", e));
+    } catch (e) {
+      console.warn("Geri tuşu köprüsü kurulamadı", e);
+    }
     return () => {
       cancelled = true;
-      handle?.remove();
+      try {
+        void handle?.remove?.();
+      } catch {}
     };
   }, [isOpen, setOpen]);
 
